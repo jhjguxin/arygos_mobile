@@ -1,0 +1,8 @@
+const config = {
+  API_HOST: 'http://api.arygos.com'
+};
+
+export {
+  config
+};
+

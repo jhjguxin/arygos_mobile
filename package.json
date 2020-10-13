@@ -1,0 +1,23 @@
+{
+  "name": "arygos_mobile",
+  "version": "1.0.0",
+  "description": "> 基于 uni-app + Vue 构建",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crm",
+    "uni-app"
+  ],
+  "author": "francis.j",
+  "license": "ISC",
+  "dependencies": {
+    "@dcloudio/uni-ui": "^1.2.5",
+    "dayjs": "^1.9.0",
+    "lodash": "^4.17.20",
+    "uview-ui": "^1.7.2",
+    "vuex-persistedstate": "^3.1.0"
+  },
+  "devDependencies": {}
+}
