@@ -1,3 +1,5 @@
+import {config} from 'config';
+
 /**
  * 通用uni-app网络请求
  * 基于 Promise 对象实现更简单的 request 使用方式，支持请求和响应拦截
@@ -31,7 +33,7 @@ http.delete('user/1').then((res)=>{
 */
 export default {
   config: {
-    baseUrl: getApp().globalData.config["API_HOST"],
+    baseUrl: config["API_HOST"],
     header: {
       'Content-Type':'application/json;charset=UTF-8'
     },  

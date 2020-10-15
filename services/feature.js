@@ -16,6 +16,9 @@ export default class Feature {
       Feature._featureInstance = new Feature();
     }
     Feature._featureInstance.feature_config = await Feature._featureInstance.fetchFeature();
+    Feature._featureInstance.labels = _.transform(Feature._featureInstance.feature_config, (result, value, key) => {
+      return result[key] = value["label"]
+    });
 
     return Feature._featureInstance;
   }
@@ -40,6 +43,12 @@ export default class Feature {
     let feature = this.feature_config[_.snakeCase(name)] || {};
 
     return feature;
+  }
+  
+  label({ name }) {
+    let { label = name} = this.get({ name }) || {};
+
+    return label;
   }
 
   isEnable = ({ name }) => {

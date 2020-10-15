@@ -1,9 +1,16 @@
 <script>
 import {config} from './config';
+import Feature from './services/feature';
 
 export default {
   onLaunch: function() {
     console.log('App Launch，app启动');
+    
+    Feature.instance().then((feature) => {
+      getApp().globalData.feature = feature;
+      console.log(JSON.stringify(feature.labels))
+      getApp().globalData.featureLabels = feature.labels;
+    });
     
     let { getters: {getHasLogin: hasLogin } } = this.$store;
     
@@ -35,7 +42,9 @@ export default {
     console.log('App Hide，app不再展现在前台');
   },
   globalData: {
-    config
+    config,
+    feature: null,
+    featureLabels: {}
   }
 };
 </script>

@@ -40,7 +40,7 @@ export default class CacheStore {
     let data = uni.getStorageSync(cache_key);
     
     if (!_.isEmpty(data)) {
-      if (data.ex > dayjs.unix()) {
+      if (data.ex > dayjs().unix()) {
         return data.value
       } else {
         this.removeKey (key);

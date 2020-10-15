@@ -9,7 +9,6 @@
       </u-grid-item>
     </u-grid>
     <u-gap></u-gap>
-          
     <uni-list
       v-for="item in lists"
      >

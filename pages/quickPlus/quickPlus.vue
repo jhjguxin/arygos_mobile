@@ -1,49 +1,82 @@
 <template>
   <view class="content" :class="{'active':active}">
     <common></common>
-    <image class="logo" :class="{'active':active}" src="../../static/logo.png"  mode="aspectFit"></image>
+    <image class="logo" :class="{'active': active}" src="/static/logo.png"  mode="aspectFit" />
+    
     <view class="tabbar-box-wrap">
       <view class="tabbar-box">
-        <view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release')">
-          <image class="box-image" src="../../static/img/release.png" mode="aspectFit"></image>
-          <text class="explain">发图文</text>
-        </view>
-        <view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')">
-          <image class="box-image" src="../../static/img/video.png" mode="aspectFit"></image>
-          <text class="explain">发视频</text>
-        </view>
-        <view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa')">
-          <image class="box-image" src="../../static/img/qa.png" mode="aspectFit"></image>
-          <text class="explain">提问</text>
-        </view>
+        <u-row gutter="16">
+          <u-grid :col="2"  :border="false">
+            <u-grid-item>
+              <u-button type="primary">
+                <u-icon name="account-fill" :size="40"></u-icon>新增{{this.featureLabels['customer']}}
+              </u-button>
+            </u-grid-item>
+            <u-grid-item>
+              <u-button type="primary"><u-icon name="scan" :size="40"></u-icon>名片扫描</u-button>
+            </u-grid-item>
+          </u-grid>
+        </u-row>
+        <u-gap height="2" bg-color="#bbb"></u-gap>
+        <u-row>
+          <u-grid :col="4"  :border="false">
+            <u-grid-item>
+              <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
+              <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
+              <view class="grid-text">{{this.featureLabels['schedule_report']}}</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="calendar" :size="46"></u-icon>
+              <view class="grid-text">新增任务</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="share-fill" :size="46"></u-icon>
+              <view class="grid-text">新增{{this.featureLabels['lead']}}</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
+              <view class="grid-text">新增{{this.featureLabels['contact']}}</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="rmb" :size="46"></u-icon>
+              <view class="grid-text">新增{{this.featureLabels['opportunity']}}</view>
+            </u-grid-item>
+            <u-grid-item>
+              <u-icon name="order" :size="46"></u-icon>
+              <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
+            </u-grid-item>
+          </u-grid>
+        </u-row>
       </view>
     </view>
   </view>
 </template> 
 
 <script>
+import _ from 'lodash';
+import Feature from 'services/feature';
+
 export default {
   data() {
     return {
-      active: false
+      active: false,
+      featureLabels: getApp().globalData.featureLabels
     };
   },
-  onLoad() {},
+  onLoad() {
+  },
   onShow() {
-    // setTimeout(() => {
-    this.active = true;
-    // }, 500);
+    _.delay(() => {
+      this.active = true;
+    }, 200);
   },
   onHide() {
     this.active = false;
   },
   methods: {
-    goToPage(url) {
-      if (!url) return;
-      uni.navigateTo({
-        url
-      });
-    }
   }
 };
 </script>
@@ -88,13 +121,13 @@ export default {
   left: 0;
   .tabbar-box {
     position: relative;
-    display: flex;
+    display: block;
     width: 100%;
     background: #fff;
     border-radius: 20upx;
     padding: 15upx 20upx;
     box-sizing: border-box;
-    z-index: 2;
+    // z-index: 2;
     box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
     &:after {
       content: '';
@@ -107,34 +140,21 @@ export default {
       height: 50upx;
       transform: rotate(45deg);
       background: #fff;
-      z-index: 1;
+      // z-index: 1;
       box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
       border-radius: 2px;
     }
-    &:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #ffffff;
-      border-radius: 20upx;
-      z-index: 2;
-    }
-    .tabbar-box-item {
-      // position: relative;
-      width: 100%;
-      z-index: 3;
-      margin: 10upx;
-      color: $uni-color-subtitle;
-      text-align: center;
-      font-size: $uni-font-size-base;
-      .box-image {
-        width: 100%;
-        height: $uni-img-size-lg;
-      }
-    }
+    // &:before {
+    //   content: '';
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   height: 100%;
+    //   background: #ffffff;
+    //   border-radius: 20upx;
+    //   // z-index: 2;
+    // }
   }
 }
 </style>
