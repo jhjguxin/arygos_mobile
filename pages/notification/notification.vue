@@ -11,6 +11,7 @@
     <u-gap></u-gap>
     <uni-list
       v-for="item in lists"
+      v-bind:key="item.id"
      >
       <!-- 显示圆形头像 -->
       <uni-list-item

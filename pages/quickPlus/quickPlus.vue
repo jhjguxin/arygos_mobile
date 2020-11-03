@@ -7,7 +7,7 @@
       <view class="tabbar-box">
         <u-row gutter="16">
           <u-grid :col="2"  :border="false">
-            <u-grid-item>
+            <u-grid-item index="customer">
               <u-button type="primary">
                 <u-icon name="account-fill" :size="40"></u-icon>新增{{this.featureLabels['customer']}}
               </u-button>
@@ -20,31 +20,31 @@
         <u-gap height="2" bg-color="#bbb"></u-gap>
         <u-row>
           <u-grid :col="4"  :border="false">
-            <u-grid-item>
+            <u-grid-item index="revisit_log">
               <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
               <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="schedule_report">
               <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
               <view class="grid-text">{{this.featureLabels['schedule_report']}}</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="event">
               <u-icon name="calendar" :size="46"></u-icon>
               <view class="grid-text">新增任务</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="lead" @click="handleItemClick($event, '/pages/lead/leadNew/leadNew')">
               <u-icon name="share-fill" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['lead']}}</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="contact">
               <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contact']}}</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="opportunity">
               <u-icon name="rmb" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['opportunity']}}</view>
             </u-grid-item>
-            <u-grid-item>
+            <u-grid-item index="contract">
               <u-icon name="order" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
             </u-grid-item>
@@ -71,12 +71,17 @@ export default {
   onShow() {
     _.delay(() => {
       this.active = true;
-    }, 200);
+    }, 300);
   },
   onHide() {
     this.active = false;
   },
   methods: {
+    handleItemClick (event, url) {
+      uni.navigateTo({
+        url
+      });
+    }
   }
 };
 </script>

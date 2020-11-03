@@ -1,4 +1,5 @@
 <script>
+import _ from "lodash";
 import {config} from './config';
 import Feature from './services/feature';
 
@@ -6,33 +7,29 @@ export default {
   onLaunch: function() {
     console.log('App Launch，app启动');
     
-    Feature.instance().then((feature) => {
-      getApp().globalData.feature = feature;
-      console.log(JSON.stringify(feature.labels))
-      getApp().globalData.featureLabels = feature.labels;
-    });
-    
+    // REVIEW onLaunch 和 onLoad 是并行执行的
+    getApp().globalData.initGlobalData();
+
     let { getters: {getHasLogin: hasLogin } } = this.$store;
     
     // 检查用户登陆状态
     if (hasLogin) {
-      uni.navigateTo({
-        url: "/pages/workbench/workbench"
-      });
-      setTimeout(() => {
+      _.delay(()=> {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        });
+      }, 500);
+
+      _.delay(()=> {
         uni.setTabBarBadge({
           index: 1,
           text: '31'
         });
-        // uni.showTabBarRedDot({
-        //   index: 3
-        // });
       }, 1000);
-
     } else {
       uni.navigateTo({
         url: "/pages/auth/login/login"
-      })
+      });
     }
   },
   onShow: function(page) {
@@ -43,6 +40,12 @@ export default {
   },
   globalData: {
     config,
+    initGlobalData: async () => {
+      Feature.instance().then((feature) => {
+        getApp().globalData.feature = feature;
+        getApp().globalData.featureLabels = feature.labels;
+      });
+    },
     feature: null,
     featureLabels: {}
   }

@@ -70,7 +70,7 @@ export default {
     if (options.needAuth) {
       const userToken = getApp().$store.getters.getAuthToken;
       const header = {
-        'Authorization': `Bearer token="${userToken}", device="web"`
+        'Authorization': `Bearer token="${userToken}", device="h5"`
       };
       options.header = Object.assign({}, options.header, header) 
     }

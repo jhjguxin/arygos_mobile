@@ -10,10 +10,10 @@
       <view class="main">
         <u-form :model="form" ref="uForm" :error-type="errorType">
           <u-form-item prop="login" left-icon='account-fill'>
-            <u-input 
+            <u-input
               v-model="form.login"
-              type="number" 
-              maxlength="11" 
+              type="number"
+              maxlength="11"
               placeholder="请输入11位手机号"
               clearable
               focus
@@ -21,23 +21,23 @@
           </u-form-item>
           <u-form-item prop="password" left-icon='lock-fill'>
             <u-input
-              v-model="form.password" 
-              type="password" 
-              placeholder="密码" 
+              v-model="form.password"
+              type="password"
+              placeholder="密码"
               password-icon
             />
           </u-form-item>
         </u-form>
       </view>
-      
-      <u-button 
+
+      <u-button
         type='primary'
         class='login-button'
         rotate='isRotate'
         ripple
         @click='handleSubmit'
       >登 录</u-button>
-    
+
       <!-- 底部信息 -->
       <view class="footer">
         <navigator url="forget" open-type="navigate">找回密码</navigator>
@@ -56,9 +56,9 @@
   import { authApi } from 'services/http';
   import Auth from 'services/auth';
   import _ from 'lodash';
-  
+
   import logo from 'static/logo.png';
-  
+
   export default {
     data() {
       return {
@@ -70,15 +70,15 @@
         rules: {
           login: [
             {
-              required: true, 
-              message: '请输入手机号', 
+              required: true,
+              message: '请输入手机号',
               trigger: ['change','blur'],
             }
           ],
           password: [
             {
-              required: true, 
-              message: '请输入密码', 
+              required: true,
+              message: '请输入密码',
               trigger: ['change','blur'],
             }
           ]
@@ -91,10 +91,10 @@
       let { rules } = this;
       // h5 中如果在 onReady 中可能会导致校验规则不生效
       this.$refs.uForm.setRules(rules);
-      
+
       // 隐藏 TabBar
       uni.hideTabBar();
-      
+
       this.auth = new Auth();
     },
     methods: {
@@ -106,20 +106,25 @@
 
           if (code == 0) {
             auth.login(user);
-            
-            // REVIEW 跳转到 tabBar 页面只能使用 switchTab 跳转
-            uni.switchTab({
-              url: "/pages/workbench/workbench",
-              success() {
-                _.delay(()=>{
-                  uni.showToast({
-                    icon: 'success',
-                    title: '退出登陆成功',
-                    duration: 1000
-                  });
-                }, 100)
-              }
-            });
+
+            // REVIEW onLaunch 和 onLoad 是并行执行的
+            getApp().globalData.initGlobalData();
+
+            _.delay(()=> {
+              // REVIEW 跳转到 tabBar 页面只能使用 switchTab 跳转
+              uni.switchTab({
+                url: "/pages/workbench/workbench",
+                success() {
+                  _.delay(()=>{
+                    uni.showToast({
+                      icon: 'success',
+                      title: '登陆成功',
+                      duration: 1000
+                    });
+                  }, 200)
+                }
+              })
+            }, 600);
           } else {
             uni.showToast({
               icon: 'none',
