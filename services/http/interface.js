@@ -1,4 +1,5 @@
 import {config} from 'config';
+const qs = require('qs');
 
 /**
  * 通用uni-app网络请求
@@ -14,22 +15,6 @@ http.config.baseUrl = "http://localhost:8080/api/"
 http.request(url:'user/list',method:'GET').then((res)=>{
   console.log(JSON.stringify(res))
 })
-http.get('user/list').then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.get('user/list', {status: 1}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.post('user', {id:1, status: 1}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.put('user/1', {status: 2}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.delete('user/1').then((res)=>{
-  console.log(JSON.stringify(res))
-}) 
-
 */
 export default {
   config: {
@@ -56,8 +41,21 @@ export default {
     options.baseUrl = options.baseUrl || this.config.baseUrl
     options.dataType = options.dataType || this.config.dataType
     options.url = options.baseUrl + options.url
-    options.data = options.data || {}
+    options.data = options.data ? JSON.parse(JSON.stringify(options.data)) : {}
     options.method = options.method || this.config.method
+
+    // REVIEW uni-app 不支持 object 嵌套 数组因此提前拼接 data 到 url
+    let [url, query] = options.url.split("?");
+    if (query) {
+      options.data = _.extend(options.data, qs.parse(query, {arrayFormat: 'brackets'}));
+    }
+
+    if (!_.isEmpty(options.data)) {
+      query = qs.stringify(options.data, {arrayFormat: 'brackets'});
+      options.url = `${url}?${query}`
+      options.data = null
+    }
+    
     //TODO 加密数据
     
     //TODO 数据签名
@@ -122,42 +120,6 @@ export default {
       
       uni.request(_config);
     });
-  },
-  get(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'GET'  
-    return this.request(options)
-  },
-  post(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'POST'
-    return this.request(options)
-  },
-  put(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'PUT'
-    return this.request(options)
-  },
-  delete(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'DELETE'
-    return this.request(options)
   }
 }
 

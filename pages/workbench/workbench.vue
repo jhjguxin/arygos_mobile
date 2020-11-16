@@ -10,7 +10,7 @@
     </u-grid>
     <uni-section title="销售管理" type="line"></uni-section>
     <u-grid :col="4" :border="true">
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/lead/leadList/leadList')">
         <u-icon name="share-fill" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["lead"]}}</view>
       </u-grid-item>
@@ -88,6 +88,11 @@
     mounted (){
     },
     methods: {
+      handleItemClick (event, url) {
+        uni.navigateTo({
+          url
+        });
+      }
     }
   }
 </script>

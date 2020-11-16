@@ -5,8 +5,10 @@ import Vuex from 'vuex';
 import createPersistedState from "vuex-persistedstate";
 
 // modules
-import userModule from './module/auth/userModule.js' // 登陆用户信息
-import permissionModule from './module/permission/permissionModule.js' // 用户操作权限
+import userModule from './module/auth/userModule' // 登陆用户信息
+import permissionModule from './module/permission/permissionModule' // 用户操作权限
+
+import filterColumModule from './module/filterColumn/filterColumnModule' // 列表页启用的筛选字段
 
 Vue.use(Vuex)
 
@@ -17,6 +19,7 @@ export default new Vuex.Store({
   })],
   modules:{
     auth: userModule,
-    permission: permissionModule
+    permission: permissionModule,
+    filterColumn: filterColumModule
   }
 })

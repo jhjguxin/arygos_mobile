@@ -51,14 +51,17 @@
        * 下拉刷新回调函数
        */
       onPullDownRefresh() {
-        this.page = 1
+        this.page = 1;
         this.fetchNotification({ reload: true });
       },
       /**
        * 上拉加载回调函数
        */
       onReachBottom() {
-        this.fetchNotification({});
+        let { page } = this;
+        page += 1;
+        this.page = page;
+        this.fetchNotification({ page });
       },
       /**
        * 获取页面数据
@@ -81,7 +84,7 @@
           const tempList = _.map(models, (model) => (
             {
               ...model,
-              time: dayjs(model.created_at).format("MM-DD HH:SS")
+              time: dayjs(model.created_at).format("MM-DD HH:ss")
             }
           ));
           if (next_page) {
@@ -102,7 +105,7 @@
             uni.stopPullDownRefresh();
           } else {
             // 上拉加载后合并数据
-            this.lists = this.lists.concat(tempList);
+            this.lists = _.concat(this.lists, tempList);
           }
           if (tempList.length) {
             this.page++

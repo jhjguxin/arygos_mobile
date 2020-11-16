@@ -139,10 +139,10 @@ export default ({ customField }) => {
               if (max == "now") max = dayjs().endOf('day');
               if (min == "now") min = dayjs().startOf('day');
 
-              if (min && value < dayjs(min)) {
+              if (min && dayjs(value) < dayjs(min)) {
                 callback(new Error(`输入的${label}不能小于当前时间!`));
               }
-              if (max && value > dayjs(max)) {
+              if (max && dayjs(value) > dayjs(max)) {
                 callback(new Error(`输入的${label}不能大于当前时间!`));
               }
 
@@ -174,10 +174,10 @@ export default ({ customField }) => {
               if (max == "now") max = dayjs();
               if (min == "now") min = dayjs();
 
-              if (min && value < dayjs(min)) {
+              if (min && dayjs(value) < dayjs(min)) {
                 callback(new Error(`输入的${label}不能小于当前时间!`));
               }
-              if (max && value > dayjs(max)) {
+              if (max && dayjs(value) > dayjs(max)) {
                 callback(new Error(`输入的${label}不能大于当前时间!`));
               }
 

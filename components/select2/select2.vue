@@ -59,10 +59,11 @@
         klassName,
         value = {},
         required,
-        title = "请选择",
+        title = "",
         width = "80%",
         query = "",
         placeholder,
+        perPage = 10,
         searchPlaceholder = "输入要搜索的内容",
         mode = "selector"
       } = this.$attrs;
@@ -80,6 +81,7 @@
         status: "nomore",
         showCancelButton: true,
         page: 1,
+        perPage: perPage,
         border: false,
         showAction: false,
         list: [],
@@ -150,11 +152,11 @@
         this.fetchData({page: this.page});
       },
       fetchData: function ({page, query}) {
-        let { klassName } = this;
+        let { klassName, perPage: per_page } = this;
 
         this.status = "loading";
 
-        this.requestApi({ klassName, page, query }).then((res) => {
+        this.requestApi({ klassName, page, query, params: { per_page } }).then((res) => {
           let {
             data: {
               data: {

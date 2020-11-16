@@ -13,11 +13,12 @@
   "author": "francis.j",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.2.5",
-    "dayjs": "^1.9.0",
-    "fsevents": "^2.1.3",
+    "@dcloudio/uni-ui": "^1.2.7",
+    "dayjs": "^1.9.5",
+    "fsevents": "^2.2.1",
     "lodash": "^4.17.20",
-    "uview-ui": "^1.7.7",
+    "qs": "^6.9.4",
+    "uview-ui": "^1.7.8",
     "vuex-persistedstate": "^3.1.0"
   }
 }

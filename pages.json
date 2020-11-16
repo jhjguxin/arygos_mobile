@@ -9,7 +9,9 @@
       // "^form-(.*)": "@/components/custom_form/fields/form-$1.vue",
       "^custom-form": "@/components/custom_form/custom-form",
       "^custom-form-field": "@/components/custom_form/custom-form-field",
-      "^collapse-custom-field": "@/components/custom_form/collapse-custom-field"
+      "^collapse-custom-field": "@/components/custom_form/collapse-custom-field",
+      "^column-filter-form": "@/components/column-filter-form/column-filter-form.vue",
+      "^column-filter-(.*)": "@/components/column-filter-form/fields/column-filter-$1.vue"
     }
   },
   "pages": [
@@ -92,6 +94,14 @@
       "path" : "pages/lead/leadNew/leadNew",
       "style": {
         "navigationBarTitleText": "新增线索"
+      }
+    },
+    {
+      "path" : "pages/lead/leadList/leadList",
+      "style" :                                                                                    
+      {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
       }
     }
   ],

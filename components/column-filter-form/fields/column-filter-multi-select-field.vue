@@ -1,5 +1,5 @@
 <template>
-  <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
+  <u-form-item :prop="customField.name" :label="customField.label">
     <u-checkbox-group wrap @change="handleChange">
       <u-checkbox
         v-model="item.checked"

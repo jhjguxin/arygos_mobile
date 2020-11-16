@@ -87,7 +87,7 @@ const transfer = (data) => {
 const mass_destroy = (data) => {
   return http.request({
     url: `/api/v2/leads/mass_destroy`,
-    method: 'POST',
+    method: 'DELETE',
     needAuth: true,
     data,
   });

@@ -37,8 +37,7 @@
       }
     },
     async onLoad() {
-      let custom_field_form = new CustomFieldForm.instance();
-      let customFields = await custom_field_form.fetchData("Lead");
+      let customFields = await CustomFieldForm.instance().fetchData("Lead");
 
       this.$set(this, "customFields", customFields);
       this.$set(this, "formReady", true);

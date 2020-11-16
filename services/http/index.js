@@ -19,6 +19,7 @@ import customerCommonSettingApi from './api/customer_common_setting';
 
 import duplicateApi from './api/duplicate';
 
+import userSettingApi from './api/user_setting';
 
 /**
  * 将业务所有接口统一起来便于维护
@@ -42,5 +43,6 @@ export {
   contractApi,
   productApi,
   customerCommonSettingApi,
-  duplicateApi
+  duplicateApi,
+  userSettingApi
 }
