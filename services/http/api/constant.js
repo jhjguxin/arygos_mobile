@@ -12,7 +12,8 @@ const index = (data) => {
 const global = (data) => {
   return http.request({
     url: '/api/v2/constants/global',
-    method: 'GET', 
+    method: 'GET',
+    needAuth: true,
     data,
   });
 };

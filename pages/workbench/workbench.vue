@@ -10,7 +10,7 @@
     </u-grid>
     <uni-section title="销售管理" type="line"></uni-section>
     <u-grid :col="4" :border="true">
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/lead/leadList/leadList')">
         <u-icon name="share-fill" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["lead"]}}</view>
       </u-grid-item>
@@ -51,15 +51,15 @@
     <u-grid :col="4" :border="true">
       <u-grid-item>
         <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
-        <view class="grid-text">跟进记录</view>
+        <view class="grid-text">{{this.featureLabels["revisit_log"]}}</view>
       </u-grid-item>
       <u-grid-item>
         <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
-        <view class="grid-text">工作报告</view>
+        <view class="grid-text">{{this.featureLabels["schedule_report"]}}</view>
       </u-grid-item>
       <u-grid-item>
         <u-icon name="zhihu" :size="46"></u-icon>
-        <view class="grid-text">知识库</view>
+        <view class="grid-text">{{this.featureLabels["knowledge_article"]}}</view>
       </u-grid-item>
     </u-grid>
   </view>
@@ -79,16 +79,28 @@
     },
     computed: {
     },
-    onLoad: (option) => {
-      console.debug('加载工作台', option)
+    async onLoad(option) {
+      console.debug('加载工作台', option);
+
+      // REVIEW onLaunch 和 onLoad 是并行执行的, 需要在首页使用 promise 保证初始化完成
+      if (Object.keys(this.featureLabels) == 0) {
+        await getApp().globalData.initGlobalData();
+        _.delay(()=> {
+          this.featureLabels = getApp().globalData.featureLabels;
+        }, 10)
+      }
     },
     mounted (){
     },
     methods: {
+      handleItemClick (event, url) {
+        uni.navigateTo({
+          url
+        });
+      }
     }
   }
 </script>
 
 <style>
-
 </style>

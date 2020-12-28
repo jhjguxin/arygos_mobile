@@ -1,4 +1,5 @@
 import {config} from 'config';
+const qs = require('qs');
 
 /**
  * 通用uni-app网络请求
@@ -14,29 +15,13 @@ http.config.baseUrl = "http://localhost:8080/api/"
 http.request(url:'user/list',method:'GET').then((res)=>{
   console.log(JSON.stringify(res))
 })
-http.get('user/list').then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.get('user/list', {status: 1}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.post('user', {id:1, status: 1}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.put('user/1', {status: 2}).then((res)=>{
-  console.log(JSON.stringify(res))
-})
-http.delete('user/1').then((res)=>{
-  console.log(JSON.stringify(res))
-}) 
-
 */
 export default {
   config: {
     baseUrl: config["API_HOST"],
     header: {
       'Content-Type':'application/json;charset=UTF-8'
-    },  
+    },
     data: {},
     method: "GET",
     dataType: "json",
@@ -56,25 +41,40 @@ export default {
     options.baseUrl = options.baseUrl || this.config.baseUrl
     options.dataType = options.dataType || this.config.dataType
     options.url = options.baseUrl + options.url
-    options.data = options.data || {}
+    options.data = options.data ? JSON.parse(JSON.stringify(options.data)) : {}
     options.method = options.method || this.config.method
+
+    // REVIEW uni-app 不支持 object 嵌套 数组因此提前拼接 data 到 url
+    let [url, query] = options.url.split("?");
+    if (query) {
+      options.data = _.extend(options.data, qs.parse(query, {arrayFormat: 'brackets'}));
+    }
+
+    if (options.method == "GET") {
+      if (!_.isEmpty(options.data)) {
+        query = qs.stringify(options.data, {arrayFormat: 'brackets'});
+        options.url = `${url}?${query}`
+        options.data = null
+      }
+    }
+
     //TODO 加密数据
-    
+
     //TODO 数据签名
-    /* 
+    /*
     _token = {'token': getStorage(STOREKEY_LOGIN).token || 'undefined'},
     _sign = {'sign': sign(JSON.stringify(options.data))}
-    options.header = Object.assign({}, options.header, _token,_sign) 
+    options.header = Object.assign({}, options.header, _token,_sign)
     */
 
     if (options.needAuth) {
       const userToken = getApp().$store.getters.getAuthToken;
       const header = {
-        'Authorization': `Bearer token="${userToken}", device="web"`
+        'Authorization': `Bearer token="${userToken}", device="h5"`
       };
-      options.header = Object.assign({}, options.header, header) 
+      options.header = Object.assign({}, options.header, header)
     }
-    
+
     return new Promise((resolve, reject) => {
       let _config = null;
 
@@ -84,23 +84,23 @@ export default {
           title: '加载中'
         });
       };
-      
+
       options.complete = (response) => {
         let statusCode = response.statusCode;
         response.config = _config;
-        
+
         if (options.showLoading) {
-          uni.hideLoading();  
+          uni.hideLoading();
         }
-        
+
         if (this.interceptor.response) {
           let newResponse = this.interceptor.response(response);
-          
+
           if (newResponse) {
             response = newResponse;
           }
         }
-        
+
         // 统一的响应日志记录
         _reslog(response);
         if (statusCode === 200) { //成功
@@ -116,48 +116,12 @@ export default {
       if (this.interceptor.request) {
         this.interceptor.request(_config)
       }
-      
+
       // 统一的请求日志记录
       _reqlog(_config);
-      
+
       uni.request(_config);
     });
-  },
-  get(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'GET'  
-    return this.request(options)
-  },
-  post(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'POST'
-    return this.request(options)
-  },
-  put(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'PUT'
-    return this.request(options)
-  },
-  delete(url, data, options) {
-    if (!options) {
-      options = {}
-    }
-    options.url = url
-    options.data = data
-    options.method = 'DELETE'
-    return this.request(options)
   }
 }
 

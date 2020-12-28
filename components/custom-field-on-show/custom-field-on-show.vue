@@ -1,0 +1,116 @@
+<template>
+  <view :style="style">
+    <slot>
+      <u-link v-if="fieldType === 'mobile_field'"  :href="href">
+        {{displayValue}}
+      </u-link>
+      <u-link v-else-if="fieldType === 'tel_field'"  :href="href">
+        {{displayValue}}
+      </u-link>
+      <u-link v-else-if="fieldType === 'url_field'"  :href="href">
+        {{displayValue}}
+      </u-link>
+      <u-tag v-else-if="fieldType === 'select_field'"  :text="displayValue">
+      </u-tag>
+      <u-tag v-else-if="fieldType === 'field_map_field'" :text="displayValue">
+      </u-tag>
+      <u-tag v-else-if="fieldType === 'multi_select'" v-for="opt in displayValue" :key="opt" :text="opt">
+      </u-tag>
+      <text v-else>
+        {{displayValue}}
+      </text>
+    </slot>
+  </view>
+</template>
+
+
+<script>
+  import _ from "lodash";
+  import dayjs from 'dayjs';
+
+  export default {
+    data() {
+      let {
+        customField = {},
+        record,
+        style = {},
+        inline
+      } = this.$attrs;
+      let { field_type: fieldType } = customField;
+      if (inline) style = {
+        ...style,
+        display: "inline-block"
+      };
+
+      return {
+        customField,
+        fieldType,
+        record,
+        style,
+        href: null,
+      }
+    },
+    methods: {
+    },
+    computed: {
+      displayValue: {
+        get () {
+          let { customField: {
+              custom_column_name: customColumnName, field_type: fieldType,
+            }, record
+          } = this;
+          let value;
+
+          switch (fieldType) {
+            case "text_field": case "email_field":
+            case "integer_field": case "float_field": case "currency_field":
+              value = _.at(record, customColumnName)[0];
+              break;
+            case "url_field":
+              value = _.at(record, customColumnName)[0];
+              this.href = value;
+              break;
+            case "mobile_field": case "tel_field":
+              value = _.at(record, customColumnName)[0];
+              this.href = `tel:${value}`;
+              break;
+            case "text_area":
+              value = _.at(record, customColumnName)[0];
+              _.truncate(value, {length: 80});
+              break;
+            case "date_field":
+              value = _.at(record, customColumnName)[0];
+              value = value ? dayjs(value).format("YYYY-MM-DD") : value;
+              break;
+            case "datetime_field":
+              value = _.at(record, customColumnName)[0];
+              value = value ? dayjs(value).format("YYYY-MM-DD HH:ss") : value;
+              break;
+            case "select_field": case "field_map_field":
+              value = _.at(record, customColumnName)[0];
+              break;
+            case "multi_select":
+              value = _.split(_.at(record, customColumnName)[0], "，");
+              break;
+            case "select2_field":
+              value = _.at(record, customColumnName)[0];
+              break;
+            case "address_select":
+              value = _.at(record, customColumnName)[0];
+              break;
+            case "geo_address_field":
+              value = _.at(record, customColumnName)[0];
+              break;
+          }
+
+          return value;
+        },
+        set (value) {
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+</style>

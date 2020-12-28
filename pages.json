@@ -1,7 +1,18 @@
 {
   "easycom": {
-    "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
-     "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    "autoscan": true,
+    "custom": {
+      "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+      "^form-(.*)": "@/components/custom_form/fields/form-$1.vue",
+      // "^form-text-field": "@/components/custom_form/form-text-field",
+      // "^form-(.*)": "@/components/custom_form/fields/form-$1.vue",
+      "^custom-form": "@/components/custom_form/custom-form",
+      "^custom-form-field": "@/components/custom_form/custom-form-field",
+      "^collapse-custom-field": "@/components/custom_form/collapse-custom-field",
+      "^column-filter-form": "@/components/column-filter-form/column-filter-form.vue",
+      "^column-filter-(.*)": "@/components/column-filter-form/fields/column-filter-$1.vue"
+    }
   },
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
@@ -29,20 +40,8 @@
       }
     },
     {
-      "path": "pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release",
-      "style": {}
-    },
-    {
-      "path": "pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video",
-      "style": {}
-    },
-    {
-      "path": "pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa",
-      "style": {}
-    },
-    {
       "path" : "pages/todo/todo",
-      "style" : {
+      "style": {
         "navigationBarTitleText": "代办",
         "app-plus": {
           "titleNView": {
@@ -53,7 +52,7 @@
     },
     {
       "path" : "pages/report/report",
-      "style" : {
+      "style": {
         "navigationBarTitleText": "报表中心",
         "app-plus": {
           "titleNView": {
@@ -64,7 +63,7 @@
     },
     {
       "path" : "pages/me/me",
-      "style" : {
+      "style": {
         "navigationBarTitleText": "我的"
       },
       "app-plus": {
@@ -75,21 +74,91 @@
     },
     {
       "path" : "pages/quickPlus/quickPlus",
-      "style" : {
+      "style": {
         "navigationBarTitleText": "快捷新增"
       }
     },
     {
       "path" : "pages/setting/setting",
-      "style" : {
+       "style": {
         "navigationBarTitleText": "设置"
       }
-    }
-    ,{
-        "path" : "pages/notification/notification",
-        "style" : {
-          "navigationBarTitleText": "消息"
-        }
+    },
+    {
+      "path" : "pages/notification/notification",
+      "style": {
+        "navigationBarTitleText": "消息"
+      }
+    },
+    {
+      "path" : "pages/lead/leadNew/leadNew",
+      "style": {
+        "navigationBarTitleText": "新增线索"
+      }
+    },
+    {
+      "path" : "pages/lead/leadList/leadList",
+      "style" :
+      {
+        "navigationBarTitleText": "线索",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/lead/leadShow/leadShow",
+      "style" :
+      {
+        "navigationBarTitleText": "线索详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/lead/leadEdit/leadEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "线索编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/event/eventNew/eventNew",
+      "style" :
+      {
+        "navigationBarTitleText": "添加任务",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transfer/transfer",
+      "style" :
+      {
+        "navigationBarTitleText": "转移给他人",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transferIntoCommon/transferIntoCommon",
+      "style" :
+      {
+        "navigationBarTitleText": "转入公海池",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/pickEntity/pickEntity",
+      "style" :
+      {
+        "navigationBarTitleText": "选择对象",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/revisitLog/revisitLogNew/revisitLogNew",
+      "style" :
+      {
+        "navigationBarTitleText": "写跟进",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {

@@ -62,9 +62,16 @@
 
 ```
 
+## 已知问题
+
+- uni-app 目前不支持[动态组件](https://github.com/dcloudio/uni-app/blob/d49de33c438fdd22295a05766a0428aeeaa4aa69/docs/use.md#vue-%E7%BB%84%E4%BB%B6)
+
 ## references
 
 - [vue 中文文档](https://cn.vuejs.org/v2/guide/instance.html)
 - [vue Api文档](https://vuejs.org/v2/api/)
 - [uniapp 文档](https://uniapp.dcloud.io/api/)
 - [Vue CLI](https://cli.vuejs.org/zh/guide/)
+- [uformjs](https://uformjs.org/)
+- [component-dynamic-async](https://v3.vuejs.org/guide/component-dynamic-async.html)
+- [uniapp 组件](https://uniapp.dcloud.io/use?id=vue-%e7%bb%84%e4%bb%b6)
