@@ -23,16 +23,16 @@
     duplicateApi,
   } from "services/http";
 
-	export default {
-		data() {
-			return {
-				duplicated: false,
+  export default {
+    data() {
+      return {
+        duplicated: false,
         modalOpen: false,
         title: "",
         fields: [],
         width: "80%"
-			};
-		},
+      };
+    },
     methods: {
       check: function ({ model_klass, entity_hash, exclude_ids,
         lead_exclude_ids, customer_exclude_ids,
@@ -64,7 +64,7 @@
         this.$emit("confirm", {duplicated, fields});
       }
     }
-	}
+  }
 </script>
 
 <style>

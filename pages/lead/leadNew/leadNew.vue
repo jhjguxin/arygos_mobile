@@ -18,8 +18,8 @@
     leadApi,
   } from "services/http";
 
-	export default {
-		data() {
+  export default {
+    data() {
       let currentUser = Auth.currentUser();
       
       let record = {
@@ -29,9 +29,9 @@
           name: currentUser.name
         }
       };
-			return {
+      return {
         formReady: false,
-				klassName: "Lead",
+        klassName: "Lead",
         customFields: [],
         record
       }
@@ -43,8 +43,8 @@
       this.$set(this, "customFields", customFields);
       this.$set(this, "formReady", true);
     },
-		methods: {
-			handleSave(values) {
+    methods: {
+      handleSave(values) {
         leadApi.create({lead: values}).then((res)=> {
           let { data: {code, remark} } = res;
 
@@ -70,7 +70,7 @@
             })
           }
         })
-			},
+      },
       handleSubmit(values) {
         let { klassName: model_klass } = this;
 
@@ -82,12 +82,12 @@
           }
         });
       }
-		}
-	}
+    }
+  }
 </script>
 
 <style>
-	.wrap {
-		padding: 24rpx;
-	}
+  .wrap {
+    padding: 24rpx;
+  }
 </style>

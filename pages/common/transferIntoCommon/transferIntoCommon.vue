@@ -28,7 +28,7 @@
   import _ from "lodash";
   import { leadCommonApi, customerCommonApi } from 'services/http';
 
-	export default {
+  export default {
     data() {
       let { query: {ids, klassName } } = this.$route;
       ids = ids.split(",");

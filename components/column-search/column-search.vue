@@ -23,9 +23,9 @@
   import { userSettingApi } from 'services/http';
 
 
-	export default {
-		data() {
-			return {
+  export default {
+    data() {
+      return {
         query: null,
         selectShow: false,
         columnSelect: {
@@ -39,8 +39,8 @@
         },
         searchColumnName: null,
         list: []
-			};
-		},
+      };
+    },
     mounted() {
       this.fetchData()
     },
@@ -97,7 +97,7 @@
         }
       }
     }
-	}
+  }
 </script>
 
 <style>

@@ -18,8 +18,8 @@
     leadApi,
   } from "services/http";
 
-	export default {
-		data() {
+  export default {
+    data() {
       let currentUser = Auth.currentUser();
       let { query: {id} } = this.$route;
 
@@ -30,10 +30,10 @@
           name: currentUser.name
         }
       };
-			return {
+      return {
         id,
         formReady: false,
-				klassName: "Lead",
+        klassName: "Lead",
         customFields: [],
         record
       }
@@ -47,7 +47,7 @@
       this.$set(this, "record", model);
       this.$set(this, "formReady", true);
     },
-		methods: {
+    methods: {
       async fetchLeadShow ({ id }) {
         uni.showLoading({
           title: '加载中'
@@ -79,7 +79,7 @@
           return null;
         }
       },
-			handleSave(values) {
+      handleSave(values) {
         let { id } = this;
 
         leadApi.update({id, lead: values}).then((res)=> {
@@ -106,7 +106,7 @@
             })
           }
         })
-			},
+      },
       handleSubmit(values) {
         let { klassName: model_klass, id } = this;
 
@@ -119,12 +119,12 @@
           }
         });
       }
-		}
-	}
+    }
+  }
 </script>
 
 <style>
-	.wrap {
-		padding: 24rpx;
-	}
+  .wrap {
+    padding: 24rpx;
+  }
 </style>

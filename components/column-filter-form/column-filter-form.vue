@@ -1,5 +1,5 @@
 <template>
-	<u-form
+  <u-form
     :model="model" ref="uForm"
     label-width="160"
     v-if="formReady"
@@ -59,7 +59,7 @@
         <u-button @click="handleReset">重置</u-button>
       </u-col>
     </u-row>
-	</u-form>
+  </u-form>
 </template>
 
 <script>
@@ -67,8 +67,8 @@
   import CustomField from 'services/custom_field';
   import parseFilter from './parseFilter';
 
-	export default {
-		data() {
+  export default {
+    data() {
       let {
         klassName = "",
         model = {}
@@ -80,8 +80,8 @@
         filters: [],
         customFields: [],
         model
-			};
-		},
+      };
+    },
     async created() {
       let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
@@ -160,7 +160,7 @@
         }
       }
     }
-	}
+  }
 </script>
 
 <style>

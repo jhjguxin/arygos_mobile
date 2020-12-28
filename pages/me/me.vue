@@ -1,6 +1,6 @@
 <template>
-	<view >
-		<common></common>
+  <view >
+    <common></common>
     <uni-list>
       <uni-list-item
         :show-extra-icon="true" :extra-icon="settingIcon" title="设置"
@@ -22,18 +22,18 @@
         clickable  @click="handleInfoClick"
       ></uni-list-item>
     </uni-list>
-	</view>
+  </view>
 </template>
 
 <script>
   import { organizationApi, notificationApi } from 'services/http';
   import dayjs from 'dayjs';
   
-	export default {
-		components:{
-		},
-		data() {
-			return {
+  export default {
+    components:{
+    },
+    data() {
+      return {
         settingIcon: {type: 'gear'},
         infoIcon: {type: 'info'},
         messageIcon: {type: 'chat'},
@@ -42,23 +42,9 @@
         accountTypeListItem: {
           title: `当前版本：VIP`,
           note: "有效期至: 9999-01-01"
-        },
-				myData:[{
-					name:"帖子",
-					num:1
-				},{
-					name:"动态",
-					num:1
-				},{
-					name:"评论",
-					num:2
-				},{
-					name:"粉丝",
-					num:0
-				}]
-				
-			}
-		},
+        }
+      }
+    },
     onReady () {
       this.fetchOrganizationInfo();
     },
@@ -66,7 +52,7 @@
       // 消息数实时性更高
       this.fetchNotificationCount();
     },
-		methods: {
+    methods: {
       handleInfoClick () {
         uni.showModal({
             title: '关于CRM',
@@ -109,8 +95,8 @@
           this.$set(this, "newMessageCount", String(total_count));
         });
       }
-		}
-	}
+    }
+  }
 </script>
 
 <style>

@@ -121,11 +121,11 @@
   import { leadApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
-	export default {
-		data() {
+  export default {
+    data() {
       let { query: {id} } = this.$route;
 
-			return {
+      return {
         id,
         klassName: "Lead",
         isInvalidData: false,
@@ -225,7 +225,7 @@
         title: model.company_name || "线索详情"
       });
     },
-		methods: {
+    methods: {
       async fetchLeadShow ({ id }) {
         uni.showLoading({
           title: '加载中'

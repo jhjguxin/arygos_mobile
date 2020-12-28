@@ -1,6 +1,6 @@
 <template>
-	<view >
-		<common></common>
+  <view >
+    <common></common>
       <uni-section title="功能设置" type="line"></uni-section>
       <uni-list>
         <uni-list-item title="功能显示" clickable @click="onClick" />
@@ -21,7 +21,7 @@
         @click="handleLogoutActionSheetClick"
         :cancel-btn="true"
       ></u-action-sheet>
-	</view>
+  </view>
 </template>
 
 <script>
@@ -29,10 +29,10 @@
   import Auth from 'services/auth';
   import _ from 'lodash';
   
-	export default {
-		data() {
-			return {
-				logoutActionSheet: {
+  export default {
+    data() {
+      return {
+        logoutActionSheet: {
           tips: {
             text: '退出登陆不会清除任何数据,你还可以继续登陆此账号！',
           },
@@ -41,13 +41,13 @@
           }],
           show: false
         }
-			}
-		},
+      }
+    },
     mounted() {
       this.auth = new Auth();
     },
-		methods: {
-			handleLogoutClick () {
+    methods: {
+      handleLogoutClick () {
         this.logoutActionSheet.show = true;
       },
       handleLogoutActionSheetClick (index) {
@@ -84,8 +84,8 @@
           }
         })
       }
-		}
-	}
+    }
+  }
 </script>
 
 <style>

@@ -32,7 +32,7 @@
   import _ from "lodash";
   import { leadApi, customerApi, opportunityApi, contractApi } from 'services/http';
 
-	export default {
+  export default {
     data() {
       let { query: {ids, klassName } } = this.$route;
       ids = ids.split(",");

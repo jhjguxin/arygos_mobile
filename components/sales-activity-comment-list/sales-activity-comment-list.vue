@@ -1,5 +1,5 @@
 <template>
-		<u-popup
+    <u-popup
       v-model="popup.show" :mode="popup.mode" :width="popup.width"
       @close="handlePopupClose"
     >
@@ -45,7 +45,7 @@
           <u-button type="primary" @click="handleSubmitClick">评论</u-button>
         </view>
       </u-card>
-		</u-popup>
+    </u-popup>
 </template>
 
 <script>
