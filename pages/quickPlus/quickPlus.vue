@@ -20,7 +20,7 @@
         <u-gap height="2" bg-color="#bbb"></u-gap>
         <u-row>
           <u-grid :col="4"  :border="false">
-            <u-grid-item index="revisit_log">
+            <u-grid-item index="revisit_log" @click="handleItemClick($event, '/pages/common/pickEntity/pickEntity?returnAction=revisitLogNew')">
               <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
               <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
             </u-grid-item>
@@ -28,7 +28,7 @@
               <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
               <view class="grid-text">{{this.featureLabels['schedule_report']}}</view>
             </u-grid-item>
-            <u-grid-item index="event">
+            <u-grid-item index="event" @click="handleItemClick($event, '/pages/common/pickEntity/pickEntity?returnAction=eventNew')">
               <u-icon name="calendar" :size="46"></u-icon>
               <view class="grid-text">新增任务</view>
             </u-grid-item>

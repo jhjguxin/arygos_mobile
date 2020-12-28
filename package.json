@@ -17,6 +17,8 @@
     "dayjs": "^1.9.5",
     "fsevents": "^2.2.1",
     "lodash": "^4.17.20",
+    "mime-types": "^2.1.27",
+    "pretty-bytes": "^5.4.1",
     "qs": "^6.9.4",
     "uview-ui": "^1.7.8",
     "vuex-persistedstate": "^3.1.0"

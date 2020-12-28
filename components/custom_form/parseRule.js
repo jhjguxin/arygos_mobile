@@ -213,12 +213,23 @@ export default ({ customField }) => {
         }
       ];
       break;
-    case "select2_field": case "geo_address_field": case "address_select":
+    case "select2_field":
       rules = [
         {
           required: required, message: `${label}是必填的!`,
           trigger: ['blur', 'change'],
           type: 'object'
+        }
+      ];
+      break;
+    case "geo_address_field":
+      break;
+    case "address_select":
+      rules = [
+        {
+          required: required, message: `${label}是必填的!`,
+          trigger: ['blur', 'change'],
+          type: 'array'
         }
       ];
       break;

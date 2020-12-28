@@ -21,7 +21,7 @@ export default {
     baseUrl: config["API_HOST"],
     header: {
       'Content-Type':'application/json;charset=UTF-8'
-    },  
+    },
     data: {},
     method: "GET",
     dataType: "json",
@@ -50,19 +50,21 @@ export default {
       options.data = _.extend(options.data, qs.parse(query, {arrayFormat: 'brackets'}));
     }
 
-    if (!_.isEmpty(options.data)) {
-      query = qs.stringify(options.data, {arrayFormat: 'brackets'});
-      options.url = `${url}?${query}`
-      options.data = null
+    if (options.method == "GET") {
+      if (!_.isEmpty(options.data)) {
+        query = qs.stringify(options.data, {arrayFormat: 'brackets'});
+        options.url = `${url}?${query}`
+        options.data = null
+      }
     }
-    
+
     //TODO 加密数据
-    
+
     //TODO 数据签名
-    /* 
+    /*
     _token = {'token': getStorage(STOREKEY_LOGIN).token || 'undefined'},
     _sign = {'sign': sign(JSON.stringify(options.data))}
-    options.header = Object.assign({}, options.header, _token,_sign) 
+    options.header = Object.assign({}, options.header, _token,_sign)
     */
 
     if (options.needAuth) {
@@ -70,9 +72,9 @@ export default {
       const header = {
         'Authorization': `Bearer token="${userToken}", device="h5"`
       };
-      options.header = Object.assign({}, options.header, header) 
+      options.header = Object.assign({}, options.header, header)
     }
-    
+
     return new Promise((resolve, reject) => {
       let _config = null;
 
@@ -82,23 +84,23 @@ export default {
           title: '加载中'
         });
       };
-      
+
       options.complete = (response) => {
         let statusCode = response.statusCode;
         response.config = _config;
-        
+
         if (options.showLoading) {
-          uni.hideLoading();  
+          uni.hideLoading();
         }
-        
+
         if (this.interceptor.response) {
           let newResponse = this.interceptor.response(response);
-          
+
           if (newResponse) {
             response = newResponse;
           }
         }
-        
+
         // 统一的响应日志记录
         _reslog(response);
         if (statusCode === 200) { //成功
@@ -114,10 +116,10 @@ export default {
       if (this.interceptor.request) {
         this.interceptor.request(_config)
       }
-      
+
       // 统一的请求日志记录
       _reqlog(_config);
-      
+
       uni.request(_config);
     });
   }

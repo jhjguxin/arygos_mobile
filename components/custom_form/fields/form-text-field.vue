@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      :v-model="value"
+      v-model="value"
       :placeholder="customField.input_html_options.placeholder"
       @input="handleChange"
     />

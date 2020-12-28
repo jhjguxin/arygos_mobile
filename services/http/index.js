@@ -1,4 +1,3 @@
-import http from './interface';
 import authApi from './api/auth';
 import constantApi from './api/constant';
 import geoApi from './api/geo';
@@ -15,7 +14,19 @@ import contactApi from './api/contact';
 import opportunityApi from './api/opportunity';
 import contractApi from './api/contract';
 import productApi from './api/product';
+
+import leadCommonApi from './api/lead_common';
+import customerCommonApi from './api/customer_common';
+
 import customerCommonSettingApi from './api/customer_common_setting';
+
+import attachmentApi from './api/attachment';
+
+import revisitLogApi from './api/revisit_log';
+
+import salesActivityApi from './api/sales_activity';
+
+import eventApi from './api/event';
 
 import duplicateApi from './api/duplicate';
 
@@ -24,7 +35,7 @@ import userSettingApi from './api/user_setting';
 /**
  * 将业务所有接口统一起来便于维护
  * 如果项目很大可以将 url 独立成文件，接口分成不同的模块
- * 
+ *
  */
 
 export {
@@ -42,7 +53,13 @@ export {
   opportunityApi,
   contractApi,
   productApi,
+  leadCommonApi,
+  customerCommonApi,
   customerCommonSettingApi,
+  attachmentApi,
+  revisitLogApi,
+  salesActivityApi,
+  eventApi,
   duplicateApi,
   userSettingApi
 }

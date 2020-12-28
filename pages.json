@@ -98,9 +98,65 @@
     },
     {
       "path" : "pages/lead/leadList/leadList",
-      "style" :                                                                                    
+      "style" :
       {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "线索",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/lead/leadShow/leadShow",
+      "style" :
+      {
+        "navigationBarTitleText": "线索详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/lead/leadEdit/leadEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "线索编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/event/eventNew/eventNew",
+      "style" :
+      {
+        "navigationBarTitleText": "添加任务",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transfer/transfer",
+      "style" :
+      {
+        "navigationBarTitleText": "转移给他人",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transferIntoCommon/transferIntoCommon",
+      "style" :
+      {
+        "navigationBarTitleText": "转入公海池",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/pickEntity/pickEntity",
+      "style" :
+      {
+        "navigationBarTitleText": "选择对象",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/revisitLog/revisitLogNew/revisitLogNew",
+      "style" :
+      {
+        "navigationBarTitleText": "写跟进",
         "enablePullDownRefresh": false
       }
     }

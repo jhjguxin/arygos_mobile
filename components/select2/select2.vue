@@ -61,11 +61,12 @@
         required,
         title = "",
         width = "80%",
+        params = {},
         query = "",
         placeholder,
         perPage = 10,
         searchPlaceholder = "输入要搜索的内容",
-        mode = "selector"
+        mode = "selector" // selector 单选，多选 multi
       } = this.$attrs;
 
       return {
@@ -76,6 +77,7 @@
         width,
         placeholder,
         searchPlaceholder,
+        params,
         query,
         className: "select2-container",
         status: "nomore",
@@ -122,11 +124,10 @@
               value: item.value,
               checked: checked
             }
-          } else {
-            let _checked = (checked && mode == "selector") ? false : checked;
-            item = {
-              ...item,
-              checked: _checked
+          }
+          if (checked && mode == "selector") {
+            if (item.value != String(value)) {
+              item.checked = false;
             }
           }
 
@@ -152,11 +153,15 @@
         this.fetchData({page: this.page});
       },
       fetchData: function ({page, query}) {
-        let { klassName, perPage: per_page } = this;
+        let { klassName, perPage: per_page, params } = this;
+        params = {
+          ...params,
+          per_page
+        }
 
         this.status = "loading";
 
-        this.requestApi({ klassName, page, query, params: { per_page } }).then((res) => {
+        this.requestApi({ klassName, page, query, params }).then((res) => {
           let {
             data: {
               data: {
@@ -171,14 +176,15 @@
             this.status = 'nomore';
           }
           let list = _.map(models, (item)=> {
-            let { value: { value } } = this;
+            let { mode, value } = this;
+            let checked = (mode == "selector") ? item.id == value?.value : (_.findIndex(value, (opt)=> opt.value == item.id) != -1);
 
             return ({
               id: item.id,
               // name: item.name,
               label: item.name,
               value: String(item.id),
-              checked: Number(value) == item.id
+              checked: checked
             })
           });
 

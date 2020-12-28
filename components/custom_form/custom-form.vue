@@ -69,7 +69,7 @@
     },
     methods: {
       initFormFields ({ customFields }) {
-        let { record } = this;
+        let { record, model } = this;
         let formFields = [];
 
         _.each(customFields, (customField) => {
@@ -81,14 +81,19 @@
             customField,
             value, record
           })
+          model = {
+            ...model,
+            [`${customField.name}`]: value
+          };
         });
 
         this.$set(this, "formFields", formFields);
+        this.$set(this, "model", model);
       },
       handleCollapseCustomFieldChange (value) {
         let { customFields } = this;
         if (!value) {
-          customFields = _.filter(customFields, (customField) => 
+          customFields = _.filter(customFields, (customField) =>
             customField.category == 'common'
           )
         }
@@ -100,8 +105,6 @@
         uForm.resetFields();
       },
       handleFieldChange: function ({name, value}) {
-        console.debug(name, value);
-
         let { formFields, model } = this;
         formFields = _.map(formFields, (formField) => (
           formField.name == name ?

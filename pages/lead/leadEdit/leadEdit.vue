@@ -21,7 +21,8 @@
 	export default {
 		data() {
       let currentUser = Auth.currentUser();
-      
+      let { query: {id} } = this.$route;
+
       let record = {
         user_id: currentUser.id,
         user: {
@@ -30,6 +31,7 @@
         }
       };
 			return {
+        id,
         formReady: false,
 				klassName: "Lead",
         customFields: [],
@@ -37,21 +39,55 @@
       }
     },
     async onLoad() {
-      let { klassName } = this;
+      let { klassName, id } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
+      let model = await this.fetchLeadShow({ id });
 
       this.$set(this, "customFields", customFields);
+      this.$set(this, "record", model);
       this.$set(this, "formReady", true);
     },
 		methods: {
+      async fetchLeadShow ({ id }) {
+        uni.showLoading({
+          title: '加载中'
+        });
+
+        let res = await leadApi.show({id});
+        let {
+          data: {
+            code, remark, data: model
+          }
+        } = res;
+
+        _.delay(()=>{
+          uni.hideLoading();
+        }, 100);
+
+        if (code == 0) {
+          return model;
+        } else {
+          _.delay(()=>{
+            uni.showToast({
+              icon: 'none',
+              title: remark || "获取数据失败",
+              duration: 1000
+            });
+          }, 200);
+          this.isInvalidData = true;
+
+          return null;
+        }
+      },
 			handleSave(values) {
-        leadApi.create({lead: values}).then((res)=> {
+        let { id } = this;
+
+        leadApi.update({id, lead: values}).then((res)=> {
           let { data: {code, remark} } = res;
 
           if (Number(code) === 0) {
-              // REVIEW 跳转到 tabBar 页面只能使用 switchTab 跳转
-              uni.switchTab({
-                url: "/pages/quickPlus/quickPlus",
+              uni.navigateTo({
+                url: `/pages/lead/leadShow/leadShow?id=${id}`,
                 success() {
                   _.delay(()=>{
                     uni.showToast({
@@ -72,11 +108,12 @@
         })
 			},
       handleSubmit(values) {
-        let { klassName: model_klass } = this;
+        let { klassName: model_klass, id } = this;
 
         this.$refs.duplicateCheck.check({
           values, model_klass,
           entity_hash: values,
+          exclude_ids: [id],
           callback: () => {
             this.handleSave(values);
           }

@@ -5,23 +5,22 @@
       @sortColumnChange="handleSortColumnChange"
     />
     <column-search :klassName="klassName" @search="handleSearch"/>
-    
+
     <u-gap></u-gap>
-    <uni-list
-      v-for="(item, index) in list"
-      v-bind:key="item.id"
-     >
-      <u-swipe-action :show="item.swipeActionShow" :index="index" 
+    <uni-list>
+      <u-swipe-action
+        v-for="(item, index) in list"
+        v-bind:key="item.id"
+        :show="item.swipeAction.show" :index="index"
         @click="handleSwipActionClick" @open="handleSwipeActionOpen"
         :options="swipeAction.options"
       >
-        <uni-list-item
-          @click="handleItemClick($event, item.id)"
-        >
+        <uni-list-item>
           <u-card
             class="item-body" slot="body" :title="item.company_name"
             :border="card.border" :sub-title="item.name" :full="card.full"
             :show-head="card.showHead" :show-foot="card.showFoot" margin="0rpx"
+            @click="handleItemClick($event, item.id)"
           >
             <u-row slot="body" gutter="0" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.id">
               <u-col span="3" text-align="right">
@@ -30,7 +29,7 @@
               <u-col span="9">
                 <custom-field-on-list :customField="customField" :record="item" />
               </u-col>
-            </u-row>  
+            </u-row>
             <u-row slot="foot" gutter="0" justify="space-between">
             </u-row>
           </u-card>
@@ -97,7 +96,7 @@
       this.customFields = customFields;
       this.ShowCustomFields = _(customFields).filter((customField) => {
         return customField.category == "common"
-      }).reject((customField) => 
+      }).reject((customField) =>
         _.includes(["name", "company_name"], customField.name)
       ).value().slice(0, 5);
 
@@ -159,7 +158,9 @@
           const tempList = _.map(models, (model) => (
             {
               ...model,
-              swipeActionShow: false,
+              swipeAction: {
+                show: false,
+              },
               statusDisplay: model.status_display,
               createAt: dayjs(model.created_at).format("MM-DD HH:ss")
             }
@@ -191,13 +192,12 @@
         })
 
       },
-      doDestroy ({index}) {
+      doDestroy ({id}) {
         let { list } = this;
-        let id = list[index]?.id;
-
         if (_.isNumber(id)) {
           leadApi.mass_destroy({ids: [id]}).then((res) => {
             let { data: {code, remark}} = res;
+            let index = _.findIndex(list, (item)=> item.id == id);
 
             if (code == 0) {
               list.splice(index, 1);
@@ -217,43 +217,33 @@
             }
           })
         }
-        
       },
       handleItemClick (event, id) {
-        notificationApi.read({id}).then((res)=> {
-          let {
-            data: {
-              code
-            },
-          } = res;
-          let { list } = this;
-          
-          if (code == 0) {
-            _.each(list, (model)=> {
-              if (model.id == Number(id)) model.status = 'read';
-            })
-            this.$set(this, "list", list);
-          }
-        })
+        let url = `/pages/lead/leadShow/leadShow?id=${id}`
+        uni.navigateTo({
+          url
+        });
       },
       handleSwipeActionOpen (index) {
         let { list } = this;
         list = _.each(list, (item) => {
-          item.swipeActionShow = false;
+          item.swipeAction.show = false;
         });
-        list[index].swipeActionShow = true;
+        list[index].swipeAction.show = true;
 
         this.list = list;
       },
       handleSwipActionClick (index, option_index) {
         if (option_index === 0) {
-          this.doDestroy({index})
+          let { list } = this;
+          let id = list[index]?.id;
+          this.doDestroy({id})
         }
       },
-      handleSearch ({query, searchColumnName }) { 
+      handleSearch ({query, searchColumnName }) {
         this.query = query;
         this.searchColumnName = searchColumnName;
-        
+
         this.fetchLead({ reload: true });
       },
       handleSortColumnChange (sort) {

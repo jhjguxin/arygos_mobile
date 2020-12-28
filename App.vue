@@ -18,7 +18,7 @@ export default {
         uni.switchTab({
           url: "/pages/workbench/workbench"
         });
-      }, 500);
+      }, 50);
 
       _.delay(()=> {
         uni.setTabBarBadge({
@@ -41,10 +41,9 @@ export default {
   globalData: {
     config,
     initGlobalData: async () => {
-      Feature.instance().then((feature) => {
-        getApp().globalData.feature = feature;
-        getApp().globalData.featureLabels = feature.labels;
-      });
+      const feature = await Feature.instance()
+      getApp().globalData.feature = feature;
+      getApp().globalData.featureLabels = feature?.labels;
     },
     feature: null,
     featureLabels: {}

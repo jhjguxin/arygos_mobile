@@ -5,9 +5,10 @@
       :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
     <u-select
       v-model="selectShow" mode="mutil-column-auto"
-      :default-value="value"
+      :default-value="defaultValue"
       :list="list"
       @confirm="handleConfirm"
+      v-if="list.length > 0"
     ></u-select>
   </u-form-item>
 </template>
@@ -29,13 +30,16 @@
         name,  fieldType, customField,
         record, klassName,
         list: [],
+        defaultValue: [],
         value,
         border: false,
         selectShow: false
       }
     },
-    created() {
-      this.fetchData();
+    async created() {
+      let { value } = this;
+      await this.fetchData();
+      this.setDefaultValue();
     },
     methods: {
       handleConfirm(e) {
@@ -103,6 +107,18 @@
         });
 
         this.$set(this, "list", list);
+      },
+      setDefaultValue () {
+        let{ value = [] } = this;
+        let province = _.find(this.list, (opt) => opt.value == value[0]);
+        let city = _.find(province?.children, (opt) => opt.value == value[1]);
+
+        let defaultValue = [
+          _.findIndex(this.list, (opt) => opt.value == province.value),
+          _.findIndex(province?.children, (opt) => opt.value == city.value),
+          _.findIndex(city?.children, (opt) => opt.value == value[2]),
+        ];
+        this.$set(this, 'defaultValue', defaultValue);
       }
     },
     computed: {

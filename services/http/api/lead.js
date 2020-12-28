@@ -57,7 +57,7 @@ const update = (data) => {
 
   return http.request({
     url: `/api/v2/leads/${id}`,
-    method: 'POST',
+    method: 'PUT',
     needAuth: true,
     data,
   });

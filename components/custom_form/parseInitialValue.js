@@ -15,11 +15,11 @@ export default ({ record, customField }) => {
       break;
     case "date_field":
       value = _.at(record, customFieldName)[0];
-      // value = value ? dayjs(_.at(record, customFieldName)[0]).format("YYYY-MM-DD") : null;
+      value = value ? dayjs(value).format("YYYY-MM-DD") : null;
       break;
     case "datetime_field":
       value = _.at(record, customFieldName)[0];
-      // value = value ? dayjs(_.at(record, customFieldName)[0]).format("YYYY-MM-DD HH:mm") : null;
+      value = value ? dayjs(value).format("YYYY-MM-DD HH:mm") : null;
       break;
     case "select_field": case "field_map_field":
       value = _.at(record, customFieldName)[0];
