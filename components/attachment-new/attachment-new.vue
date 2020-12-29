@@ -102,7 +102,11 @@
       },
       showModal() {
         this.show = true;
-        this.$refs.uForm.setRules(this.form.rules);
+
+        // REVIEW 延时校验表单等待 uForm 初始化完成
+        _.delay(()=> {
+          this.$refs.uForm.setRules(this.form.rules);
+        }, 100);
       },
       handleUpload(lists) {
         if (lists.length == 1) {
