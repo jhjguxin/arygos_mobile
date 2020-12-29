@@ -30,28 +30,25 @@
 
 <script>
   import _ from "lodash";
-  import { leadApi, customerApi, opportunityApi, contractApi } from 'services/http';
+  import { leadCommonApi, customerCommonApi } from 'services/http';
 
   export default {
     data() {
-      let { query: {ids, klassName, successUrl } } = this.$route;
+      let { query: {ids, klassName, successUrl, id } } = this.$route;
       ids = ids.split(",");
       let api = {
-        lead: leadApi,
-        customer: customerApi,
-        opportunity: opportunityApi,
-        contract: contractApi
+        lead_common: leadCommonApi,
+        customer_common: customerCommonApi
       }[_.snakeCase(klassName)];
       successUrl = successUrl || {
-        lead: "/pages/lead/leadList/leadList",
-        customer: "/pages/customer/customerList/customerList",
-        opportunity: "/pages/opportunity/opportunityList/opportunityList",
-        contract: "/pages/contract/contractList/contractList"
+        lead_common: "/pages/leadCommon/leadList/leadList",
+        customer_common: "/pages/customerCommon/customerList/customerList"
       }[_.snakeCase(klassName)];
 
       return {
         klassName,
         api,
+        id,
         successUrl,
         card: {
           full: false,
@@ -90,10 +87,10 @@
     },
     methods: {
       handleSave({values}) {
-        let { klassName, api, successUrl: url } = this;
+        let { klassName, api, successUrl: url, id } = this;
         let {user_id: {value: user_id}, ids} = values;
 
-        api.transfer({ids, user_id}).then((res)=> {
+        api.transfer({ids, user_id, id}).then((res)=> {
           let { data: {code, remark} } = res;
 
           if (Number(code) === 0) {

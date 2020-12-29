@@ -1,38 +1,38 @@
 <template>
-    <view class="filter">
-      <u-dropdown ref="uDropdown" @open="handleOpen">
-        <u-dropdown-item title="字段筛选">
-          <view class="slot-content u-cell-item-box">
-            <column-filter-form
-              :klassName="klassName"
-              @filterConfirm="handleFilterConfirm"
-              :model="filtersModel"
-              :filterColumns="filterColumns"
-              v-show="filterColumns.length > 0"
-            />
-            <u-empty text="筛选条件为空" mode="list" v-show="filterColumns.length == 0"/>
-          </view>
-        </u-dropdown-item>
-        <u-dropdown-item
-          v-model="sortValue" :title="sortTitle" :options="sortOptions" @change="handleSortDropDownChange"
-        ></u-dropdown-item>
-        <u-dropdown-item title="筛选设置">
-          <view class="slot-content u-cell-item-box">
-            <uni-list
-              v-for="item in defaultFilterColumns"
-              v-bind:key="item.name"
-             >
-              <uni-list-item
-                :title="item.label"
-                showSwitch
-                :switchChecked="item.checked"
-                @switchChange="handleFilterColumnSwitchChange($event, item.name)"
-              ></uni-list-item>
-            </uni-list>
-          </view>
-        </u-dropdown-item>
-      </u-dropdown>
-    </view>
+  <view class="filter">
+    <u-dropdown ref="uDropdown" @open="handleOpen">
+      <u-dropdown-item title="字段筛选">
+        <view class="slot-content u-cell-item-box">
+          <column-filter-form
+            :klassName="klassName"
+            @filterConfirm="handleFilterConfirm"
+            :model="filtersModel"
+            :filterColumns="filterColumns"
+            v-show="filterColumns.length > 0"
+          />
+          <u-empty text="筛选条件为空" mode="list" v-show="filterColumns.length == 0"/>
+        </view>
+      </u-dropdown-item>
+      <u-dropdown-item
+        v-model="sortValue" :title="sortTitle" :options="sortOptions" @change="handleSortDropDownChange"
+      ></u-dropdown-item>
+      <u-dropdown-item title="筛选设置">
+        <view class="slot-content u-cell-item-box">
+          <uni-list
+            v-for="item in defaultFilterColumns"
+            v-bind:key="item.name"
+           >
+            <uni-list-item
+              :title="item.label"
+              showSwitch
+              :switchChecked="item.checked"
+              @switchChange="handleFilterColumnSwitchChange($event, item.name)"
+            ></uni-list-item>
+          </uni-list>
+        </view>
+      </u-dropdown-item>
+    </u-dropdown>
+  </view>
 </template>
 
 <script>
@@ -41,10 +41,12 @@
     
   export default {
     data() {
-      let { klassName } = this.$attrs;
+      let { klassName, storeKey } = this.$attrs;
+      storeKey = storeKey || klassName;
 
       return {
         klassName,
+        storeKey,
         sortValue: "",
         order: "asc",
         sortOptions: [],
@@ -56,8 +58,8 @@
       };
     },
     mounted() {
-      let { klassName } = this.$attrs;
-      this.filterColumns = this.$store.getters.getFilterColumns(klassName);
+      let { storeKey } = this;
+      this.filterColumns = this.$store.getters.getFilterColumns(storeKey) || [];
 
       this.fetchData();
     },
@@ -122,7 +124,7 @@
       handleFilterColumnSwitchChange (e, value) {
         let { klassName } = this.$attrs;
         let { value: checked } = e;
-        let { defaultFilterColumns, maxFilterColumn } = this;
+        let { defaultFilterColumns, maxFilterColumn, storeKey } = this;
         
         defaultFilterColumns = _.map(defaultFilterColumns, (column) => {
           if (String(column.name) == String(value)) {
@@ -161,7 +163,7 @@
         }
         
         let columns = _.filter(defaultFilterColumns, "checked").map((column) => ({...column}));
-        this.$store.dispatch('setFilterColumns', {klassName, columns});
+        this.$store.dispatch('setFilterColumns', {name: storeKey, columns});
         this.filterColumns = columns;
       },
       handleFilterConfirm (filters, model) {
@@ -202,5 +204,9 @@
         background-color: $u-type-primary;
       }
     }
+  }
+  .u-cell-item-box {
+    max-height: 65vh;
+    overflow-y: scroll;
   }
 </style>
