@@ -121,6 +121,14 @@
       }
     },
     {
+      "path" : "pages/leadCommon/leadList/leadList",
+      "style" :
+      {
+        "navigationBarTitleText": "线索池",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {
@@ -141,6 +149,22 @@
       "style" :
       {
         "navigationBarTitleText": "转入公海池",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transferToOther/transferToOther",
+      "style" :
+      {
+        "navigationBarTitleText": "转移至其他公海池",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/common/transferOutCommon/transferOutCommon",
+      "style" :
+      {
+        "navigationBarTitleText": "从公海转移给他人",
         "enablePullDownRefresh": false
       }
     },

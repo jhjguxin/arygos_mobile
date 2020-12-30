@@ -1,8 +1,12 @@
 <template>
   <view class="list">
+    <u-tabs :list="leadCommonTabs.list" :is-scroll="true" :current="leadCommonTabs.current" @change="handleLeadCommonChange"></u-tabs>
+
     <column-filter
       :klassName="klassName" @filterConfirm="handleFilterConfirm"
       @sortColumnChange="handleSortColumnChange"
+      storeKey="leadCommon"
+      v-show="leadCommonId"
     />
     <column-search :klassName="klassName" @search="handleSearch"/>
 
@@ -40,6 +44,10 @@
         </uni-list-item>
       </u-swipe-action>
     </uni-list>
+    <u-action-sheet
+      :list="uActionSheet.list" v-model="uActionSheet.show"
+      @click="handleActionSheet"
+    ></u-action-sheet>
     <uni-load-more v-if="list.length > 0" :status="status" />
     <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
   </view>
@@ -48,7 +56,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { leadApi } from 'services/http';
+  import { leadCommonApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
@@ -56,6 +64,12 @@
     data() {
       return {
         klassName: "Lead",
+        leadCommonTabs: {
+          list: [],
+          current: 0
+        },
+        leadCommons: [],
+        leadCommonId: null,
         card: {
           border: false,
           full: true,
@@ -71,6 +85,10 @@
               }
             }
           ]
+        },
+        uActionSheet: {
+          list: [],
+          show: false
         },
         list: [], // 列表数据
         ShowCustomFields: [], // 列表页显示字段
@@ -100,29 +118,47 @@
         _.includes(["name", "company_name"], customField.name)
       ).value().slice(0, 5);
 
-      uni.setNavigationBarTitle({
-          title: this.featureLabels["lead"]
-      });
-
-      // 初始化页面数据
-      this.fetchLead({reload: true });
+      await this.fetchLeadCommons();
+      this.fetchLead({reload: true })
     },
     methods: {
       /**
        * 下拉刷新回调函数
        */
-      handlePullDownRefresh() {
+      onPullDownRefresh() {
         this.page = 1
         this.fetchLead({ reload: true });
       },
       /**
        * 上拉加载回调函数
        */
-      handleReachBottom() {
+      onReachBottom() {
         let { page } = this;
         page += 1;
         this.page = page;
         this.fetchLead({ page });
+      },
+      async fetchLeadCommons() {
+        let { query: { index = 0 } } = this.$route;
+        let res = await leadCommonApi.lead_common_settings();
+        let {
+          data: {
+            code,
+            data: {
+              models: lead_commons
+            }
+          },
+        } = res;
+
+        if (code == 0) {
+          this.leadCommons = lead_commons;
+          this.leadCommonTabs.list = _.map(lead_commons, (item)=> (
+            {
+              name: item.name
+            }
+          ));
+          this.handleLeadCommonChange(index)
+        }
       },
       /**
        * 获取页面数据
@@ -135,14 +171,20 @@
           sort,
           filters,
           pageSize: per_page,
-          searchColumnName: search_column_name
+          searchColumnName: search_column_name,
+          leadCommonId: id
         } = this;
         if (reload) page = 1;
         uni.showLoading({
           title: '加载中'
         });
 
-        leadApi.index({ page, per_page, query, search_column_name, filters, sort }).then((res) => {
+        let params = {
+          id,
+          page, per_page, query, search_column_name, filters, sort
+        };
+
+        leadCommonApi.leads({ ...params }).then((res) => {
           _.delay(()=>{
             uni.hideLoading();
           }, 100)
@@ -192,10 +234,13 @@
         })
 
       },
-      doDestroy ({id}) {
-        let { list } = this;
+      doGrab ({id}) {
+        let {
+          list,
+          leadCommonId
+        } = this;
         if (_.isNumber(id)) {
-          leadApi.mass_destroy({ids: [id]}).then((res) => {
+          leadCommonApi.grab({ids: [id], id: leadCommonId}).then((res) => {
             let { data: {code, remark}} = res;
             let index = _.findIndex(list, (item)=> item.id == id);
 
@@ -218,11 +263,92 @@
           })
         }
       },
-      handleItemClick (event, id) {
-        let url = `/pages/lead/leadShow/leadShow?id=${id}`
-        uni.navigateTo({
-          url
+      doDestroy ({id}) {
+        let {
+          list,
+          leadCommonId
+        } = this;
+        if (_.isNumber(id)) {
+          leadCommonApi.mass_destroy({ids: [id], id: leadCommonId}).then((res) => {
+            let { data: {code, remark}} = res;
+            let index = _.findIndex(list, (item)=> item.id == id);
+
+            if (code == 0) {
+              list.splice(index, 1);
+              this.list = list;
+
+              uni.showToast({
+                icon: 'success',
+                title: '操作成功',
+                duration: 1000
+              });
+            } else {
+              uni.showToast({
+                icon: 'none',
+                title: remark || "获取数据失败",
+                duration: 1000
+              })
+            }
+          })
+        }
+      },
+      handleLeadCommonChange (index) {
+        let { leadCommons, featureLabels } = this;
+        let item = leadCommons[index];
+
+        this.leadCommonId = item?.id;
+        this.leadCommonTabs.current = index;
+
+        uni.setNavigationBarTitle({
+          title: item?.name
         });
+
+        this.uActionSheet.list = item.is_admin ? [
+          {
+            text: '转移',
+          },
+          {
+            text: `转移到其他${featureLabels["lead_common"]}`,
+          },
+        ] : [
+          {
+            text: '抢',
+          }
+        ];
+
+        this.fetchLead({reload: true });
+      },
+      handleItemClick (event, id) {
+        this.currentLeadId = id;
+        this.uActionSheet.show = true;
+      },
+      handleActionSheet (index) {
+        let { uActionSheet: { list }, leadCommonTabs: { current }, leadCommons, leadCommonId, currentLeadId } = this;
+        let item = _.find(leadCommons, (item)=> item.id == leadCommonId);
+        console.debug("uActionSheet 点击了", list[index]?.text);
+
+        if (item.is_admin) {
+          if (index == 0) {
+            let transferUrl = `/pages/common/transferOutCommon/transferOutCommon?ids=${currentLeadId}&klassName=LeadCommon&id=${leadCommonId}&successUrl=/pages/leadCommon/leadList/leadList?index=${current}`;
+            uni.navigateTo({
+              url: transferUrl
+            });
+          }
+          if (index == 1) {
+            let transferToOther = `/pages/common/transferToOther/transferToOther?ids=${currentLeadId}&klassName=LeadCommon&id=${leadCommonId}&successUrl=/pages/leadCommon/leadList/leadList?index=${current}`;
+            uni.navigateTo({
+              url: transferToOther
+            });
+          }
+          return
+        }
+
+        if (item.is_member) {
+          if (index == 0) {
+            this.doGrab({id: currentLeadId});
+          }
+          return
+        }
       },
       handleSwipeActionOpen (index) {
         let { list } = this;

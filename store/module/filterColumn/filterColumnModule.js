@@ -3,21 +3,21 @@ const state = {
 };
 
 const mutations = {
-  setFilterColumns(state, {klassName, columns}) {
-    state.filter_columns[klassName] = columns;
+  setFilterColumns(state, {name, columns}) {
+    state.filter_columns[name] = columns;
   }
 };
 
 const actions = {
-  setFilterColumns ({commit}, {klassName, columns}) {
-    commit("setFilterColumns", {klassName, columns});
+  setFilterColumns ({commit}, {name, columns}) {
+    commit("setFilterColumns", {name, columns});
   }
 };
 
 const getters = {
   getFilterColumns(state){
-    return (klassName) => {
-      let { filter_columns: { [`${klassName}`]: columns } } = state;
+    return (name) => {
+      let { filter_columns: { [`${name}`]: columns } } = state;
       return columns;
     };
   }
