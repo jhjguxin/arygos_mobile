@@ -18,11 +18,11 @@
         <u-icon name="/static/icons/LC_icon_share_fill_1.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["lead_common"]}}</view>
       </u-grid-item>
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/customer/customerList/customerList')">
         <u-icon name="account-fill" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["customer"]}}</view>
       </u-grid-item>
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/customerCommon/customerList/customerList')">
         <u-icon name="/static/icons/account-multiple.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["customer_common"]}}</view>
       </u-grid-item>

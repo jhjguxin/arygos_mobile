@@ -206,7 +206,7 @@
     }
   }
   .u-cell-item-box {
-    max-height: 65vh;
+    max-height: 70vh;
     overflow-y: scroll;
   }
 </style>

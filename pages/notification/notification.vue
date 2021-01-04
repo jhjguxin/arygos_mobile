@@ -107,9 +107,6 @@
             // 上拉加载后合并数据
             this.lists = _.concat(this.lists, tempList);
           }
-          if (tempList.length) {
-            this.page++
-          }
         })
 
       },

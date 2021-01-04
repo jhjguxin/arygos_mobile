@@ -1,12 +1,12 @@
 <template>
   <view class="list">
-    <u-tabs :list="leadCommonTabs.list" :is-scroll="true" :current="leadCommonTabs.current" @change="handleLeadCommonChange"></u-tabs>
+    <u-tabs :list="customerCommonTabs.list" :is-scroll="true" :current="customerCommonTabs.current" @change="handleCustomerCommonChange"></u-tabs>
 
     <column-filter
       :klassName="klassName" @filterConfirm="handleFilterConfirm"
       @sortColumnChange="handleSortColumnChange"
-      storeKey="leadCommon"
-      v-show="leadCommonId"
+      storeKey="customerCommon"
+      v-show="customerCommonId"
     />
     <column-search :klassName="klassName" @search="handleSearch"/>
 
@@ -57,21 +57,21 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { leadCommonApi } from 'services/http';
+  import { customerCommonApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
     components: {},
     data() {
       return {
-        klassName: "Lead",
-        leadCommonTabs: {
+        klassName: "Customer",
+        customerCommonTabs: {
           list: [],
           current: 0
         },
-        leadCommons: [],
-        leadCommonId: null,
-        leadCommon: null,
+        customerCommons: [],
+        customerCommonId: null,
+        customerCommon: null,
         card: {
           border: false,
           full: true,
@@ -112,8 +112,8 @@
         _.includes(["name", "company_name"], customField.name)
       ).value().slice(0, 5);
 
-      await this.fetchLeadCommons();
-      this.fetchLead({reload: true })
+      await this.fetchCustomerCommons();
+      this.fetchCustomer({reload: true })
     },
     methods: {
       /**
@@ -121,7 +121,7 @@
        */
       onPullDownRefresh() {
         this.page = 1
-        this.fetchLead({ reload: true });
+        this.fetchCustomer({ reload: true });
       },
       /**
        * 上拉加载回调函数
@@ -132,36 +132,36 @@
         if (status == 'more') {
           page += 1;
           this.page = page;
-          this.fetchLead({ page });
+          this.fetchCustomer({ page });
         }
       },
-      async fetchLeadCommons() {
+      async fetchCustomerCommons() {
         let { query: { index = 0 } } = this.$route;
-        let res = await leadCommonApi.lead_common_settings();
+        let res = await customerCommonApi.customer_common_settings();
         let {
           data: {
             code,
             data: {
-              models: lead_commons
+              models: customer_commons
             }
           },
         } = res;
 
         if (code == 0) {
-          this.leadCommons = lead_commons;
-          this.leadCommonTabs.list = _.map(lead_commons, (item)=> (
+          this.customerCommons = customer_commons;
+          this.customerCommonTabs.list = _.map(customer_commons, (item)=> (
             {
               name: item.name
             }
           ));
-          this.handleLeadCommonChange(index)
+          this.handleCustomerCommonChange(index)
         }
       },
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false
        */
-      fetchLead({ reload = false, page = 1}) {
+      fetchCustomer({ reload = false, page = 1}) {
         this.status = 'loading';
         let {
           query,
@@ -169,8 +169,8 @@
           filters,
           pageSize: per_page,
           searchColumnName: search_column_name,
-          leadCommonId: id,
-          leadCommon
+          customerCommonId: id,
+          customerCommon
         } = this;
         if (reload) page = 1;
         uni.showLoading({
@@ -182,7 +182,7 @@
           page, per_page, query, search_column_name, filters, sort
         };
 
-        leadCommonApi.leads({ ...params }).then((res) => {
+        customerCommonApi.customers({ ...params }).then((res) => {
           _.delay(()=>{
             uni.hideLoading();
           }, 100)
@@ -195,7 +195,7 @@
             },
           } = res;
 
-          let swipeActionOptions = leadCommon.is_admin ? [
+          let swipeActionOptions = customerCommon.is_admin ? [
             {
               text: '删除',
               style: {
@@ -241,10 +241,10 @@
       doGrab ({id}) {
         let {
           list,
-          leadCommonId
+          customerCommonId
         } = this;
         if (_.isNumber(id)) {
-          leadCommonApi.grab({ids: [id], id: leadCommonId}).then((res) => {
+          customerCommonApi.grab({ids: [id], id: customerCommonId}).then((res) => {
             let { data: {code, remark}} = res;
             let index = _.findIndex(list, (item)=> item.id == id);
 
@@ -270,10 +270,10 @@
       doDestroy ({id}) {
         let {
           list,
-          leadCommonId
+          customerCommonId
         } = this;
         if (_.isNumber(id)) {
-          leadCommonApi.mass_destroy({ids: [id], id: leadCommonId}).then((res) => {
+          customerCommonApi.mass_destroy({ids: [id], id: customerCommonId}).then((res) => {
             let { data: {code, remark}} = res;
             let index = _.findIndex(list, (item)=> item.id == id);
 
@@ -296,13 +296,13 @@
           })
         }
       },
-      handleLeadCommonChange (index) {
-        let { leadCommons, featureLabels } = this;
-        let item = leadCommons[index];
+      handleCustomerCommonChange (index) {
+        let { customerCommons, featureLabels } = this;
+        let item = customerCommons[index];
 
-        this.leadCommonId = item?.id;
-        this.leadCommon = item;
-        this.leadCommonTabs.current = index;
+        this.customerCommonId = item?.id;
+        this.customerCommon = item;
+        this.customerCommonTabs.current = index;
 
         uni.setNavigationBarTitle({
           title: item?.name
@@ -313,7 +313,7 @@
             text: '转移',
           },
           {
-            text: `转移到其他${featureLabels["lead_common"]}`,
+            text: `转移到其他${featureLabels["customer_common"]}`,
           },
         ] : [
           {
@@ -321,26 +321,26 @@
           }
         ];
 
-        this.fetchLead({reload: true });
+        this.fetchCustomer({reload: true });
       },
       handleItemClick (event, id) {
-        this.currentLeadId = id;
+        this.currentCustomerId = id;
         this.uActionSheet.show = true;
       },
       handleActionSheet (index) {
-        let { uActionSheet: { list }, leadCommonTabs: { current }, leadCommons, leadCommonId, currentLeadId } = this;
-        let item = _.find(leadCommons, (item)=> item.id == leadCommonId);
+        let { uActionSheet: { list }, customerCommonTabs: { current }, customerCommons, customerCommonId, currentCustomerId } = this;
+        let item = _.find(customerCommons, (item)=> item.id == customerCommonId);
         console.debug("uActionSheet 点击了", list[index]?.text);
 
         if (item.is_admin) {
           if (index == 0) {
-            let transferUrl = `/pages/common/transferOutCommon/transferOutCommon?ids=${currentLeadId}&klassName=LeadCommon&id=${leadCommonId}&successUrl=/pages/leadCommon/leadList/leadList?index=${current}`;
+            let transferUrl = `/pages/common/transferOutCommon/transferOutCommon?ids=${currentCustomerId}&klassName=CustomerCommon&id=${customerCommonId}&successUrl=/pages/customerCommon/customerList/customerList?index=${current}`;
             uni.navigateTo({
               url: transferUrl
             });
           }
           if (index == 1) {
-            let transferToOther = `/pages/common/transferToOther/transferToOther?ids=${currentLeadId}&klassName=LeadCommon&id=${leadCommonId}&successUrl=/pages/leadCommon/leadList/leadList?index=${current}`;
+            let transferToOther = `/pages/common/transferToOther/transferToOther?ids=${currentCustomerId}&klassName=CustomerCommon&id=${customerCommonId}&successUrl=/pages/customerCommon/customerList/customerList?index=${current}`;
             uni.navigateTo({
               url: transferToOther
             });
@@ -350,7 +350,7 @@
 
         if (item.is_member) {
           if (index == 0) {
-            this.doGrab({id: currentLeadId});
+            this.doGrab({id: currentCustomerId});
           }
           return
         }
@@ -375,16 +375,16 @@
         this.query = query;
         this.searchColumnName = searchColumnName;
 
-        this.fetchLead({ reload: true });
+        this.fetchCustomer({ reload: true });
       },
       handleSortColumnChange (sort) {
         this.sort = sort;
 
-        this.fetchLead({ reload: true });
+        this.fetchCustomer({ reload: true });
       },
       handleFilterConfirm (filters) {
         this.filters = filters;
-        this.fetchLead({ reload: true });
+        this.fetchCustomer({ reload: true });
       }
     }
   };

@@ -10,11 +10,11 @@
       <u-link v-else-if="fieldType === 'url_field'"  :href="href">
         {{displayValue}}
       </u-link>
-      <u-tag v-else-if="fieldType === 'select_field'"  :text="displayValue">
+      <u-tag v-else-if="fieldType === 'select_field' && displayValue"  :text="displayValue">
       </u-tag>
-      <u-tag v-else-if="fieldType === 'field_map_field'" :text="displayValue">
+      <u-tag v-else-if="fieldType === 'field_map_field' && displayValue" :text="displayValue">
       </u-tag>
-      <u-tag v-else-if="fieldType === 'multi_select'" v-for="opt in displayValue" :key="opt" :text="opt">
+      <u-tag v-else-if="fieldType === 'multi_select' && opt" v-for="opt in displayValue" :key="opt" :text="opt">
       </u-tag>
       <text v-else>
         {{displayValue}}

@@ -229,7 +229,7 @@ export default ({ customField }) => {
         {
           required: required, message: `${label}是必填的!`,
           trigger: ['blur', 'change'],
-          type: 'array'
+          type: 'object'
         }
       ];
       break;

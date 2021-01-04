@@ -8,7 +8,7 @@
         <u-row gutter="16">
           <u-grid :col="2"  :border="false">
             <u-grid-item index="customer">
-              <u-button type="primary">
+              <u-button type="primary" @click="handleItemClick($event, '/pages/customer/customerNew/customerNew')" >
                 <u-icon name="account-fill" :size="40"></u-icon>新增{{this.featureLabels['customer']}}
               </u-button>
             </u-grid-item>

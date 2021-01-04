@@ -1,48 +1,47 @@
 <template>
   <view class="event-list"  :style="style">
     <u-time-line class="timeLine">
+      <u-time-line-item
+        v-for="(item, index) in models"
+        v-bind:key="item.id"
+        nodeTop="2"
+      >
+        <!-- 此处自定义了左边内容，用一个图标替代 -->
+        <template v-slot:node>
+          <view class="u-node" :style="item.node.style">
+            <!-- 此处为uView的icon组件 -->
+            <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
+          </view>
+        </template>
+        <template v-slot:content>
+          <u-swipe-action
+            :show="item.swipeAction.show" :index="index"
+            @click="(index, option_index) => handleSwipActionClick(item, index, option_index)" @open="handleSwipeActionOpen"
+            :options="item.swipeAction.options"
 
-        <u-time-line-item
-          v-for="(item, index) in models"
-          v-bind:key="item.id"
-          nodeTop="2"
-        >
-          <!-- 此处自定义了左边内容，用一个图标替代 -->
-          <template v-slot:node>
-            <view class="u-node" :style="item.node.style">
-              <!-- 此处为uView的icon组件 -->
-              <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
-            </view>
-          </template>
-          <template v-slot:content>
-            <u-swipe-action
-              :show="item.swipeAction.show" :index="index"
-              @click="(index, option_index) => handleSwipActionClick(item, index, option_index)" @open="handleSwipeActionOpen"
-              :options="item.swipeAction.options"
-
-            >
-            <u-card
-              full
-              :title="item.title"
-              :sub-title="item.createdAt"
-              :margin="timeLine.card.margin"
-              :padding="timeLine.card.padding"
-              :show-foot="timeLine.card.showFoot"
-              :border="timeLine.card.border"
-            >
-              <view class="" slot="body">
-                <view class="u-order-desc">
-                  状态：<u-tag :text="item.status_display" :type="item.statusTag.type"></u-tag>
-                </view>
-                <view class="u-order-desc">内容：{{item.note}}</view>
-                <view class="u-order-desc">开始时间：{{item.remindAt}}</view>
-                <view class="u-order-desc">提醒类型：{{item.remind_type_display}}</view>
-                <view class="u-order-desc">参与人：{{item.userNames}}</view>
+          >
+          <u-card
+            full
+            :title="item.title"
+            :sub-title="item.createdAt"
+            :margin="timeLine.card.margin"
+            :padding="timeLine.card.padding"
+            :show-foot="timeLine.card.showFoot"
+            :border="timeLine.card.border"
+          >
+            <view class="" slot="body">
+              <view class="u-order-desc">
+                状态：<u-tag :text="item.status_display" :type="item.statusTag.type"></u-tag>
               </view>
-            </u-card>
-            </u-swipe-action>
-          </template>
-        </u-time-line-item>
+              <view class="u-order-desc">内容：{{item.note}}</view>
+              <view class="u-order-desc">开始时间：{{item.remindAt}}</view>
+              <view class="u-order-desc">提醒类型：{{item.remind_type_display}}</view>
+              <view class="u-order-desc">参与人：{{item.userNames}}</view>
+            </view>
+          </u-card>
+          </u-swipe-action>
+        </template>
+      </u-time-line-item>
     </u-time-line>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
@@ -61,7 +60,7 @@
 
   export default {
     data() {
-      let { style = "height: 680rpx;"} = this.$attrs;
+      let { style = "height: 55vh;"} = this.$attrs;
 
       return {
         style,
