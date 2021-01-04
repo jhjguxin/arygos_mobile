@@ -12,19 +12,13 @@
         </u-link>
       </view>
       <view v-else-if="fieldType === 'select_field'" >
-        <u-tag v-if="displayValue">
-          {{displayValue}}
-        </u-tag>
+        <u-tag :text="displayValue" v-if="displayValue"/>
       </view>
       <view v-else-if="fieldType === 'field_map_field'" >
-        <u-tag v-if="displayValue">
-          {{displayValue}}
-        </u-tag>
+        <u-tag :text="displayValue" v-if="displayValue"/>
       </view>
       <view v-else-if="fieldType === 'multi_select'" v-for="opt in value" :key="opt">
-        <u-tag>
-          {{opt}}
-        </u-tag>
+        <u-tag :text="opt"/>
       </view>
       <view v-else>
         {{displayValue}}
@@ -79,7 +73,7 @@
               break;
             case "text_area":
               value = _.at(record, customColumnName)[0];
-              _.truncate(value, {length: 80});
+              value = _.truncate(value, {length: 100});
               break;
             case "date_field":
               value = _.at(record, customColumnName)[0];

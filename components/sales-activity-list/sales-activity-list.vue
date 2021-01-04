@@ -54,7 +54,7 @@
 
   export default {
     data() {
-      let { style = "height: 680rpx;"} = this.$attrs;
+      let { style = "height: 55vh;"} = this.$attrs;
       return {
         models: [],
         isLoading: true,

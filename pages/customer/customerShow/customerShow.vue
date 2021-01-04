@@ -3,8 +3,8 @@
     <view>
       <u-card
         full
-        :title="model.company_name"
-        :sub-title="model.name"
+        :title="model.name"
+        :sub-title="model.status_display"
         :margin="card.margin"
         :padding="card.padding"
         :show-foot="card.showFoot"
@@ -57,8 +57,8 @@
           <u-grid-item @click="handleItemClick($event, revisitLogNew.url)">
             <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
           </u-grid-item>
-          <u-grid-item index="turnCustomer">
-            <view class="grid-text">转{{this.featureLabels['customer']}}</view>
+          <u-grid-item>
+            &
           </u-grid-item>
           <u-grid-item @click="salesActionSheet.show = true">
             <view class="grid-text">更多</view>
@@ -81,6 +81,27 @@
         </u-grid>
       </view>
       <view v-if="tabs.current == 2" class="u-padding-bottom-80">
+        <contact-list-on-customer-show
+          ref="contactListOnCustomerShow"
+          :model="model" :klassName="klassName"
+          :params="contactListOnCustomerShow.params"
+        />
+      </view>
+      <view v-if="tabs.current == 3" class="u-padding-bottom-80">
+        <opportunity-list-on-customer-show
+          ref="opportunityListOnCustomerShow"
+          :model="model" :klassName="klassName"
+          :params="opportunityListOnCustomerShow.params"
+        />
+      </view>
+      <view v-if="tabs.current == 4" class="u-padding-bottom-80">
+        <contract-list-on-customer-show
+          ref="contractListOnCustomerShow"
+          :model="model" :klassName="klassName"
+          :params="contractListOnCustomerShow.params"
+        />
+      </view>
+      <view v-if="tabs.current == 5" class="u-padding-bottom-80">
         <attachment-list
           ref="attachmentList"
           :model="model" :klassName="klassName"
@@ -99,7 +120,7 @@
           </u-grid-item>
         </u-grid>
       </view>
-      <view v-if="tabs.current == 3" class="u-padding-bottom-80">
+      <view v-if="tabs.current == 6" class="u-padding-bottom-80">
         <event-list
           ref="eventList"
           :model="model" :klassName="klassName"
@@ -118,16 +139,17 @@
 
 <script>
   import _ from 'lodash';
-  import { leadApi } from 'services/http';
+  import { customerApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
     data() {
       let { query: {id} } = this.$route;
+      let featureLabels = getApp().globalData.featureLabels;
 
       return {
         id,
-        klassName: "Lead",
+        klassName: "Customer",
         isInvalidData: false,
         model: {},
         customFields: [],
@@ -146,6 +168,15 @@
               name: '详情'
             },
             {
+              name: featureLabels['contact'],
+            },
+            {
+              name: featureLabels['opportunity'],
+            },
+            {
+              name: featureLabels['contract'],
+            },
+            {
               name: '附件'
             },
             {
@@ -156,32 +187,47 @@
         },
         salesActivityList: {
           params: {
-            lead_id: id
+            customer_id: id
+          }
+        },
+        contactListOnCustomerShow: {
+          params: {
+            id
+          }
+        },
+        opportunityListOnCustomerShow: {
+          params: {
+            id
+          }
+        },
+        contractListOnCustomerShow: {
+          params: {
+            id
           }
         },
         attachmentList: {
           params: {
-            attachmentable_type: "Lead",
+            attachmentable_type: "Customer",
             attachmentable_id: id
           }
         },
         attachmentNew: {
           params: {
-            attachmentable_type: "Lead",
+            attachmentable_type: "Customer",
             attachmentable_id: id
           }
         },
        eventList: {
           params: {
-            related_item_type: "Lead",
+            related_item_type: "Customer",
             related_item_id: id
           }
         },
         eventNew: {
-          url: `/pages/event/eventNew/eventNew?related_item_type=Lead&related_item_id=${id}`
+          url: `/pages/event/eventNew/eventNew?related_item_type=Customer&related_item_id=${id}`
         },
         revisitLogNew: {
-          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Lead&loggable_id=${id}`
+          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Customer&loggable_id=${id}`
         },
         salesActionSheet: {
           list: [
@@ -193,7 +239,7 @@
               subText: '感谢您的分享'
             },
             {
-              text: '转入线索池'
+              text: '转入客户公海'
             },
             {
               text: '删除',
@@ -207,31 +253,31 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/lead/leadEdit/leadEdit?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Lead`,
-        transferIntoCommonUrl: `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=LeadCommon`
+        editUrl: `/pages/customer/customerEdit/customerEdit?id=${id}`,
+        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Customer`,
+        transferIntoCommonUrl: `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=CustomerCommon`
       }
     },
     async onLoad() {
       let { klassName, id } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
-      let model = await this.fetchLeadShow({ id });
+      let model = await this.fetchCustomerShow({ id });
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
 
       uni.setNavigationBarTitle({
-        title: model.company_name || "线索详情"
+        title: model.name || "客户详情"
       });
     },
     methods: {
-      async fetchLeadShow ({ id }) {
+      async fetchCustomerShow ({ id }) {
         uni.showLoading({
           title: '加载中'
         });
 
-        let res = await leadApi.show({id});
+        let res = await customerApi.show({id});
         let {
           data: {
             code, remark, data: model
@@ -258,7 +304,7 @@
         }
       },
       doDestroy ({id}) {
-        leadApi.mass_destroy({ids: [id]}).then((res) => {
+        customerApi.mass_destroy({ids: [id]}).then((res) => {
           let { data: {code, remark}} = res;
 
           if (code == 0) {
@@ -269,7 +315,7 @@
             });
             _.delay(()=> {
               uni.navigateTo({
-                url: '/pages/lead/leadList/leadList'
+                url: '/pages/customer/customerList/customerList'
               });
             }, 1000);
           } else {

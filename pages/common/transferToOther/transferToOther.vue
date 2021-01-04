@@ -49,7 +49,7 @@
         successUrl,
         card: {
           full: false,
-          title: `转入`,
+          title: `转移至其他`,
           subTitle: ""
         },
         form: {

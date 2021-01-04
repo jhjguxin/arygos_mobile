@@ -19,7 +19,8 @@
           <u-card
             class="item-body" slot="body" :title="item.company_name"
             :border="card.border" :sub-title="item.name" :full="card.full"
-            :show-head="card.showHead" :show-foot="card.showFoot" margin="0rpx"
+            :show-head="card.showHead" :show-foot="card.showFoot"
+            :margin="card.margin"  :padding="card.padding"
             @click="handleItemClick($event, item.id)"
           >
             <u-row slot="body" gutter="0" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.id">
@@ -40,7 +41,7 @@
         </uni-list-item>
       </u-swipe-action>
     </uni-list>
-    <uni-load-more v-if="list.length > 0" :status="status" />
+    <uni-load-more :status="status" />
     <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
   </view>
 </template>
@@ -60,7 +61,9 @@
           border: false,
           full: true,
           showHead: true,
-          showFoot: false
+          showFoot: false,
+          margin: "0rpx",
+          padding: "10"
         },
         swipeAction: {
           options: [
@@ -111,18 +114,21 @@
       /**
        * 下拉刷新回调函数
        */
-      handlePullDownRefresh() {
+      onPullDownRefresh() {
         this.page = 1
         this.fetchLead({ reload: true });
       },
       /**
        * 上拉加载回调函数
        */
-      handleReachBottom() {
-        let { page } = this;
-        page += 1;
-        this.page = page;
-        this.fetchLead({ page });
+      onReachBottom() {
+        let { page, status } = this;
+
+        if (status == 'more') {
+          page += 1;
+          this.page = page;
+          this.fetchLead({ page });
+        }
       },
       /**
        * 获取页面数据
@@ -185,9 +191,6 @@
           } else {
             // 上拉加载后合并数据
             this.list = this.list.concat(tempList);
-          }
-          if (tempList.length) {
-            this.page++
           }
         })
 

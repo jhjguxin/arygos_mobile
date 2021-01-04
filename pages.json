@@ -129,6 +129,44 @@
       }
     },
     {
+      "path" : "pages/customer/customerNew/customerNew",
+      "style": {
+        "navigationBarTitleText": "新增客户"
+      }
+    },
+    {
+      "path" : "pages/customer/customerList/customerList",
+      "style" :
+      {
+        "navigationBarTitleText": "客户",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/customer/customerShow/customerShow",
+      "style" :
+      {
+        "navigationBarTitleText": "客户详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/customer/customerEdit/customerEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "客户编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/customerCommon/customerList/customerList",
+      "style" :
+      {
+        "navigationBarTitleText": "客户公海",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {

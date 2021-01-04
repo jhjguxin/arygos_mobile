@@ -1,15 +1,24 @@
 <template>
-  <view class="attachment-list"  :style="style">
-    <u-cell-group>
-      <u-cell-item
-        icon="file-text-fill"
-        :title="item.file_file_name"
-        :value="item.fileSize"
-        v-for="item in models"
-        :key="item.id"
+  <view class="contract-list-on-show"  :style="style">
+    <view
+      v-for="item in models":key="item.id">
+      <u-card
+        :title="item.title"
+        :border="card.border" :sub-title="item.status_display" :full="card.full"
+        :show-head="card.showHead" :show-foot="card.showFoot"
+        :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
-      ></u-cell-item>
-    </u-cell-group>
+      >
+        <u-row slot="body"  gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.id">
+          <u-col span="3" text-align="left">
+            {{customField.label}}
+          </u-col>
+          <u-col span="9">
+            <custom-field-on-list :customField="customField" :record="item" />
+          </u-col>
+        </u-row>
+      </u-card>
+    </view>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
       :status="status" :contentText="loadText"
@@ -21,13 +30,13 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import prettyBytes from 'pretty-bytes';
-  import mime from 'mime-types';
-  import { attachmentApi } from 'services/http';
+  import { customerApi } from 'services/http';
+  import CustomField from 'services/custom_field';
 
   export default {
     data() {
       let { style = "height: 55vh;"} = this.$attrs;
+      let featureLabels = getApp().globalData.featureLabels;
 
       return {
         style,
@@ -36,16 +45,33 @@
         page: 1,
         perPage: 8, // 分页数
         uEmpty: {
-          text: "附件为空"
+          text: `${featureLabels["contract"]}为空`
+        },
+        card: {
+          border: false,
+          full: true,
+          showHead: true,
+          showFoot: false,
+          margin: "30rpx",
+          padding: "20"
         },
         loadText: {
           contentdown: '点击加载更多',
           contentrefresh: '加载中',
           contentnomore: '没有更多数据了'
-        }
+        },
+        customFields: [],
       };
     },
-    mounted() {
+    async mounted() {
+      let customFields = await CustomField.instance().fetchData("Contract");
+      const customFieldNames = [
+        "total_amount",
+        "start_at", "end_at", "extra.note"
+      ];
+      this.customFields = _.map(customFieldNames, (customFieldName)=>
+        _.find(customFields, (customField)=> customField.name == customFieldName)
+      );
       this.fetchListData({});
     },
     methods: {
@@ -56,14 +82,14 @@
         if (reload) {
           page = 1;
         }
-        
+
         params = {
           ...params,
           per_page,
           page
         };
-        
-        attachmentApi.index(params).then((res)=> {
+
+        customerApi.contracts(params).then((res)=> {
           let {
             data: {
               data: {
@@ -71,24 +97,24 @@
               }
             },
           } = res;
-        
+
           _models = _.map(_models, (item) => {
             return ({
               ...item,
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
-              fileSize: prettyBytes(item.file_file_size)
+              url: `/pages/contract/contractShow/contractShow?id=${item.id}`
             })
           })
-        
+
           _models = _.filter(
             _models, (item)=>
               _.findIndex(models, (_item)=> item.id == _item.id) == -1
           );
-        
+
           models = (page == 1) ? _models : _.concat(models, _models);
-        
+
           models = _.orderBy(models, ['id'], ['desc']);
-        
+
           this.page = page;
           this.isLoading = false;
           this.status = _.isNumber(next_page) ? 'more' : 'noMore';
@@ -103,64 +129,24 @@
         this.fetchListData({page});
       },
       handleItemClick (event, item) {
-        let { file_url: filePath, file_content_type } = item;
-
-        uni.showLoading({
-            title: '文件下载中'
+        let { url } = item;
+        uni.navigateTo({
+          url
         });
-
-        uni.downloadFile({
-          url: encodeURI(filePath),
-          success(res) {
-            uni.hideLoading();
-            
-            let isImage = _.startsWith(file_content_type, "image/");
-            const documentExts = [
-              "doc", "xls", "ppt", "pdf", "docx", "xlsx", "pptx"
-            ];
-            let isDocument = _.includes(
-              documentExts, mime.extension(file_content_type)
-            );
-
-            if (isImage) {
-              uni.previewImage({
-                urls: [res.tempFilePath]
-              });
-            } else if (isDocument){
-              uni.openDocument({
-                filePath: res.tempFilePath,
-                fail(e) {
-                  uni.hideLoading();
-                  uni.showToast({
-                    icon: 'none',
-                    title: '文件打开失败！'
-                  });
-                }
-              });
-            } else {
-              uni.saveFile({});
-            }
-          },
-          fail() {
-            uni.hideLoading();
-            uni.showToast({
-              icon: 'none',
-              title: '附件下载出错！'
-            });
-          },
-          complete() {
-            uni.hideLoading();
-          }
-        });
-
       }
     }
   }
 </script>
 
 <style>
-  .attachment-list {
+  .contract-list-on-show {
     padding-left: 32rpx;
     overflow-y: scroll;
+  }
+  .item-body {
+    width: 600rpx;
+  }
+  .item-footer {
+    width: 0rpx;
   }
 </style>
