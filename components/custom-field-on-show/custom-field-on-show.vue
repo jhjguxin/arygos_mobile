@@ -10,6 +10,17 @@
       <u-link v-else-if="fieldType === 'url_field'"  :href="href">
         {{displayValue}}
       </u-link>
+      <text v-else-if="fieldType === 'select2_field'">
+        <text
+          v-if="href" style="color: #2979ff;"
+          @tap.stop="handleSelect2Click"
+        >
+          {{displayValue}}
+        </text>
+        <text v-else>
+          {{displayValue}}
+        </text>
+      </text>
       <u-tag v-else-if="fieldType === 'select_field' && displayValue"  :text="displayValue">
       </u-tag>
       <u-tag v-else-if="fieldType === 'field_map_field' && displayValue" :text="displayValue">
@@ -51,12 +62,23 @@
       }
     },
     methods: {
+      handleSelect2Click (e) {
+        let { href: url } = this;
+        e.stopPropagation();
+
+        uni.navigateTo({
+          url
+        })
+      }
     },
     computed: {
       displayValue: {
         get () {
-          let { customField: {
+          let {
+            customField: {
+              name,
               custom_column_name: customColumnName, field_type: fieldType,
+              select_klass_name: selectKlassName
             }, record
           } = this;
           let value;
@@ -94,6 +116,15 @@
               break;
             case "select2_field":
               value = _.at(record, customColumnName)[0];
+              let id = _.at(record, `${name}_id`)[0];
+              const urlMap = {
+                Lead: `/pages/lead/leadShow/leadShow?id=${id}`,
+                Customer: `/pages/customer/customerShow/customerShow?id=${id}`,
+                Contact: `/pages/contact/contactShow/contactShow?id=${id}`,
+                Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${id}`,
+                Contract: `/pages/contract/contractShow/contractShow?id=${id}`,
+              }
+              this.href = urlMap[selectKlassName];
               break;
             case "address_select":
               value = _.at(record, customColumnName)[0];

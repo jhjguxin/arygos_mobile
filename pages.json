@@ -167,6 +167,36 @@
       }
     },
     {
+      "path" : "pages/contact/contactNew/contactNew",
+      "style": {
+        "navigationBarTitleText": "新增联系人"
+      }
+    },
+    {
+      "path" : "pages/contact/contactList/contactList",
+      "style" :
+      {
+        "navigationBarTitleText": "联系人",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/contact/contactShow/contactShow",
+      "style" :
+      {
+        "navigationBarTitleText": "联系人详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/contact/contactEdit/contactEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "联系人编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {

@@ -26,7 +26,7 @@
         <u-icon name="/static/icons/account-multiple.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["customer_common"]}}</view>
       </u-grid-item>
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/contact/contactList/contactList')">
         <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["contact"]}}</view>
       </u-grid-item>
