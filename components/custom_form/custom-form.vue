@@ -131,10 +131,13 @@
             let values = {};
             _.each(formFields, (formField) => {
               let { name, customField } = formField;
-              let value = parseCustomField({ data: model, customField });
-              values[name] = value;
+              let attr = parseCustomField({ data: model, customField });
+              values = {
+                ...values,
+                ...attr
+              };
             })
-            this.$emit("submit", model);
+            this.$emit("submit", values);
 
           } else {
             console.log('验证失败');

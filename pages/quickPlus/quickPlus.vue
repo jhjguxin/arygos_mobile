@@ -36,7 +36,7 @@
               <u-icon name="share-fill" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['lead']}}</view>
             </u-grid-item>
-            <u-grid-item index="contact">
+            <u-grid-item index="contact" @click="handleItemClick($event, '/pages/contact/contactNew/contactNew')">
               <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contact']}}</view>
             </u-grid-item>
