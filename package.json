@@ -10,17 +10,18 @@
     "crm",
     "uni-app"
   ],
+  "repository": "jhjguxin/arygos_mobile",
   "author": "francis.j",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.2.7",
-    "dayjs": "^1.9.5",
+    "@dcloudio/uni-ui": "^1.2.10",
+    "dayjs": "^1.10.1",
     "fsevents": "^2.2.1",
     "lodash": "^4.17.20",
-    "mime-types": "^2.1.27",
-    "pretty-bytes": "^5.4.1",
+    "mime-types": "^2.1.28",
+    "pretty-bytes": "^5.5.0",
     "qs": "^6.9.4",
-    "uview-ui": "^1.7.8",
+    "uview-ui": "^1.8.3",
     "vuex-persistedstate": "^3.1.0"
   }
 }
