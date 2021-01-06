@@ -73,18 +73,19 @@
         let formFields = [];
 
         _.each(customFields, (customField) => {
-          let value = parseInitialValue({ record, customField });
-          // let { name, field_type } = customField;
+          let value = model[`${customField.name}`];
+
+          // REVIEW model[name] 为空的时候从record 中获取初始化值
+          if (_.isNil(value)) {
+            value = parseInitialValue({ record, customField });
+          }
 
           formFields.push({
             name: customField.name, fieldType: customField.field_type,
             customField,
             value, record
           })
-          model = {
-            ...model,
-            [`${customField.name}`]: value
-          };
+          model[`${customField.name}`] = value;
         });
 
         this.$set(this, "formFields", formFields);
