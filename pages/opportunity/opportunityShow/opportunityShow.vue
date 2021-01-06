@@ -12,7 +12,7 @@
       >
         <view class="" slot="body">
           <u-row gutter="16" v-if="customFieldsObject['expect_sign_date']">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['expect_sign_date'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -20,7 +20,7 @@
             </u-col>
           </u-row>
           <u-row gutter="16" v-if="customFieldsObject['expect_amount']">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['expect_amount'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -28,7 +28,7 @@
             </u-col>
           </u-row>
           <u-row gutter="16">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['user'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -40,7 +40,7 @@
             </u-col>
           </u-row>
           <u-row gutter="16">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['revisit_remind_at'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -244,8 +244,7 @@
         },
         featureLabels: getApp().globalData.featureLabels,
         editUrl: `/pages/opportunity/opportunityEdit/opportunityEdit?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Opportunity`,
-        transferIntoCommonUrl: `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=OpportunityCommon`
+        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Opportunity`
       }
     },
     async onLoad() {

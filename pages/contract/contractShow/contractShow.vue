@@ -3,49 +3,49 @@
     <view>
       <u-card
         full
-        :title="model.name"
-        :sub-title="model.extra.job"
+        :title="model.title"
+        :sub-title="model.sn"
         :margin="card.margin"
         :padding="card.padding"
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
         <view class="" slot="body">
-          <u-row gutter="16" v-if="customFieldsObject['extra.tel']">
+          <u-row gutter="16" v-if="customFieldsObject['customer']">
             <u-col span="3" class="u-font-xs">
-              <view>{{customFieldsObject['extra.tel'].label}}</view>
+              <view>{{customFieldsObject['customer'].label}}</view>
             </u-col>
             <u-col span="9">
-               <custom-field-on-show :customField="customFieldsObject['extra.tel']" :record="model" />
+               <custom-field-on-show :customField="customFieldsObject['customer']" :record="model" />
             </u-col>
           </u-row>
-          <u-row gutter="16" v-if="customFieldsObject['extra.phone']">
+          <u-row gutter="16" v-if="customFieldsObject['total_amount']">
             <u-col span="3" class="u-font-xs">
-              <view>{{customFieldsObject['extra.phone'].label}}</view>
+              <view>{{customFieldsObject['total_amount'].label}}</view>
             </u-col>
             <u-col span="9">
-               <custom-field-on-show :customField="customFieldsObject['extra.phone']" :record="model" />
-            </u-col>
-          </u-row>
-          <u-row gutter="16" v-if="customFieldsObject['extra.detail_address']">
-            <u-col span="3" class="u-font-xs">
-              <view>{{customFieldsObject['extra.detail_address'].label}}</view>
-            </u-col>
-            <u-col span="9">
-               <custom-field-on-show :customField="customFieldsObject['extra.detail_address']" :record="model" />
+               <custom-field-on-show :customField="customFieldsObject['total_amount']" :record="model" />
             </u-col>
           </u-row>
           <u-row gutter="16">
             <u-col span="3" class="u-font-xs">
-              <view>{{customFieldsObject['creator'].label}}</view>
+              <view>{{customFieldsObject['user'].label}}</view>
             </u-col>
             <u-col span="9">
               <custom-field-on-show
-              :customField="customFieldsObject['creator']" :record="model" inline
-              />
+              :customField="customFieldsObject['user']" :record="model" inline
+              /> & <custom-field-on-show
+              :customField="customFieldsObject['department']" :record="model" inline
+             />
             </u-col>
           </u-row>
           <u-row gutter="16">
+            <u-col span="3" class="u-font-xs">
+              <view>{{customFieldsObject['revisit_remind_at'].label}}</view>
+            </u-col>
+            <u-col span="9">
+              <custom-field-on-show :customField="customFieldsObject['revisit_remind_at']" :record="model" />
+            </u-col>
           </u-row>
         </view>
       </u-card>
@@ -62,10 +62,10 @@
           />
 
         <u-grid :col="3"  :border="true" class="fixed-bottom">
-          <u-grid-item @click="handleItemClick($event, editUrl)">
-            <view class="grid-text">编辑</view>
+          <u-grid-item @click="handleItemClick($event, revisitLogNew.url)">
+            <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
           </u-grid-item>
-          <u-grid-item index="_">
+          <u-grid-item>
             &
           </u-grid-item>
           <u-grid-item @click="salesActionSheet.show = true">
@@ -88,6 +88,51 @@
           </u-grid-item>
         </u-grid>
       </view>
+      <view v-if="tabs.current == 2" class="u-padding-bottom-80">
+        <contact-assetship-list-on-contract-show
+          ref="contactAssetshipList"
+          :model="model" :klassName="klassName"
+          :params="contactAssetshipList.params"
+        />
+      </view>
+      <view v-if="tabs.current == 3" class="u-padding-bottom-80">
+        <product-asset-list-on-contract-show
+          ref="productAssetList"
+          :model="model" :klassName="klassName"
+          :params="productAssetList.params"
+        />
+      </view>
+      <view v-if="tabs.current == 4" class="u-padding-bottom-80">
+        <attachment-list
+          ref="attachmentList"
+          :model="model" :klassName="klassName"
+          :params="attachmentList.params"
+        />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="$refs.attachmentNew.showModal()">
+            <view class="grid-text">
+              <attachment-new
+                ref="attachmentNew"
+                @success="$refs.attachmentList.fetchListData({})"
+                :params="attachmentNew.params"
+              />
+            </view>
+          </u-grid-item>
+        </u-grid>
+      </view>
+      <view v-if="tabs.current == 5" class="u-padding-bottom-80">
+        <event-list
+          ref="eventList"
+          :model="model" :klassName="klassName"
+          :params="eventList.params"
+        />
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, eventNew.url)">
+            <view class="grid-text">新增</view>
+          </u-grid-item>
+        </u-grid>
+      </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
   </view>
@@ -95,16 +140,17 @@
 
 <script>
   import _ from 'lodash';
-  import { contactApi } from 'services/http';
+  import { contractApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
     data() {
       let { query: {id} } = this.$route;
+      let featureLabels = getApp().globalData.featureLabels;
 
       return {
         id,
-        klassName: "Contact",
+        klassName: "Contract",
         isInvalidData: false,
         model: {},
         customFields: [],
@@ -121,17 +167,70 @@
             },
             {
               name: '详情'
+            },
+            {
+              name: `${featureLabels.contact}`
+            },
+            {
+              name: `${featureLabels.product}`
+            },
+            {
+              name: '附件'
+            },
+            {
+              name: '任务'
             }
           ],
           current: 0
         },
         salesActivityList: {
           params: {
-            contact_id: id
+            contract_id: id
           }
+        },
+        contactAssetshipList: {
+          params: {
+            id
+          }
+        },
+        productAssetList: {
+          params: {
+            id
+          }
+        },
+        attachmentList: {
+          params: {
+            attachmentable_type: "Contract",
+            attachmentable_id: id
+          }
+        },
+        attachmentNew: {
+          params: {
+            attachmentable_type: "Contract",
+            attachmentable_id: id
+          }
+        },
+       eventList: {
+          params: {
+            related_item_type: "Contract",
+            related_item_id: id
+          }
+        },
+        eventNew: {
+          url: `/pages/event/eventNew/eventNew?related_item_type=Contract&related_item_id=${id}`
+        },
+        revisitLogNew: {
+          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Contract&loggable_id=${id}`
         },
         salesActionSheet: {
           list: [
+            {
+              text: '编辑',
+            },
+            {
+              text: '转移给他人',
+              subText: '感谢您的分享'
+            },
             {
               text: '删除',
               color: 'red',
@@ -144,29 +243,30 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/contact/contactEdit/contactEdit?id=${id}`
+        editUrl: `/pages/contract/contractEdit/contractEdit?id=${id}`,
+        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Contract`,
       }
     },
     async onLoad() {
       let { klassName, id } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
-      let model = await this.fetchContactShow({ id });
+      let model = await this.fetchContractShow({ id });
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
 
       uni.setNavigationBarTitle({
-        title: model.name || "联系人详情"
+        title: model.title || "合同详情"
       });
     },
     methods: {
-      async fetchContactShow ({ id }) {
+      async fetchContractShow ({ id }) {
         uni.showLoading({
           title: '加载中'
         });
 
-        let res = await contactApi.show({id});
+        let res = await contractApi.show({id});
         let {
           data: {
             code, remark, data: model
@@ -193,7 +293,7 @@
         }
       },
       doDestroy ({id}) {
-        contactApi.mass_destroy({ids: [id]}).then((res) => {
+        contractApi.mass_destroy({ids: [id]}).then((res) => {
           let { data: {code, remark}} = res;
 
           if (code == 0) {
@@ -204,7 +304,7 @@
             });
             _.delay(()=> {
               uni.navigateTo({
-                url: '/pages/contact/contactList/contactList'
+                url: '/pages/contract/contractList/contractList'
               });
             }, 1000);
           } else {
@@ -226,6 +326,20 @@
       },
       handleSalesActionSheetClick (index) {
         if (index == 0) {
+          let { editUrl } = this;
+          uni.navigateTo({
+            url: editUrl
+          });
+          return;
+        }
+        if (index == 1) {
+          let { transferUrl } = this;
+          uni.navigateTo({
+            url: transferUrl
+          });
+          return;
+        }
+        if (index == 2) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({
             title: `确定删除${featureLabels[_.snakeCase(klassName)]}？`,
@@ -241,7 +355,7 @@
             }
           });
         }
-        if (index == 1) {
+        if (index == 3) {
           let { editUrl } = this;
           uni.switchTab({
             url: '/pages/workbench/workbench',

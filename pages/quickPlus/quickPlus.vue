@@ -44,7 +44,7 @@
               <u-icon name="rmb" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['opportunity']}}</view>
             </u-grid-item>
-            <u-grid-item index="contract">
+            <u-grid-item index="contract" @click="handleItemClick($event, '/pages/contract/contractNew/contractNew')">
               <u-icon name="order" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
             </u-grid-item>

@@ -1,10 +1,10 @@
 <template>
-  <view class="opportunity-list-on-show"  :style="style">
+  <view class="contact-assetship-list-on-show"  :style="style">
     <view
       v-for="item in models":key="item.id">
       <u-card
-        :title="item.title"
-        :border="card.border" :sub-title="item.stage_display" :full="card.full"
+        :title="item.contact.name"
+        :border="card.border" :sub-title="item.category_display" :full="card.full"
         :show-head="card.showHead" :show-foot="card.showFoot"
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
@@ -14,7 +14,7 @@
             {{customField.label}}
           </u-col>
           <u-col span="9" class="u-padding-left-20">
-            <custom-field-on-list :customField="customField" :record="item" />
+            <custom-field-on-list :customField="customField" :record="item.contact" />
           </u-col>
         </u-row>
       </u-card>
@@ -30,7 +30,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { customerApi } from 'services/http';
+  import { contractApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
@@ -45,7 +45,7 @@
         page: 1,
         perPage: 8, // 分页数
         uEmpty: {
-          text: `${featureLabels["opportunity"]}为空`
+          text: `${featureLabels["contact"]}为空`
         },
         card: {
           border: false,
@@ -64,10 +64,10 @@
       };
     },
     async mounted() {
-      let customFields = await CustomField.instance().fetchData("Opportunity");
+      let customFields = await CustomField.instance().fetchData("Contact");
       const customFieldNames = [
-        "expect_amount",
-        "expect_sign_date", "sign_possibility", "extra.note"
+        "name",
+        "extra.job", "extra.tel", "extra.phone", "extra.email"
       ];
       this.customFields = _.map(customFieldNames, (customFieldName)=>
         _.find(customFields, (customField)=> customField.name == customFieldName)
@@ -89,7 +89,7 @@
           page
         };
 
-        customerApi.opportunities(params).then((res)=> {
+        contractApi.contact_assetships(params).then((res)=> {
           let {
             data: {
               data: {
@@ -102,7 +102,7 @@
             return ({
               ...item,
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
-              url: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.id}`
+              url: `/pages/contact/contactShow/contactShow?id=${item.contact_id}`
             })
           })
 
@@ -139,7 +139,7 @@
 </script>
 
 <style>
-  .opportunity-list-on-show {
+  .contact-assetship-list-on-show {
     padding-left: 32rpx;
     overflow-y: scroll;
   }
