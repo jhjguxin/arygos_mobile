@@ -197,6 +197,36 @@
       }
     },
     {
+      "path" : "pages/opportunity/opportunityNew/opportunityNew",
+      "style": {
+        "navigationBarTitleText": "新增商机"
+      }
+    },
+    {
+      "path" : "pages/opportunity/opportunityList/opportunityList",
+      "style" :
+      {
+        "navigationBarTitleText": "商机",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/opportunity/opportunityShow/opportunityShow",
+      "style" :
+      {
+        "navigationBarTitleText": "商机详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/opportunity/opportunityEdit/opportunityEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "商机编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {

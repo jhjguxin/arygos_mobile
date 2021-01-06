@@ -1,0 +1,272 @@
+<template>
+  <view class="list">
+    <column-filter
+      :klassName="klassName" @filterConfirm="handleFilterConfirm"
+      @sortColumnChange="handleSortColumnChange"
+    />
+    <column-search :klassName="klassName" @search="handleSearch"/>
+
+    <u-gap></u-gap>
+    <uni-list>
+      <u-swipe-action
+        v-for="(item, index) in list"
+        v-bind:key="item.id"
+        :show="item.swipeAction.show" :index="index"
+        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
+        :options="swipeAction.options"
+      >
+        <uni-list-item>
+          <u-card
+            class="item-body" slot="body" :title="item.title"
+            :border="card.border" :sub-title="item.expect_sign_date" :full="card.full"
+            :show-head="card.showHead" :show-foot="card.showFoot"
+            :margin="card.margin"  :padding="card.padding"
+            @click="handleItemClick($event, item.id)"
+          >
+            <u-row slot="body" gutter="0" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.id">
+              <u-col span="3" text-align="right">
+                {{customField.label}}：
+              </u-col>
+              <u-col span="9">
+                <custom-field-on-list :customField="customField" :record="item" />
+              </u-col>
+            </u-row>
+            <u-row slot="foot" gutter="0" justify="space-between">
+            </u-row>
+          </u-card>
+
+          <u-row class="item-footer" slot="footer" gutter="0" align="center">
+            <u-tag :text="item.stageDisplay" v-if="item.stageDisplay"/>
+          </u-row>
+        </uni-list-item>
+      </u-swipe-action>
+    </uni-list>
+    <uni-load-more :status="status" />
+    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+  </view>
+</template>
+
+<script>
+  import _ from 'lodash';
+  import dayjs from 'dayjs';
+  import { opportunityApi } from 'services/http';
+  import CustomField from 'services/custom_field';
+
+  export default {
+    components: {},
+    data() {
+      return {
+        klassName: "Opportunity",
+        card: {
+          border: false,
+          full: true,
+          showHead: true,
+          showFoot: false,
+          margin: "0rpx",
+          padding: "10"
+        },
+        swipeAction: {
+          options: [
+            {
+              text: '删除',
+              style: {
+                backgroundColor: '#dd524d'
+              }
+            }
+          ]
+        },
+        list: [], // 列表数据
+        ShowCustomFields: [], // 列表页显示字段
+        status: 'more', // 加载状态
+        backTop: {
+          scrollTop: 0,
+          top: 600
+        }, // 返回顶部
+        tipShow: false, // 是否显示顶部提示框
+        query: null, // 搜索内容
+        searchColumnName: null, // 搜索字段名
+        filters: [], // 筛选条件
+        sort: [], // 排序字段
+        pageSize: 10, // 每页显示的数据条数
+        page: 1 ,// 当前页数
+        featureLabels: getApp().globalData.featureLabels // 自定义模块名
+      };
+    },
+    async onLoad() {
+      let { klassName } = this;
+      let customFields = await CustomField.instance().fetchData(klassName);
+
+      this.customFields = customFields;
+      this.ShowCustomFields = _(customFields).filter((customField) => {
+        return customField.category == "common"
+      }).reject((customField) =>
+        _.includes(["title", "stage", "expect_sign_date"], customField.name)
+      ).value().slice(0, 5);
+
+      uni.setNavigationBarTitle({
+          title: this.featureLabels["opportunity"]
+      });
+
+      // 初始化页面数据
+      this.fetchOpportunity({reload: true });
+    },
+    methods: {
+      /**
+       * 下拉刷新回调函数
+       */
+      onPullDownRefresh() {
+        this.page = 1
+        this.fetchOpportunity({ reload: true });
+      },
+      /**
+       * 上拉加载回调函数
+       */
+      onReachBottom() {
+        let { page, status } = this;
+
+        if (status == 'more') {
+          page += 1;
+          this.page = page;
+          this.fetchOpportunity({ page });
+        }
+      },
+      /**
+       * 获取页面数据
+       * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false
+       */
+      fetchOpportunity({ reload = false, page = 1}) {
+        this.status = 'loading';
+        let {
+          query,
+          sort,
+          filters,
+          pageSize: per_page,
+          searchColumnName: search_column_name
+        } = this;
+        if (reload) page = 1;
+        uni.showLoading({
+          title: '加载中'
+        });
+
+        opportunityApi.index({ page, per_page, query, search_column_name, filters, sort }).then((res) => {
+          _.delay(()=>{
+            uni.hideLoading();
+          }, 100)
+
+          let {
+            data: {
+              data: {
+                next_page, models
+              }
+            },
+          } = res;
+
+          const tempList = _.map(models, (model) => (
+            {
+              ...model,
+              swipeAction: {
+                show: false,
+              },
+              stageDisplay: model.stage_display,
+              createAt: dayjs(model.created_at).format("MM-DD HH:ss")
+            }
+          ));
+
+          if (next_page) {
+            this.status = 'more';
+          } else {
+            this.status = 'noMore';
+          }
+
+          if (reload) {
+            // 处理下拉加载提示框
+            this.tipShow = true;
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+              this.tipShow = false;
+            }, 2000);
+            this.list = tempList;
+            // 停止刷新
+            uni.stopPullDownRefresh();
+          } else {
+            // 上拉加载后合并数据
+            this.list = this.list.concat(tempList);
+          }
+        })
+
+      },
+      doDestroy ({id}) {
+        let { list } = this;
+        if (_.isNumber(id)) {
+          opportunityApi.mass_destroy({ids: [id]}).then((res) => {
+            let { data: {code, remark}} = res;
+            let index = _.findIndex(list, (item)=> item.id == id);
+
+            if (code == 0) {
+              list.splice(index, 1);
+              this.list = list;
+
+              uni.showToast({
+                icon: 'success',
+                title: '操作成功',
+                duration: 1000
+              });
+            } else {
+              uni.showToast({
+                icon: 'none',
+                title: remark || "获取数据失败",
+                duration: 1000
+              })
+            }
+          })
+        }
+      },
+      handleItemClick (event, id) {
+        let url = `/pages/opportunity/opportunityShow/opportunityShow?id=${id}`
+        uni.navigateTo({
+          url
+        });
+      },
+      handleSwipeActionOpen (index) {
+        let { list } = this;
+        list = _.each(list, (item) => {
+          item.swipeAction.show = false;
+        });
+        list[index].swipeAction.show = true;
+
+        this.list = list;
+      },
+      handleSwipActionClick (index, option_index) {
+        if (option_index === 0) {
+          let { list } = this;
+          let id = list[index]?.id;
+          this.doDestroy({id})
+        }
+      },
+      handleSearch ({query, searchColumnName }) {
+        this.query = query;
+        this.searchColumnName = searchColumnName;
+
+        this.fetchOpportunity({ reload: true });
+      },
+      handleSortColumnChange (sort) {
+        this.sort = sort;
+
+        this.fetchOpportunity({ reload: true });
+      },
+      handleFilterConfirm (filters) {
+        this.filters = filters;
+        this.fetchOpportunity({ reload: true });
+      }
+    }
+  };
+</script>
+
+<style>
+  .item-body {
+    width: 580rpx;
+  }
+  .item-footer {
+    width: 120rpx;
+  }
+</style>

@@ -115,7 +115,7 @@ export default ({ customField }) => {
           trigger: ['blur']
         },
         {
-          max: -999999999,
+          min: -999999999,
           message: `输入金额过小!`,
           trigger: ['blur']
         }
