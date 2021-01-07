@@ -10,7 +10,7 @@
         @click="handleItemClick($event, item)"
       >
         <u-row slot="body"  gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.id">
-          <u-col span="3" text-align="left">
+          <u-col span="3" text-align="right" class="u-font-xs">
             {{customField.label}}
           </u-col>
           <u-col span="9">

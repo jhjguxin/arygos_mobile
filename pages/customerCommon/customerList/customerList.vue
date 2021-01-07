@@ -27,9 +27,9 @@
             :margin="card.margin"  :padding="card.padding"
             @click="handleItemClick($event, item.id)"
           >
-            <u-row slot="body" gutter="0" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.id">
-              <u-col span="3" text-align="right">
-                {{customField.label}}：
+            <u-row slot="body" gutter="10" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.id">
+              <u-col span="3" text-align="right" class="u-font-xs">
+                {{customField.label}}
               </u-col>
               <u-col span="9">
                 <custom-field-on-list :customField="customField" :record="item" />

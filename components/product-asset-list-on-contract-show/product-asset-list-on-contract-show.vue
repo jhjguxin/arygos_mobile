@@ -1,10 +1,10 @@
 <template>
-  <view class="opportunity-list-on-show"  :style="style">
+  <view class="product-asset-list-on-show"  :style="style">
     <view
       v-for="item in models":key="item.id">
       <u-card
-        :title="item.title"
-        :border="card.border" :sub-title="item.stage_display" :full="card.full"
+        :title="item.product.name"
+        :border="card.border" :sub-title="item.product.no" :full="card.full"
         :show-head="card.showHead" :show-foot="card.showFoot"
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
@@ -30,7 +30,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { customerApi } from 'services/http';
+  import { contractApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
@@ -45,7 +45,7 @@
         page: 1,
         perPage: 8, // 分页数
         uEmpty: {
-          text: `${featureLabels["opportunity"]}为空`
+          text: `${featureLabels["product"]}为空`
         },
         card: {
           border: false,
@@ -60,18 +60,35 @@
           contentrefresh: '加载中',
           contentnomore: '没有更多数据了'
         },
-        customFields: [],
+        customFields: [
+          {
+            name: "quantity",
+            label: "数量",
+            field_type: "float_field",
+            custom_column_name: "quantity"
+          },
+          {
+            name: "standard_unit_price",
+            label: "标准单价",
+            field_type: "currency_field",
+            custom_column_name: "standard_unit_price"
+          },
+          {
+            name: "recommended_unit_price",
+            label: "建议价格",
+            field_type: "currency_field",
+            custom_column_name: "recommended_unit_price"
+          },
+          {
+            name: "remark",
+            label: "备注",
+            field_type: "text_area",
+            custom_column_name: "remark"
+          }
+        ],
       };
     },
     async mounted() {
-      let customFields = await CustomField.instance().fetchData("Opportunity");
-      const customFieldNames = [
-        "expect_amount",
-        "expect_sign_date", "sign_possibility", "extra.note"
-      ];
-      this.customFields = _.map(customFieldNames, (customFieldName)=>
-        _.find(customFields, (customField)=> customField.name == customFieldName)
-      );
       this.fetchListData({});
     },
     methods: {
@@ -89,7 +106,7 @@
           page
         };
 
-        customerApi.opportunities(params).then((res)=> {
+        contractApi.product_assets(params).then((res)=> {
           let {
             data: {
               data: {
@@ -102,7 +119,7 @@
             return ({
               ...item,
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
-              url: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.id}`
+              url: `/pages/product/productShow/productShow?id=${item.product_id}`
             })
           })
 
@@ -139,7 +156,7 @@
 </script>
 
 <style>
-  .opportunity-list-on-show {
+  .product-asset-list-on-show {
     padding-left: 32rpx;
     overflow-y: scroll;
   }

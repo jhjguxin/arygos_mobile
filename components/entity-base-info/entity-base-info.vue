@@ -9,6 +9,7 @@
         :title="customField.label"
         :arrow="cellItem.arrow"
         :use-label-slot="cellItem.useLabelSlot"
+        :title-style="cellItem.titleStyle"
         v-for="customField in customFieldGroup.custom_fields"
         :key="customField.name"
       >
@@ -37,7 +38,8 @@
         customFieldGroups: [],
         cellItem: {
           arrow: false,
-          useLabelSlot: true
+          useLabelSlot: true,
+          titleStyle: {'font-size': '24rpx'}
         }
       };
     },

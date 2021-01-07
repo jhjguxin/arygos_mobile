@@ -12,7 +12,7 @@
       >
         <view class="" slot="body">
           <u-row gutter="16" v-if="customFieldsObject['extra.detail_address']">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['extra.detail_address'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -20,7 +20,7 @@
             </u-col>
           </u-row>
           <u-row gutter="16">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['user'].label}}</view>
             </u-col>
             <u-col span="9">
@@ -32,7 +32,7 @@
             </u-col>
           </u-row>
           <u-row gutter="16">
-            <u-col span="3">
+            <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['revisit_remind_at'].label}}</view>
             </u-col>
             <u-col span="9">

@@ -227,6 +227,36 @@
       }
     },
     {
+      "path" : "pages/contract/contractNew/contractNew",
+      "style": {
+        "navigationBarTitleText": "新增合同"
+      }
+    },
+    {
+      "path" : "pages/contract/contractList/contractList",
+      "style" :
+      {
+        "navigationBarTitleText": "合同",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/contract/contractShow/contractShow",
+      "style" :
+      {
+        "navigationBarTitleText": "合同详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/contract/contractEdit/contractEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "合同编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {
