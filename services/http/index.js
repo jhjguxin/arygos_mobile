@@ -14,6 +14,7 @@ import contactApi from './api/contact';
 import opportunityApi from './api/opportunity';
 import contractApi from './api/contract';
 import productApi from './api/product';
+import productCategoryApi from './api/product_category';
 
 import leadCommonApi from './api/lead_common';
 import customerCommonApi from './api/customer_common';
@@ -53,6 +54,7 @@ export {
   opportunityApi,
   contractApi,
   productApi,
+  productCategoryApi,
   leadCommonApi,
   customerCommonApi,
   customerCommonSettingApi,

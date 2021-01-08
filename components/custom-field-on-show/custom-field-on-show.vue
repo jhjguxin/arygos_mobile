@@ -43,7 +43,6 @@
     data() {
       let {
         customField = {},
-        record,
         style = {},
         inline
       } = this.$attrs;
@@ -56,7 +55,6 @@
       return {
         customField,
         fieldType,
-        record,
         style,
         href: null,
       }
@@ -75,11 +73,14 @@
       displayValue: {
         get () {
           let {
+            record
+          } = this.$attrs;
+          let {
             customField: {
               name,
               custom_column_name: customColumnName, field_type: fieldType,
               select_klass_name: selectKlassName
-            }, record
+            }
           } = this;
           let value;
 

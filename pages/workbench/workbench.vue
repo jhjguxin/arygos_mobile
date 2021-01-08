@@ -42,7 +42,7 @@
         <u-icon name="/static/icons/PaymentRcharge.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["received_payment"]}}</view>
       </u-grid-item>
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/product/productList/productList')">
         <u-icon name="bag-fill" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["product"]}}</view>
       </u-grid-item>

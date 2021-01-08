@@ -30,10 +30,10 @@
 
   export default {
     data() {
-      let { klassName, model, style = "height: 55vh;" } = this.$attrs;
+      let { klassName, style = "height: 55vh;" } = this.$attrs;
 
       return {
-        klassName, model,
+        klassName,
         style,
         customFieldGroups: [],
         cellItem: {
@@ -48,6 +48,18 @@
       let customFieldGroups = await CustomFieldGroup.instance().fetchData(klassName);
 
       this.customFieldGroups = customFieldGroups;
+    },
+    computed: {
+      model: {
+        get() {
+          let { model } = this.$attrs;
+
+          return model;
+        },
+        set (value) {
+          return value
+        }
+      }
     }
   }
 </script>

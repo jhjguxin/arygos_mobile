@@ -46,15 +46,13 @@
   export default {
     data() {
       let {
-        customField = {},
-        record,
+        customField = {}
       } = this.$attrs;
       let { field_type: fieldType } = customField;
 
       return {
         customField,
         fieldType,
-        record,
         href: null,
       }
     },
@@ -75,8 +73,11 @@
             name,
             custom_column_name: customColumnName, field_type: fieldType,
             select_klass_name: selectKlassName
-            }, record
+            }
           } = this;
+          let {
+            record
+          } = this.$attrs;
           let value;
           
           switch (fieldType) {

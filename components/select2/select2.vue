@@ -48,6 +48,7 @@
     opportunityApi,
     contractApi,
     productApi,
+    productCategoryApi,
     customerCommonSettingApi
   } from "services/http";
 
@@ -221,6 +222,9 @@
             return api;
           case 'Product':
             api = productApi.simple({ query, page, ...params });
+            return api;
+          case 'ProductCategory':
+            api = productCategoryApi.simple({ query, page, ...params });
             return api;
           case 'CustomerCommonSetting':
             api = customerCommonSettingApi.simple({ query, page, ...params });
