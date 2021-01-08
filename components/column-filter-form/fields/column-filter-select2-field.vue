@@ -1,12 +1,23 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label">
     <select2
+      :title="customField.label"
       :klassName="customField.select_klass_name"
       :placeholder="placeholder"
       :value="value"
       :required="customField.required"
       perPage = "5"
       @select="handleSelect"
+      v-if="customField.input_html_options.selectType != 'tree'"
+    />
+    <tree-select2
+      ref="treeSelect"
+      :title="customField.label"
+      :klassName="customField.select_klass_name"
+      :placeholder="placeholder"
+      :value="value"
+      @select="handleSelect"
+      v-if="customField.input_html_options.selectType == 'tree'"
     />
   </u-form-item>
 </template>

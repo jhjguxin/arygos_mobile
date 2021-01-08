@@ -257,6 +257,36 @@
       }
     },
     {
+      "path" : "pages/product/productNew/productNew",
+      "style": {
+        "navigationBarTitleText": "新增产品"
+      }
+    },
+    {
+      "path" : "pages/product/productList/productList",
+      "style" :
+      {
+        "navigationBarTitleText": "产品",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/product/productShow/productShow",
+      "style" :
+      {
+        "navigationBarTitleText": "产品详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/product/productEdit/productEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "产品编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {

@@ -48,6 +48,10 @@
               <u-icon name="order" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
             </u-grid-item>
+            <u-grid-item index="product" @click="handleItemClick($event, '/pages/product/productNew/productNew')">
+              <u-icon name="bag" :size="46"></u-icon>
+              <view class="grid-text">新增{{this.featureLabels['product']}}</view>
+            </u-grid-item>
           </u-grid>
         </u-row>
       </view>

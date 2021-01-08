@@ -7,6 +7,16 @@
       :value="value"
       :required="customField.required"
       @select="handleSelect"
+      v-if="customField.input_html_options.selectType != 'tree'"
+    />
+    <tree-select2
+      ref="treeSelect"
+      :title="customField.label"
+      :klassName="customField.select_klass_name"
+      :placeholder="customField.input_html_options.placeholder"
+      :value="value"
+      @select="handleSelect"
+      v-if="customField.input_html_options.selectType == 'tree'"
     />
   </u-form-item>
 </template>
@@ -27,8 +37,7 @@
       return {
         customField,
         record, klassName,
-        value, mode,
-        list: [],
+        value, mode
       }
     },
     methods: {
@@ -38,17 +47,6 @@
 
         this.value = value;
         this.$emit("fieldChange", {name, value: value});
-      }
-    },
-    computed: {
-      valueDisplay: {
-        get: function () {
-          let { value } = this;
-
-          return value?.name;
-        },
-        set: function (value) {
-        }
       }
     }
   };

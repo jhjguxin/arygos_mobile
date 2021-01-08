@@ -210,7 +210,7 @@
             attachmentable_id: id
           }
         },
-       eventList: {
+        eventList: {
           params: {
             related_item_type: "Opportunity",
             related_item_id: id
