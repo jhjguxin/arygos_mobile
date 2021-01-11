@@ -113,7 +113,7 @@
             <view class="grid-text">
               <attachment-new
                 ref="attachmentNew"
-                @success="$refs.attachmentList.fetchListData({})"
+                @success="$refs.attachmentList.fetchListData({reload: true})"
                 :params="attachmentNew.params"
               />
             </view>

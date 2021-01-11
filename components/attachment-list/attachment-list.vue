@@ -1,14 +1,21 @@
 <template>
   <view class="attachment-list"  :style="style">
     <u-cell-group>
+      <u-swipe-action
+        v-for="(item, index) in models"
+        :key="item.id"
+        v-bind:key="item.id"
+        :show="item.swipeAction.show" :index="index"
+        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
+        :options="swipeAction.options"
+      >
       <u-cell-item
         icon="file-text-fill"
         :title="item.file_file_name"
         :value="item.fileSize"
-        v-for="item in models"
-        :key="item.id"
         @click="handleItemClick($event, item)"
       ></u-cell-item>
+      </u-swipe-action>
     </u-cell-group>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
@@ -42,7 +49,17 @@
           contentdown: '点击加载更多',
           contentrefresh: '加载中',
           contentnomore: '没有更多数据了'
-        }
+        },
+        swipeAction: {
+          options: [
+            {
+              text: '删除',
+              style: {
+                backgroundColor: '#dd524d'
+              }
+            }
+          ]
+        },
       };
     },
     mounted() {
@@ -75,6 +92,9 @@
           _models = _.map(_models, (item) => {
             return ({
               ...item,
+              swipeAction: {
+                show: false
+              },
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
               fileSize: prettyBytes(item.file_file_size)
             })
@@ -94,6 +114,32 @@
           this.status = _.isNumber(next_page) ? 'more' : 'noMore';
           this.models = models;
         })
+      },
+      doDestroy ({id}) {
+        let { models } = this;
+        if (_.isNumber(id)) {
+          attachmentApi.destroy({ id }).then((res) => {
+            let { data: {code, remark}} = res;
+            let index = _.findIndex(models, (item)=> item.id == id);
+
+            if (code == 0) {
+              models.splice(index, 1);
+              this.models = models;
+
+              uni.showToast({
+                icon: 'success',
+                title: '操作成功',
+                duration: 1000
+              });
+            } else {
+              uni.showToast({
+                icon: 'none',
+                title: remark || "获取数据失败",
+                duration: 1000
+              })
+            }
+          })
+        }
       },
       handleLoadMore () {
         let { page, status } = this;
@@ -153,7 +199,23 @@
           }
         });
 
-      }
+      },
+      handleSwipeActionOpen (index) {
+        let { models } = this;
+        models = _.each(models, (item) => {
+          item.swipeAction.show = false;
+        });
+        models[index].swipeAction.show = true;
+
+        this.models = models;
+      },
+      handleSwipActionClick (index, option_index) {
+        if (option_index === 0) {
+          let { models } = this;
+          let id = models[index]?.id;
+          this.doDestroy({id});
+        }
+      },
     }
   }
 </script>
