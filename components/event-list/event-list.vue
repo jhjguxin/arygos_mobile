@@ -29,7 +29,7 @@
             :show-foot="timeLine.card.showFoot"
             :border="timeLine.card.border"
           >
-            <view class="" slot="body">
+            <view slot="body">
               <view class="u-order-desc">
                 状态：<u-tag :text="item.status_display" :type="item.statusTag.type"></u-tag>
               </view>

@@ -25,7 +25,7 @@
       </u-tag>
       <u-tag v-else-if="fieldType === 'field_map_field' && displayValue" :text="displayValue">
       </u-tag>
-      <u-tag v-else-if="fieldType === 'multi_select' && opt" v-for="opt in displayValue" :key="opt" :text="opt">
+      <u-tag v-else-if="fieldType === 'multi_select' && displayValue" v-for="opt in displayValue" :key="opt" :text="opt">
       </u-tag>
       <text v-else>
         {{displayValue}}

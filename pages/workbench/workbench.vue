@@ -49,7 +49,7 @@
     </u-grid>
     <uni-section title="销售支持" type="line"></uni-section>
     <u-grid :col="4" :border="true">
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/revisitLog/revisitLogList/revisitLogList')">
         <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["revisit_log"]}}</view>
       </u-grid-item>

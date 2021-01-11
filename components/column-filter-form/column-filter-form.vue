@@ -71,22 +71,26 @@
     data() {
       let {
         klassName = "",
-        model = {}
+        model = {},
+        customFields = []
       } = this.$attrs;
-      
+
       return {
         klassName,
         formReady: false,
         filters: [],
-        customFields: [],
+        customFields,
         model
       };
     },
     async created() {
-      let { klassName } = this;
-      let customFields = await CustomField.instance().fetchData(klassName);
+      let { klassName, customFields } = this;
 
-      this.$set(this, "customFields", customFields);
+      if (customFields.length == 0) {
+        customFields = await CustomField.instance().fetchData(klassName);
+        this.$set(this, "customFields", customFields);
+      }
+
       this.$set(this, "formReady", true);
     },
     methods: {
@@ -96,7 +100,7 @@
           ...model,
           [`${name}`]: value
         }
-        
+
         this.model = model;
       },
       handleSubmit () {
@@ -111,14 +115,14 @@
       handleReset () {
         let { customFields } = this;
         let { uForm } = this.$refs;
-        
+
         this.customFields = [];
 
         _.delay(()=> {
           this.customFields = customFields;
           this.filters = [];
           this.model = {};
-          uForm.resetFields();          
+          uForm.resetFields();
         }, 100);
       }
     },
@@ -127,9 +131,9 @@
         get () {
           let { filterColumns } = this.$attrs;
           let { customFields, model } = this;
-          
+
           if (_.isEmpty(customFields)) return null;
-          
+
           filterColumns = _.map(filterColumns, (column)=> {
             let customField = _.find(customFields, (customField) => (
               customField.name == column.name
@@ -146,14 +150,14 @@
             } else {
               value = model[name];
             }
-            
+
             return {
               ...column,
               customField,
               value
             };
           });
-    
+
           return filterColumns;
         },
         set (value) {

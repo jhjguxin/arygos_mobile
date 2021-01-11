@@ -3,14 +3,14 @@
     <view>
       <u-card
         full
-        :title="model.company_name"
-        :sub-title="model.name"
+        :title="model.name"
+        :sub-title="model.company_name"
         :margin="card.margin"
         :padding="card.padding"
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view class="" slot="body">
+        <view slot="body">
           <u-row gutter="16" v-if="customFieldsObject['extra.detail_address']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['extra.detail_address'].label}}</view>
