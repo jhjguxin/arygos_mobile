@@ -341,6 +341,14 @@
         "navigationBarTitleText": "写跟进",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path" : "pages/revisitLog/revisitLogList/revisitLogList",
+      "style" :
+      {
+        "navigationBarTitleText": "跟进记录",
+        "enablePullDownRefresh": true
+      }
     }
   ],
   "globalStyle": {

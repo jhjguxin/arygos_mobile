@@ -20,11 +20,21 @@
             :border="timeLine.card.border"
             :thumb="item.user.avatar_url"
           >
-            <view class="" slot="body">
+            <view slot="body">
               <view class="u-order-desc">{{item.description}}</view>
-              <view class="u-order-desc">来自：{{item.refer_name}}</view>
+              <view class="u-order-desc">来自：
+                <text
+                  v-if="item.refer_url" style="color: #2979ff;"
+                  @tap.stop="handleReferNameClick($event, item.refer_url)"
+                >
+                  {{item.refer_name}}
+                </text>
+                <text v-else>
+                  {{item.refer_name}}
+                </text>
+              </view>
             </view>
-            <u-row class="" slot="foot">
+            <u-row slot="foot">
               <u-col span="4">
                 <u-icon
                   name="chat-fill" size="24" :label="item.commentCount"
@@ -115,8 +125,17 @@
           } = res;
 
           _models = _.map(_models, (item) => {
+            const urlMap = {
+              Lead: `/pages/lead/leadShow/leadShow?id=${item.refer_id}`,
+              Customer: `/pages/customer/customerShow/customerShow?id=${item.refer_id}`,
+              Contact: `/pages/contact/contactShow/contactShow?id=${item.refer_id}`,
+              Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.refer_id}`,
+              Contract: `/pages/contract/contractShow/contractShow?id=${item.refer_id}`,
+            };
+
             return ({
               ...item,
+                refer_url: urlMap[item.refer_type],
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
               commentCount: `评论（${item.comments_count}）`,
               commentListRef: `sales-activity-comment-list-${item.id}`,
@@ -171,6 +190,13 @@
 
         this.models = models;
       },
+      handleReferNameClick(e, url) {
+        e.stopPropagation();
+
+        uni.navigateTo({
+          url
+        })
+      }
     }
   }
 </script>

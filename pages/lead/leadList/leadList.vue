@@ -17,8 +17,8 @@
       >
         <uni-list-item>
           <u-card
-            class="item-body" slot="body" :title="item.company_name"
-            :border="card.border" :sub-title="item.name" :full="card.full"
+            class="item-body" slot="body" :title="item.name"
+            :border="card.border" :sub-title="item.company_name" :full="card.full"
             :show-head="card.showHead" :show-foot="card.showFoot"
             :margin="card.margin"  :padding="card.padding"
             @click="handleItemClick($event, item.id)"

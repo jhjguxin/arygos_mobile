@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view class="" slot="body">
+        <view slot="body">
           <u-row gutter="16" justify="center">
             <u-col span="11">
               <u-swiper

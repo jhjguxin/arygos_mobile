@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view class="" slot="body">
+        <view slot="body">
           <u-row gutter="16" v-if="customFieldsObject['expect_sign_date']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['expect_sign_date'].label}}</view>
