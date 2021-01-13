@@ -9,12 +9,12 @@
         @click="handleSwipActionClick" @open="handleSwipeActionOpen"
         :options="swipeAction.options"
       >
-      <u-cell-item
-        icon="file-text-fill"
-        :title="item.file_file_name"
-        :value="item.fileSize"
-        @click="handleItemClick($event, item)"
-      ></u-cell-item>
+        <u-cell-item
+          icon="file-text-fill"
+          :title="item.file_file_name"
+          :value="item.fileSize"
+          @click="handleItemClick($event, item)"
+        ></u-cell-item>
       </u-swipe-action>
     </u-cell-group>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -72,6 +72,7 @@
 
         if (reload) {
           page = 1;
+          models = [];
         }
         
         params = {

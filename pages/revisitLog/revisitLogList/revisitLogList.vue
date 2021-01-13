@@ -115,7 +115,6 @@
           scrollTop: 0,
           top: 600
         }, // 返回顶部
-        tipShow: false, // 是否显示顶部提示框
         query: null, // 搜索内容
         searchColumnName: "content", // 搜索字段名
         filters: [], // 筛选条件
@@ -167,10 +166,14 @@
           query,
           sort,
           filters,
+          models,
           pageSize: per_page,
           searchColumnName: search_column_name
         } = this;
-        if (reload) page = 1;
+        if (reload) {
+          page = 1;
+          models = [];
+        };
         uni.showLoading({
           title: '加载中'
         });
@@ -183,14 +186,12 @@
           let {
             data: {
               data: {
-                next_page, models: models
+                next_page, models: _models
               }
             },
           } = res;
 
-
-
-          const tempList = _.map(models, (item) => {
+          const tempList = _.map(_models, (item) => {
             const urlMap = {
               Lead: `/pages/lead/leadShow/leadShow?id=${item.sales_activity.refer_id}`,
               Customer: `/pages/customer/customerShow/customerShow?id=${item.sales_activity.refer_id}`,
@@ -224,19 +225,11 @@
           }
 
           if (reload) {
-            // 处理下拉加载提示框
-            this.tipShow = true;
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => {
-              this.tipShow = false;
-            }, 2000);
-            this.models = tempList;
             // 停止刷新
             uni.stopPullDownRefresh();
-          } else {
-            // 上拉加载后合并数据
-            this.models = this.models.concat(tempList);
           }
+
+          this.models = models.concat(tempList);
         })
 
       },

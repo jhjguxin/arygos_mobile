@@ -349,6 +349,14 @@
         "navigationBarTitleText": "跟进记录",
         "enablePullDownRefresh": true
       }
+    },
+    {
+      "path" : "pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "联系人",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {

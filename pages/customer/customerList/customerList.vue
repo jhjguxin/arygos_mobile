@@ -140,10 +140,14 @@
           query,
           sort,
           filters,
+          list,
           pageSize: per_page,
           searchColumnName: search_column_name
         } = this;
-        if (reload) page = 1;
+        if (reload) {
+          page = 1;
+          list = [];
+        };
         uni.showLoading({
           title: '加载中'
         });
@@ -156,12 +160,12 @@
           let {
             data: {
               data: {
-                next_page, models
+                next_page, models: _models
               }
             },
           } = res;
 
-          const tempList = _.map(models, (model) => (
+          const tempList = _.map(_models, (model) => (
             {
               ...model,
               swipeAction: {
@@ -179,19 +183,11 @@
           }
 
           if (reload) {
-            // 处理下拉加载提示框
-            this.tipShow = true;
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => {
-              this.tipShow = false;
-            }, 2000);
-            this.list = tempList;
             // 停止刷新
             uni.stopPullDownRefresh();
-          } else {
-            // 上拉加载后合并数据
-            this.list = this.list.concat(tempList);
           }
+
+          this.list = list.concat(tempList);
         })
 
       },
