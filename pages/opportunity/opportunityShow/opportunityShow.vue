@@ -106,6 +106,12 @@
           :model="model" :klassName="klassName"
           :params="productAssetList.params"
         />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, productAssetEdit.url)">
+            <view class="grid-text">编辑</view>
+          </u-grid-item>
+        </u-grid>
       </view>
       <view v-if="tabs.current == 4" class="u-padding-bottom-80">
         <attachment-list
@@ -206,6 +212,9 @@
             id
           }
         },
+        productAssetEdit: {
+          url: null
+        },
         attachmentList: {
           params: {
             attachmentable_type: "Opportunity",
@@ -264,6 +273,7 @@
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
       this.contactAssetshipEdit.url = `/pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit?id=${id}&klassName=Opportunity&customerId=${model.customer_id}`;
+      this.productAssetEdit.url = `/pages/productAsset/productAssetMultiEdit/productAssetMultiEdit?id=${id}&klassName=Opportunity`;
 
       uni.setNavigationBarTitle({
         title: model.title || "商机详情"
