@@ -264,6 +264,7 @@
             title: `不允许选择重复的${featureLabels.contact}`,
             duration: 1000
           })
+          return;
         }
 
         this.handleSave({ contactAssetships });

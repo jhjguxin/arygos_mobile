@@ -357,6 +357,14 @@
         "navigationBarTitleText": "联系人",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path" : "pages/productAsset/productAssetMultiEdit/productAssetMultiEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "产品",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {
