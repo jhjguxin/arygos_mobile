@@ -112,6 +112,7 @@
 
         if (reload) {
           page = 1;
+          models = [];
         }
 
         params = {

@@ -94,6 +94,12 @@
           :model="model" :klassName="klassName"
           :params="contactAssetshipList.params"
         />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, contactAssetshipEdit.url)">
+            <view class="grid-text">编辑</view>
+          </u-grid-item>
+        </u-grid>
       </view>
       <view v-if="tabs.current == 3" class="u-padding-bottom-80">
         <product-asset-list-on-contract-show
@@ -193,6 +199,9 @@
             id
           }
         },
+        contactAssetshipEdit: {
+          url: null
+        },
         productAssetList: {
           params: {
             id
@@ -255,6 +264,7 @@
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
+      this.contactAssetshipEdit.url = `/pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit?id=${id}&klassName=Contract&customerId=${model.customer_id}`;
 
       uni.setNavigationBarTitle({
         title: model.title || "合同详情"

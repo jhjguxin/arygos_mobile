@@ -10,7 +10,7 @@
     </u-grid>
     <u-gap></u-gap>
     <uni-list
-      v-for="item in lists"
+      v-for="item in list"
       v-bind:key="item.id"
      >
       <!-- 显示圆形头像 -->
@@ -22,7 +22,7 @@
         @click="handleItemClick($event, item.id)"
       ></uni-list-item>
     </uni-list>
-    <uni-load-more v-if="lists.length > 0" :status="status" />
+    <uni-load-more v-if="list.length > 0" :status="status" />
   </view>
 </template>
 
@@ -35,7 +35,7 @@
     components: {},
     data() {
       return {
-        lists: [], // 列表数据
+        list: [], // 列表数据
         status: 'more', // 加载状态
         tipShow: false, // 是否显示顶部提示框
         pageSize: 20, // 每页显示的数据条数
@@ -69,19 +69,22 @@
        */
       fetchNotification({ reload = false, page = 1}) {
         this.status = 'loading';
-        let { pageSize: per_page} = this;
-        if (reload) page = 1;
+        let { pageSize: per_page, list } = this;
+        if (reload) {
+          page = 1;
+          list = [];
+        };
         
         notificationApi.index({ page, per_page }).then((res) => {
           let {
             data: {
               data: {
-                next_page, models
+                next_page, models: _models
               }
             },
           } = res;
 
-          const tempList = _.map(models, (model) => (
+          const tempList = _.map(_models, (model) => (
             {
               ...model,
               time: dayjs(model.created_at).format("MM-DD HH:ss")
@@ -94,19 +97,11 @@
           }
 
           if (reload) {
-            // 处理下拉加载提示框
-            this.tipShow = true;
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => {
-              this.tipShow = false;
-            }, 2000);
-            this.lists = tempList;
             // 停止刷新
             uni.stopPullDownRefresh();
-          } else {
-            // 上拉加载后合并数据
-            this.lists = _.concat(this.lists, tempList);
           }
+
+          this.list = list.concat(tempList);
         })
 
       },
@@ -117,13 +112,13 @@
               code
             },
           } = res;
-          let { lists } = this;
+          let { list } = this;
           
           if (code == 0) {
-            _.each(lists, (model)=> {
+            _.each(list, (model)=> {
               if (model.id == Number(id)) model.status = 'read';
             })
-            this.$set(this, "lists", lists);
+            this.$set(this, "list", list);
           }
         })
       },
@@ -134,13 +129,13 @@
               code
             },
           } = res;
-          let { lists } = this;
+          let { list } = this;
           
           if (code == 0) {
-            _.each(lists, (model)=> {
+            _.each(list, (model)=> {
               model.status = 'read';
             })
-            this.$set(this, "lists", lists);
+            this.$set(this, "list", list);
           }
         })
       },
@@ -153,7 +148,7 @@
           } = res;
           
           if (code == 0) {
-            this.$set(this, "lists", []);
+            this.$set(this, "list", []);
           }
         })
       },
