@@ -65,7 +65,7 @@
           <u-grid-item @click="handleItemClick($event, revisitLogNew.url)">
             <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
           </u-grid-item>
-          <u-grid-item index="turnContract">
+          <u-grid-item @click="handleItemClick($event, turnContractUrl)">
             <view class="grid-text">转{{this.featureLabels['contract']}}</view>
           </u-grid-item>
           <u-grid-item @click="salesActionSheet.show = true">
@@ -261,6 +261,7 @@
         },
         featureLabels: getApp().globalData.featureLabels,
         editUrl: `/pages/opportunity/opportunityEdit/opportunityEdit?id=${id}`,
+        turnContractUrl: `/pages/opportunity/turnContract/turnContract?id=${id}`,
         transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Opportunity`
       }
     },

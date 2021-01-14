@@ -235,6 +235,14 @@
       }
     },
     {
+      "path" : "pages/opportunity/turnContract/turnContract",
+      "style" :
+      {
+        "navigationBarTitleText": "转合同",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/contract/contractNew/contractNew",
       "style": {
         "navigationBarTitleText": "新增合同"
