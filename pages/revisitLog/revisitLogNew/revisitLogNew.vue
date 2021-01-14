@@ -262,6 +262,10 @@
       this.form.model.loggableStatus = loggable[loggableStatusCustomField?.name];
 
       this.$set(this, "formReady", true);
+
+      uni.setNavigationBarTitle({
+        title: `写${featureLabels[_.snakeCase(klassName)]}`
+      });
     },
     methods: {
       handleSave({values}) {

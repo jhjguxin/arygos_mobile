@@ -121,6 +121,14 @@
       }
     },
     {
+      "path" : "pages/lead/turnCustomer/turnCustomer",
+      "style" :
+      {
+        "navigationBarTitleText": "转客户",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/leadCommon/leadList/leadList",
       "style" :
       {
