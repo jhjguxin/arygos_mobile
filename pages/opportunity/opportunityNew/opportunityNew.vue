@@ -41,6 +41,10 @@
 
       this.$set(this, "customFields", customFields);
       this.$set(this, "formReady", true);
+
+      uni.setNavigationBarTitle({
+        title: `新增${featureLabels[_.snakeCase(klassName)]}`
+      });
     },
     methods: {
       handleSave(values) {

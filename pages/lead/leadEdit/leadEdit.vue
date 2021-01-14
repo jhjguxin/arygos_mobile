@@ -45,7 +45,11 @@
 
       this.$set(this, "customFields", customFields);
       this.$set(this, "record", model);
-      this.$set(this, "formReady", true);
+      if (model) this.$set(this, "formReady", true);
+
+      uni.setNavigationBarTitle({
+        title: `编辑${featureLabels[_.snakeCase(klassName)]}`
+      });
     },
     methods: {
       async fetchLeadShow ({ id }) {
