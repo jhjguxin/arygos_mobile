@@ -367,6 +367,14 @@
       }
     },
     {
+      "path" : "pages/scheduleReport/scheduleReportNew/scheduleReportNew",
+      "style" :
+      {
+        "navigationBarTitleText": "写工作报告",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path" : "pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit",
       "style" :
       {

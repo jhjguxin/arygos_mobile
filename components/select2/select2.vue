@@ -249,7 +249,7 @@
 </script>
 
 <style>
-  .wrap {
-    padding: 24rpx;
+  .select2-container {
+    width: 100%;
   }
 </style>
