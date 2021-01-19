@@ -89,8 +89,10 @@
       }
     },
     async onLoad() {
+      let { featureLabels } = this;
+
       uni.setNavigationBarTitle({
-        title: this.featureLabels["contact"]
+        title: featureLabels["contact"]
       });
 
       this.fetchCategoryCustomField()

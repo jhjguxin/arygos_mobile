@@ -39,6 +39,7 @@
               <u-input
                 v-model="form.model.content" type="textarea"
                 placeholder="内容"
+                border
               />
             </u-form-item>
           </u-form>
@@ -176,7 +177,7 @@
           salesActivityApi.destroy_comment(params).then((res) => {
             let { data: {code, remark}} = res;
             if (code == 0) {
-               this.fetchListData();
+              this.fetchListData();
              } else {
                _.delay(()=>{
                  uni.showToast({

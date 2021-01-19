@@ -149,6 +149,8 @@
       }
     },
     async onLoad() {
+      let { featureLabels } = this;
+
       uni.setNavigationBarTitle({
         title: this.featureLabels["product"]
       });

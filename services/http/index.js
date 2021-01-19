@@ -25,6 +25,9 @@ import attachmentApi from './api/attachment';
 
 import revisitLogApi from './api/revisit_log';
 
+import scheduleReportApi from './api/schedule_report';
+
+
 import salesActivityApi from './api/sales_activity';
 
 import eventApi from './api/event';
@@ -60,6 +63,7 @@ export {
   customerCommonSettingApi,
   attachmentApi,
   revisitLogApi,
+  scheduleReportApi,
   salesActivityApi,
   eventApi,
   duplicateApi,
