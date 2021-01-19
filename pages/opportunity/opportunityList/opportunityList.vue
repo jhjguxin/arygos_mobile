@@ -92,7 +92,7 @@
       };
     },
     async onLoad() {
-      let { klassName } = this;
+      let { klassName, featureLabels } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
 
       this.customFields = customFields;
@@ -103,7 +103,7 @@
       ).value().slice(0, 5);
 
       uni.setNavigationBarTitle({
-          title: this.featureLabels["opportunity"]
+        title: featureLabels["opportunity"]
       });
 
       // 初始化页面数据

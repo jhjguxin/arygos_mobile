@@ -32,11 +32,12 @@
         formReady: false,
         klassName: "Opportunity",
         customFields: [],
-        record
+        record,
+        featureLabels: getApp().globalData.featureLabels
       }
     },
     async onLoad() {
-      let { klassName } = this;
+      let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
 
       this.$set(this, "customFields", customFields);

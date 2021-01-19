@@ -69,7 +69,7 @@ const marking = (data) => {
 
   return http.request({
     url: `/api/v2/schedule_reports/${id}/marking`,
-    method: 'PUT',
+    method: 'POST',
     needAuth: true,
     data,
   });

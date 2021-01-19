@@ -35,11 +35,12 @@
         formReady: false,
         klassName: "Opportunity",
         customFields: [],
-        record
+        record,
+        featureLabels: getApp().globalData.featureLabels
       }
     },
     async onLoad() {
-      let { klassName, id } = this;
+      let { klassName, id, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let model = await this.fetchOpportunityShow({ id });
 

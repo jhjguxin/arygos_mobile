@@ -371,7 +371,23 @@
       "style" :
       {
         "navigationBarTitleText": "写工作报告",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/scheduleReport/scheduleReportList/scheduleReportList",
+      "style" :
+      {
+        "navigationBarTitleText": "工作报告",
         "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/scheduleReport/scheduleReportShow/scheduleReportShow",
+      "style" :
+      {
+        "navigationBarTitleText": "工作报告详情",
+        "enablePullDownRefresh": false
       }
     },
     {
