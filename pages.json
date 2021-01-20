@@ -405,6 +405,22 @@
         "navigationBarTitleText": "产品",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path" : "pages/wiki/knowledgeArticleList/knowledgeArticleList",
+      "style" :
+      {
+        "navigationBarTitleText": "知识库",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/wiki/knowledgeArticleShow/knowledgeArticleShow",
+      "style" :
+      {
+        "navigationBarTitleText": "文章详情",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {
