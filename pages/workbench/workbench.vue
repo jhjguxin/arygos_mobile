@@ -57,7 +57,7 @@
         <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["schedule_report"]}}</view>
       </u-grid-item>
-      <u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/wiki/knowledgeArticleList/knowledgeArticleList')">
         <u-icon name="zhihu" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["knowledge_article"]}}</view>
       </u-grid-item>

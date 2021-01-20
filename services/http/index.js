@@ -27,6 +27,9 @@ import revisitLogApi from './api/revisit_log';
 
 import scheduleReportApi from './api/schedule_report';
 
+import knowledgeSectionApi from './api/knowledge_section';
+import knowledgeTagApi from './api/knowledge_tag';
+import knowledgeArticleApi from './api/knowledge_article';
 
 import salesActivityApi from './api/sales_activity';
 
@@ -63,6 +66,9 @@ export {
   customerCommonSettingApi,
   attachmentApi,
   revisitLogApi,
+  knowledgeSectionApi,
+  knowledgeTagApi,
+  knowledgeArticleApi,
   scheduleReportApi,
   salesActivityApi,
   eventApi,
