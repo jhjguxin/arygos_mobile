@@ -116,8 +116,8 @@
           ...model,
           title: model.sticky_at ? `[置顶]${model.title}` : model.title,
           tagsName: model.tags.join(", "),
-          createdAt: dayjs(model.created_at).format("YYYY-MM-DD hh:mm"),
-          updatedAt: dayjs(model.updated_at).format("YYYY-MM-DD hh:mm")
+          createdAt: dayjs(model.created_at).format("YYYY-MM-DD HH:mm"),
+          updatedAt: dayjs(model.updated_at).format("YYYY-MM-DD HH:mm")
         }
 
         return model;

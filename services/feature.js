@@ -44,7 +44,7 @@ export default class Feature {
 
     return feature;
   }
-  
+
   label({ name }) {
     let { label = name} = this.get({ name }) || {};
 
@@ -62,7 +62,7 @@ export default class Feature {
   }
 
   async fetchFeature() {
-    const cacheKey = Feature.cacheKey;;
+    const cacheKey = Feature.cacheKey;
     let deferred = Q.defer();
 
     if (CacheStore.instance().keyExists(cacheKey)) {

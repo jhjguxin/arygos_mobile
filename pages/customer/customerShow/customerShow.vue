@@ -321,7 +321,7 @@
           } else {
             uni.showToast({
               icon: 'none',
-              title: remark || "获取数据失败",
+              title: remark || "操作失败",
               duration: 1000
             })
           }

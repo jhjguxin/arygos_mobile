@@ -203,9 +203,9 @@
             return {
               ...item,
               contactNames: (_.map(item.contacts, "name")).join("，"),
-              remindAt: item.remind_at ? dayjs(item.remind_at).format("YYYY-MM-DD hh:mm") : null,
-              revisitAt: dayjs(item.revisit_at).format("YYYY-MM-DD hh:mm"),
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+              remindAt: item.remind_at ? dayjs(item.remind_at).format("YYYY-MM-DD HH:mm") : null,
+              revisitAt: dayjs(item.revisit_at).format("YYYY-MM-DD HH:mm"),
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
               sales_activity: {
                 ...item.sales_activity,
                 refer_url: urlMap[item.sales_activity.refer_type],

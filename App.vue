@@ -2,16 +2,17 @@
 import _ from "lodash";
 import {config} from './config';
 import Feature from './services/feature';
+import RedDot from './services/red_dot';
 
 export default {
   onLaunch: function() {
     console.log('App Launch，app启动');
-    
+
     // REVIEW onLaunch 和 onLoad 是并行执行的
     getApp().globalData.initGlobalData();
 
     let { getters: {getHasLogin: hasLogin } } = this.$store;
-    
+
     // 检查用户登陆状态
     if (hasLogin) {
       _.delay(()=> {
@@ -20,12 +21,12 @@ export default {
         });
       }, 50);
 
-      _.delay(()=> {
+      RedDot.instance().todoDot().then((value)=> {
         uni.setTabBarBadge({
           index: 1,
-          text: '31'
+          text: value
         });
-      }, 1000);
+      })
     } else {
       uni.navigateTo({
         url: "/pages/auth/login/login"
@@ -52,6 +53,6 @@ export default {
 </script>
 
 <style lang="scss">
-  /*每个页面公共css */ 
+  /*每个页面公共css */
   @import "uview-ui/index.scss";
 </style>

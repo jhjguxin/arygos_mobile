@@ -102,7 +102,7 @@
           _models = _.map(_models, (item) => {
             return ({
               ...item,
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
               url: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.id}`
             })
           })

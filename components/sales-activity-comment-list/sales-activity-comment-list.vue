@@ -122,7 +122,7 @@
             return ({
               ...item,
               swipeAction: {show: false},
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm")
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm")
             })
           });
           models = _.orderBy(models, ['id'], ['desc']);

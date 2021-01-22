@@ -203,7 +203,7 @@
             return {
               ...item,
               title: `${item.cycle_type_i18n}(${dayjs(item.due_at).format(format)})`,
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
               ccUsers: _.map(item.cc_users, "name").join(", ") || "无",
               card: {
                 foot: {
