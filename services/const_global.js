@@ -31,7 +31,7 @@ export default class ConstGlobal {
   }
 
   async fetchConstGlobal() {
-    const cacheKey = ConstGlobal.cacheKey;;
+    const cacheKey = ConstGlobal.cacheKey;
     let deferred = Q.defer();
 
     if (CacheStore.instance().keyExists(cacheKey)) {

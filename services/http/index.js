@@ -34,6 +34,7 @@ import knowledgeArticleApi from './api/knowledge_article';
 import salesActivityApi from './api/sales_activity';
 
 import eventApi from './api/event';
+import reminderApi from './api/reminder';
 
 import duplicateApi from './api/duplicate';
 
@@ -72,6 +73,7 @@ export {
   scheduleReportApi,
   salesActivityApi,
   eventApi,
+  reminderApi,
   duplicateApi,
   userSettingApi
 }

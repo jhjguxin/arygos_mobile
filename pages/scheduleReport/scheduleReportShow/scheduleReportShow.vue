@@ -155,7 +155,7 @@
           model = {
             ...model,
             title: `${model.user?.name}的${model.cycle_type_i18n}(${dayjs(model.due_at).format(format)})`,
-            createdAt: dayjs(model.created_at).format("YYYY-MM-DD hh:mm"),
+            createdAt: dayjs(model.created_at).format("YYYY-MM-DD HH:mm"),
             ccUsers: _.map(model.cc_users, "name").join(", ") || "无",
           }
 
@@ -191,7 +191,7 @@
             markings = _.map(markings, (item)=> {
               return {
                 ...item,
-                createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+                createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
                 swipeAction: {
                   show: false
                 }

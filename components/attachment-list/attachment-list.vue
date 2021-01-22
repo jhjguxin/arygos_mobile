@@ -96,7 +96,7 @@
               swipeAction: {
                 show: false
               },
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
               fileSize: prettyBytes(item.file_file_size)
             })
           })
@@ -135,7 +135,7 @@
             } else {
               uni.showToast({
                 icon: 'none',
-                title: remark || "获取数据失败",
+                title: remark || "操作失败",
                 duration: 1000
               })
             }

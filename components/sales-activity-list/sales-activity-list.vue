@@ -136,7 +136,7 @@
             return ({
               ...item,
                 refer_url: urlMap[item.refer_type],
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
               commentCount: `评论（${item.comments_count}）`,
               commentListRef: `sales-activity-comment-list-${item.id}`,
               node: {

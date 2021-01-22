@@ -29,7 +29,7 @@ export default class Geo {
   }
 
   async fetchData() {
-    const cacheKey = Geo.cacheKey;;
+    const cacheKey = Geo.cacheKey;
     let deferred = Q.defer();
 
     if (CacheStore.instance().keyExists(cacheKey)) {

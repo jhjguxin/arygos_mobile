@@ -177,7 +177,7 @@
               title: item.sticky_at ? `[置顶]${item.title}` : item.title,
               tagsName: item.tags.join(", "),
               thumb:  (item.image_urls || [])[0],
-              createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm")
+              createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm")
             }
           });
 

@@ -179,8 +179,8 @@
         return ({
           ...item,
           title: `${dayjs(item.remind_at).format("YYYY-MM-DD")} 任务`,
-          remindAt: dayjs(item.remind_at).format("YYYY-MM-DD hh:mm"),
-          createdAt: dayjs(item.created_at).format("YYYY-MM-DD hh:mm"),
+          remindAt: dayjs(item.remind_at).format("YYYY-MM-DD HH:mm"),
+          createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
           userNames: _.map(item.users, "name").join("、"),
           statusTag: {
             type

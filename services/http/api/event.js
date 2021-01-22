@@ -45,6 +45,18 @@ const create = (data = {}) => {
   });
 };
 
+const show = (data = {}) => {
+  let { id } = data;
+  delete data["id"];
+
+  return http.request({
+    url: `/api/v2/events/${id}`,
+    method: 'GET',
+    needAuth: true,
+    data,
+  });
+};
+
 const update = (data) => {
   let { id } = data;
   delete data["id"];
@@ -88,6 +100,7 @@ export default {
   expired,
   expired_dot,
   create,
+  show,
   update,
   complate,
   destroy
