@@ -8,7 +8,7 @@
         <u-row gutter="16">
           <u-grid :col="2"  :border="false">
             <u-grid-item index="customer">
-              <u-button type="primary" @click="handleItemClick($event, '/pages/customer/customerNew/customerNew')" >
+              <u-button type="primary" @click="handleItemClick($event, '/pages/customer/customerNew/customerNew', 'customer#create')" >
                 <u-icon name="account-fill" :size="40"></u-icon>新增{{this.featureLabels['customer']}}
               </u-button>
             </u-grid-item>
@@ -32,23 +32,23 @@
               <u-icon name="calendar" :size="46"></u-icon>
               <view class="grid-text">新增任务</view>
             </u-grid-item>
-            <u-grid-item index="lead" @click="handleItemClick($event, '/pages/lead/leadNew/leadNew')">
+            <u-grid-item index="lead" @click="handleItemClick($event, '/pages/lead/leadNew/leadNew', 'lead#create')">
               <u-icon name="share-fill" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['lead']}}</view>
             </u-grid-item>
-            <u-grid-item index="contact" @click="handleItemClick($event, '/pages/contact/contactNew/contactNew')">
+            <u-grid-item index="contact" @click="handleItemClick($event, '/pages/contact/contactNew/contactNew', 'contact#create')">
               <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contact']}}</view>
             </u-grid-item>
-            <u-grid-item index="opportunity" @click="handleItemClick($event, '/pages/opportunity/opportunityNew/opportunityNew')">
+            <u-grid-item index="opportunity" @click="handleItemClick($event, '/pages/opportunity/opportunityNew/opportunityNew', 'opportunity#create')">
               <u-icon name="rmb" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['opportunity']}}</view>
             </u-grid-item>
-            <u-grid-item index="contract" @click="handleItemClick($event, '/pages/contract/contractNew/contractNew')">
+            <u-grid-item index="contract" @click="handleItemClick($event, '/pages/contract/contractNew/contractNew', 'contract#create')">
               <u-icon name="order" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
             </u-grid-item>
-            <u-grid-item index="product" @click="handleItemClick($event, '/pages/product/productNew/productNew')">
+            <u-grid-item index="product" @click="handleItemClick($event, '/pages/product/productNew/productNew', 'product#create')">
               <u-icon name="bag" :size="46"></u-icon>
               <view class="grid-text">新增{{this.featureLabels['product']}}</view>
             </u-grid-item>
@@ -62,6 +62,7 @@
 <script>
 import _ from 'lodash';
 import Feature from 'services/feature';
+import Policy from 'services/policy';
 
 export default {
   data() {
@@ -72,6 +73,10 @@ export default {
   },
   onLoad() {
   },
+  async mounted (){
+    let policy = await Policy.instance();
+    this.policy = policy;
+  },
   onShow() {
     _.delay(() => {
       this.active = true;
@@ -81,10 +86,20 @@ export default {
     this.active = false;
   },
   methods: {
-    handleItemClick (event, url) {
-      uni.navigateTo({
-        url
-      });
+    handleItemClick (event, url, authKey) {
+      let { policy } = this;
+
+      if ( policy.checkPermission({ authKey })) {
+        uni.navigateTo({
+          url
+        });
+      } else {
+        uni.showToast({
+          icon: 'none',
+          title: "操作失败: 未授权操作",
+          duration: 1000
+        })
+      }
     }
   }
 };

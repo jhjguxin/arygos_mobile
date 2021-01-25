@@ -134,6 +134,7 @@
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
+    <permit-checker authKey="customer#show" ></permit-checker>
   </view>
 </template>
 
@@ -374,10 +375,8 @@
           });
         }
         if (index == 4) {
-          let { editUrl } = this;
           uni.switchTab({
-            url: '/pages/workbench/workbench',
-
+            url: '/pages/workbench/workbench'
           });
           return;
         }

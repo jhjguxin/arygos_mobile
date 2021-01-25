@@ -7,7 +7,7 @@
       @submit="handleSubmit"
       v-if="formReady"
     />
-    <duplicate-check ref="duplicateCheck" @success="handleSave"/>
+    <permit-checker authKey="opportunity#turn_to_contract" ></permit-checker>
   </view>
 </template>
 

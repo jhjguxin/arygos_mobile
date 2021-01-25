@@ -7,6 +7,7 @@
       @submit="handleSubmit"
       v-if="formReady"
     />
+    <permit-checker authKey="contract#create" ></permit-checker>
   </view>
 </template>
 

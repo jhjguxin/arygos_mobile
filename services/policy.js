@@ -27,6 +27,7 @@ export default class Policy {
     if (authKey) {
       [subject, action] = authKey.split("#")
     }
+    if (_.isNil(subject)) return true;
     if (subject == 'usercenter') return this.checkUsercenterPermission({action});
 
     let index = _.findIndex(this.permissions, function (per) {
@@ -38,6 +39,10 @@ export default class Policy {
     })
 
     return index != -1;
+  }
+
+  noPermission({ subject, action, authKey }) {
+    return ! this.checkPermission({ subject, action, authKey });
   }
 
   checkUsercenterPermission({ action }) {
@@ -52,13 +57,13 @@ export default class Policy {
 
   async fetchPermission() {
     let deferred = Q.defer();
-    let { 
+    let {
       getters: {
-        getPermissions: { permissions, usercenter_permission } 
+        getPermissions: { permissions, usercenter_permission }
       }
     } = this.app.$store;
 
-    if (! _.isEmpty(permissions)) {
+    if (_.isArray(permissions)) {
       deferred.resolve({ permissions, usercenter_permission });
     } else {
       permissionApi.index()

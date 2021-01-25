@@ -71,6 +71,7 @@
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
+    <permit-checker authKey="product#show" ></permit-checker>
   </view>
 </template>
 

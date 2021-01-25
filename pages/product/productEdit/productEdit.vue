@@ -7,7 +7,7 @@
       @submit="handleSubmit"
       v-if="formReady"
     />
-    <duplicate-check ref="duplicateCheck" @success="handleSave"/>
+    <permit-checker authKey="product#edit" ></permit-checker>
   </view>
 </template>
 

@@ -23,7 +23,7 @@
             :href="item.file_url"
             v-for="(item, index) in (model.attachments)"
             class="u-m-r-10 u-m-l-10"
-            :index="index"
+            :key="index"
           >{{item.file_file_name}}</u-link>
         </u-col>
         <u-col span="12" class="u-m-t-10">
@@ -32,6 +32,7 @@
             :text="tag"
             v-for="tag in (model.tags)"
             class="u-m-r-10 u-m-l-10"
+            :key="tag"
           ></u-tag>
         </u-col>
       </u-row>

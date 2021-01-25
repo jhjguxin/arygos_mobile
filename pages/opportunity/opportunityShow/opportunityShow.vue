@@ -146,6 +146,7 @@
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
+    <permit-checker authKey="opportunity#show" ></permit-checker>
   </view>
 </template>
 
@@ -376,7 +377,6 @@
           });
         }
         if (index == 3) {
-          let { editUrl } = this;
           uni.switchTab({
             url: '/pages/workbench/workbench',
 

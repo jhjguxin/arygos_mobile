@@ -1,27 +1,30 @@
 <template>
-  <u-card
-    :full="card.full"
-    :title="card.title"
-    :sub-title="card.subTitle"
-    :margin="card.margin"
-    :padding="card.padding"
-    :show-foot="card.showFoot"
-    :border="card.border"
-  >
-    <view slot="body">
-      <u-form :model="form.model" label-width="160" ref="uForm">
-        <u-form-item :label="form.item.common_id.label" prop="common_id">
-          <u-input
-            :border="form.item.common_id.border" type="select" :select-open="form.item.common_id.show" v-model="commonDisplay"
-            :placeholder="form.item.common_id.placeholder" @click="form.item.common_id.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.common_id.list" v-model="form.item.common_id.show" @confirm="handleSelectCommonConfirm"></u-select>
-        </u-form-item>
-      </u-form>
-    </view>
-    <view slot="foot">
-      <u-button @click="handleSubmit" type="primary">提交</u-button>
-    </view>
-  </u-card>
+  <view>
+    <u-card
+      :full="card.full"
+      :title="card.title"
+      :sub-title="card.subTitle"
+      :margin="card.margin"
+      :padding="card.padding"
+      :show-foot="card.showFoot"
+      :border="card.border"
+    >
+      <view slot="body">
+        <u-form :model="form.model" label-width="160" ref="uForm">
+          <u-form-item :label="form.item.common_id.label" prop="common_id">
+            <u-input
+              :border="form.item.common_id.border" type="select" :select-open="form.item.common_id.show" v-model="commonDisplay"
+              :placeholder="form.item.common_id.placeholder" @click="form.item.common_id.show = true"></u-input>
+            <u-select mode="single-column" :list="form.item.common_id.list" v-model="form.item.common_id.show" @confirm="handleSelectCommonConfirm"></u-select>
+          </u-form-item>
+        </u-form>
+      </view>
+      <view slot="foot">
+        <u-button @click="handleSubmit" type="primary">提交</u-button>
+      </view>
+    </u-card>
+    <permit-checker :authKey="permitChecker.authKey" ></permit-checker>
+  </view>
 </template>
 
 <script>
@@ -46,6 +49,9 @@
         klassName,
         api,
         successUrl,
+        permitChecker: {
+          authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#turn_${_.snakeCase(klassName)}`
+        },
         card: {
           full: false,
           title: `转入`,
