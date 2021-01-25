@@ -8,6 +8,7 @@
       v-if="formReady"
     />
     <duplicate-check ref="duplicateCheck" @success="handleSave"/>
+    <permit-checker authKey="lead#turn_to_customer" ></permit-checker>
   </view>
 </template>
 

@@ -1,31 +1,34 @@
 <template>
-  <u-card
-    :full="card.full"
-    :title="card.title"
-    :sub-title="card.subTitle"
-    :margin="card.margin"
-    :padding="card.padding"
-    :show-foot="card.showFoot"
-    :border="card.border"
-  >
-    <view slot="body">
-      <u-form :model="form.model" label-width="160" ref="uForm">
-        <u-form-item :label="form.item.user_id.label" prop="user_id">
-          <select2
-            :title="form.item.user_id.label"
-            klassName="User"
-            mode="selector"
-            :placeholder="form.item.user_id.placeholder"
-            :value="form.model.user_id"
-            @select="handleUserIdSelect"
-          />
-        </u-form-item>
-      </u-form>
-    </view>
-    <view slot="foot">
-      <u-button @click="handleSubmit" type="primary">提交</u-button>
-    </view>
-  </u-card>
+  <view>
+    <u-card
+      :full="card.full"
+      :title="card.title"
+      :sub-title="card.subTitle"
+      :margin="card.margin"
+      :padding="card.padding"
+      :show-foot="card.showFoot"
+      :border="card.border"
+    >
+      <view slot="body">
+        <u-form :model="form.model" label-width="160" ref="uForm">
+          <u-form-item :label="form.item.user_id.label" prop="user_id">
+            <select2
+              :title="form.item.user_id.label"
+              klassName="User"
+              mode="selector"
+              :placeholder="form.item.user_id.placeholder"
+              :value="form.model.user_id"
+              @select="handleUserIdSelect"
+            />
+          </u-form-item>
+        </u-form>
+      </view>
+      <view slot="foot">
+        <u-button @click="handleSubmit" type="primary">提交</u-button>
+      </view>
+    </u-card>
+    <permit-checker :authKey="permitChecker.authKey" ></permit-checker>
+  </view>
 </template>
 
 <script>
@@ -50,6 +53,9 @@
         api,
         id,
         successUrl,
+        permitChecker: {
+          authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#transfer`
+        },
         card: {
           full: false,
           title: "转移给他人",
