@@ -22,10 +22,12 @@ export default {
       }, 50);
 
       RedDot.instance().todoDot().then((value)=> {
-        uni.setTabBarBadge({
-          index: 1,
-          text: value
-        });
+        if (value) {
+          uni.setTabBarBadge({
+            index: 1,
+            text: value
+          });
+        }
       })
     } else {
       uni.navigateTo({

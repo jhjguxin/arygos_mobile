@@ -9,6 +9,7 @@
       <uni-list-item
         :show-extra-icon="true" :extra-icon="messageIcon" title="消息中心"
         :show-badge="newMessageCount >= 1" :badge-text="newMessageCount"
+        badgeType="error"
         showArrow="true"
          link to="/pages/notification/notification"
       ></uni-list-item>

@@ -431,12 +431,14 @@
         if (currentDate == dayjs().format("YYYY-MM-DD")) {
           RedDot.instance().removeTodoDot();
           let item = _.find(selected, (item)=> (item.date == currentDate));
-          let count = item?.data?.count;
+          let count = item?.data?.count || 0;
 
-          uni.setTabBarBadge({
-            index: 1,
-            text: String(count)
-          });
+          if (count > 0) {
+            uni.setTabBarBadge({
+              index: 1,
+              text: String(count)
+            });
+          }
         }
       },
       handleItemClick (e, item) {
