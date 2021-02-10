@@ -15,12 +15,12 @@
   "license": "ISC",
   "dependencies": {
     "@dcloudio/uni-ui": "^1.2.10",
-    "dayjs": "^1.10.1",
-    "fsevents": "^2.2.1",
+    "dayjs": "^1.10.4",
+    "fsevents": "^2.3.2",
     "lodash": "^4.17.20",
     "mime-types": "^2.1.28",
     "pretty-bytes": "^5.5.0",
-    "qs": "^6.9.4",
+    "qs": "^6.9.6",
     "uview-ui": "^1.8.3",
     "vuex-persistedstate": "^3.1.0"
   }
