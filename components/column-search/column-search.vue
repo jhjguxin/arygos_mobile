@@ -1,10 +1,10 @@
 <template>
-  <u-row gutter="16" justify="center">
+  <u-row gutter="16" justify="center" v-if="list.length > 0">
     <u-col span="4">
       <u-input
         :border="columnSelect.border" type="select" :select-open="selectShow" v-model="valueDisplay"
         :placeholder="columnSelect.placeholder" @click="selectShow = true"></u-input>
-      <u-select mode="single-column" :list="list" v-model="selectShow" @confirm="handleSelectConfirm"></u-select>
+      <u-select mode="single-column" :list="list" v-model="selectShow" @confirm="handleSelectConfirm">      </u-select>
     </u-col>
     <u-col span="8">
       <u-search
@@ -49,15 +49,15 @@
         let { klassName: klass_name } = this.$attrs;
         userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
           let { data: {code, remark, data}} = res;
-          
+
           if (code == 0) {
             let { search_columns } = data;
             let list = _.map(search_columns, (column) => {
               let { name: value, label , custom_column_name: customColumnName } = column;
-              
+
               return {value, label, customColumnName};
             });
- 
+
             this.query = null;
             this.searchColumnName = list[0]?.value;
             this.search.placeholder = `搜索${list[0]?.label}`;
@@ -79,7 +79,7 @@
       handleSearch (value) {
         let { searchColumnName } = this;
         this.query = value;
-        
+
         this.$emit("search", {
           query: value,
           searchColumnName

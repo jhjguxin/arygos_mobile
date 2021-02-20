@@ -1,10 +1,10 @@
 <template>
-  <view class="contact-list-on-show"  :style="style">
+  <view class="received-payment-list-on-show"  :style="style">
     <view
       v-for="item in models":key="item.id">
       <u-card
-        :title="item.name"
-        :border="card.border" :sub-title="item.extra.department" :full="card.full"
+        :title="item.receiveDate"
+        :border="card.border" :sub-title="item.amount" :full="card.full"
         :show-head="card.showHead" :show-foot="card.showFoot"
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
@@ -30,7 +30,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { customerApi } from 'services/http';
+  import { contractApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
   export default {
@@ -45,7 +45,7 @@
         page: 1,
         perPage: 8, // 分页数
         uEmpty: {
-          text: `${featureLabels["contact"]}为空`
+          text: `${featureLabels["received_payment"]}为空`
         },
         card: {
           border: false,
@@ -60,14 +60,15 @@
           contentrefresh: '加载中',
           contentnomore: '没有更多数据了'
         },
-        customFields: [],
+        customFields: []
       };
     },
     async mounted() {
-      let customFields = await CustomField.instance().fetchData("Contact");
+      let customFields = await CustomField.instance().fetchData("ReceivedPayment");
       const customFieldNames = [
-        "extra.job",
-        "extra.tel", "extra.phone", "extra.email"
+        "received_payment_plan",
+        "payment_type",
+        "received_type", "receive_user", "overdue_status"
       ];
       this.customFields = _.compact(_.map(customFieldNames, (customFieldName)=>
         _.find(customFields, (customField)=> customField.name == customFieldName)
@@ -90,7 +91,7 @@
           page
         };
 
-        customerApi.contacts(params).then((res)=> {
+        contractApi.received_payments(params).then((res)=> {
           let {
             data: {
               data: {
@@ -102,8 +103,9 @@
           _models = _.map(_models, (item) => {
             return ({
               ...item,
+              receiveDate: dayjs(item.receive_date).format("YYYY-MM-DD"),
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
-              url: `/pages/contact/contactShow/contactShow?id=${item.id}`
+              url: `/pages/invoicedPayment/invoicedPaymentShow/invoicedPaymentShow?id=${item.id}`
             })
           })
 
@@ -131,7 +133,6 @@
       },
       handleItemClick (event, item) {
         let { url } = item;
-
         uni.navigateTo({
           url
         });
@@ -141,7 +142,7 @@
 </script>
 
 <style>
-  .contact-list-on-show {
+  .received-payment-list-on-show {
     padding-left: 32rpx;
     overflow-y: scroll;
   }

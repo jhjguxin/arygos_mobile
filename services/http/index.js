@@ -13,6 +13,10 @@ import customerApi from './api/customer';
 import contactApi from './api/contact';
 import opportunityApi from './api/opportunity';
 import contractApi from './api/contract';
+import invoicedPaymentApi from './api/invoiced_payment';
+import receivedPaymentApi from './api/received_payment';
+import receivedPaymentPlanApi from './api/received_payment_plan';
+
 import productApi from './api/product';
 import productCategoryApi from './api/product_category';
 
@@ -60,6 +64,9 @@ export {
   contactApi,
   opportunityApi,
   contractApi,
+  invoicedPaymentApi,
+  receivedPaymentApi,
+  receivedPaymentPlanApi,
   productApi,
   productCategoryApi,
   leadCommonApi,

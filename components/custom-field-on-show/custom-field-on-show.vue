@@ -124,6 +124,7 @@
                 Contact: `/pages/contact/contactShow/contactShow?id=${id}`,
                 Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${id}`,
                 Contract: `/pages/contract/contractShow/contractShow?id=${id}`,
+                ReceivedPaymentPlan: `/pages/receivedPaymentPlan/receivedPaymentPlanShow/receivedPaymentPlanShow?id=${id}`,
               }
               this.href = urlMap[selectKlassName];
               break;
