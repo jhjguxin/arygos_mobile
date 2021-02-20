@@ -303,6 +303,96 @@
       }
     },
     {
+      "path" : "pages/receivedPaymentPlan/receivedPaymentPlanNew/receivedPaymentPlanNew",
+      "style": {
+        "navigationBarTitleText": "新增回款计划"
+      }
+    },
+    {
+      "path" : "pages/receivedPaymentPlan/receivedPaymentPlanList/receivedPaymentPlanList",
+      "style" :
+      {
+        "navigationBarTitleText": "回款计划",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/receivedPaymentPlan/receivedPaymentPlanShow/receivedPaymentPlanShow",
+      "style" :
+      {
+        "navigationBarTitleText": "回款计划详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/receivedPaymentPlan/receivedPaymentPlanEdit/receivedPaymentPlanEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "回款计划编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/receivedPayment/receivedPaymentNew/receivedPaymentNew",
+      "style": {
+        "navigationBarTitleText": "新增回款记录"
+      }
+    },
+    {
+      "path" : "pages/receivedPayment/receivedPaymentList/receivedPaymentList",
+      "style" :
+      {
+        "navigationBarTitleText": "回款记录",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/receivedPayment/receivedPaymentShow/receivedPaymentShow",
+      "style" :
+      {
+        "navigationBarTitleText": "回款记录详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/receivedPayment/receivedPaymentEdit/receivedPaymentEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "回款记录编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/invoicedPayment/invoicedPaymentNew/invoicedPaymentNew",
+      "style": {
+        "navigationBarTitleText": "新增开票记录"
+      }
+    },
+    {
+      "path" : "pages/invoicedPayment/invoicedPaymentList/invoicedPaymentList",
+      "style" :
+      {
+        "navigationBarTitleText": "开票记录",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/invoicedPayment/invoicedPaymentShow/invoicedPaymentShow",
+      "style" :
+      {
+        "navigationBarTitleText": "开票记录详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/invoicedPayment/invoicedPaymentEdit/invoicedPaymentEdit",
+      "style" :
+      {
+        "navigationBarTitleText": "开票记录编辑",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/event/eventNew/eventNew",
       "style" :
       {
@@ -387,6 +477,14 @@
       "style" :
       {
         "navigationBarTitleText": "工作报告详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/receivedPaymentCenter/receivedPaymentCenter",
+      "style" :
+      {
+        "navigationBarTitleText": "回款",
         "enablePullDownRefresh": false
       }
     },

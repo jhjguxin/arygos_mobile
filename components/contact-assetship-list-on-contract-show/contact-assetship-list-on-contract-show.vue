@@ -69,9 +69,9 @@
         "name",
         "extra.job", "extra.tel", "extra.phone", "extra.email"
       ];
-      this.customFields = _.map(customFieldNames, (customFieldName)=>
+      this.customFields = _.compact(_.map(customFieldNames, (customFieldName)=>
         _.find(customFields, (customField)=> customField.name == customFieldName)
-      );
+      ));
       this.fetchListData({});
     },
     methods: {

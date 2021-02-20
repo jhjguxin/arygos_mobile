@@ -69,9 +69,9 @@
         "total_amount",
         "start_at", "end_at", "extra.note"
       ];
-      this.customFields = _.map(customFieldNames, (customFieldName)=>
+      this.customFields = _.compact(_.map(customFieldNames, (customFieldName)=>
         _.find(customFields, (customField)=> customField.name == customFieldName)
-      );
+      ));
       this.fetchListData({});
     },
     methods: {

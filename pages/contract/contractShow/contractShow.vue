@@ -89,6 +89,45 @@
         </u-grid>
       </view>
       <view v-if="tabs.current == 2" class="u-padding-bottom-80">
+        <received-payment-plan-list-on-contract-show
+          ref="receivedPaymentPlanList"
+          :model="model" :klassName="klassName"
+          :params="receivedPaymentPlanList.params"
+        />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, receivedPaymentPlanNew.url)">
+            <view class="grid-text">新增</view>
+          </u-grid-item>
+        </u-grid>
+      </view>
+      <view v-if="tabs.current == 3" class="u-padding-bottom-80">
+        <received-payment-list-on-contract-show
+          ref="receivedPaymentList"
+          :model="model" :klassName="klassName"
+          :params="receivedPaymentList.params"
+        />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, receivedPaymentNew.url)">
+            <view class="grid-text">新增</view>
+          </u-grid-item>
+        </u-grid>
+      </view>
+      <view v-if="tabs.current == 4" class="u-padding-bottom-80">
+        <invoiced-payment-list-on-contract-show
+          ref="invoicedPaymentList"
+          :model="model" :klassName="klassName"
+          :params="invoicedPaymentList.params"
+        />
+
+        <u-grid :col="1"  :border="true" class="fixed-bottom">
+          <u-grid-item @click="handleItemClick($event, invoicedPaymentNew.url)">
+            <view class="grid-text">新增</view>
+          </u-grid-item>
+        </u-grid>
+      </view>
+      <view v-if="tabs.current == 5" class="u-padding-bottom-80">
         <contact-assetship-list-on-contract-show
           ref="contactAssetshipList"
           :model="model" :klassName="klassName"
@@ -101,7 +140,7 @@
           </u-grid-item>
         </u-grid>
       </view>
-      <view v-if="tabs.current == 3" class="u-padding-bottom-80">
+      <view v-if="tabs.current == 6" class="u-padding-bottom-80">
         <product-asset-list-on-contract-show
           ref="productAssetList"
           :model="model" :klassName="klassName"
@@ -114,7 +153,7 @@
           </u-grid-item>
         </u-grid>
       </view>
-      <view v-if="tabs.current == 4" class="u-padding-bottom-80">
+      <view v-if="tabs.current == 7" class="u-padding-bottom-80">
         <attachment-list
           ref="attachmentList"
           :model="model" :klassName="klassName"
@@ -133,7 +172,7 @@
           </u-grid-item>
         </u-grid>
       </view>
-      <view v-if="tabs.current == 5" class="u-padding-bottom-80">
+      <view v-if="tabs.current == 8" class="u-padding-bottom-80">
         <event-list
           ref="eventList"
           :model="model" :klassName="klassName"
@@ -182,6 +221,15 @@
               name: '详情'
             },
             {
+              name: `${featureLabels.received_payment_plan}`
+            },
+            {
+              name: `${featureLabels.received_payment}`
+            },
+            {
+              name: `${featureLabels.invoiced_payment}`
+            },
+            {
               name: `${featureLabels.contact}`
             },
             {
@@ -200,6 +248,30 @@
           params: {
             contract_id: id
           }
+        },
+        receivedPaymentPlanList: {
+          params: {
+            id
+          }
+        },
+        receivedPaymentPlanNew: {
+          url: `/pages/receivedPaymentPlan/receivedPaymentPlanNew/receivedPaymentPlanNew?contract_id=${id}`
+        },
+        receivedPaymentList: {
+          params: {
+            id
+          }
+        },
+        receivedPaymentNew: {
+          url: `/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew?contract_id=${id}`
+        },
+        invoicedPaymentList: {
+          params: {
+            id
+          }
+        },
+        invoicedPaymentNew: {
+          url: `/pages/invoicedPayment/invoicedPaymentNew/invoicedPaymentNew?contract_id=${id}`
         },
         contactAssetshipList: {
           params: {

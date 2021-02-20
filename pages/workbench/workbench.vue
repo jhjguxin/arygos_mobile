@@ -38,9 +38,9 @@
         <u-icon name="order" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["contract"]}}</view>
       </u-grid-item>
-      <u-grid-item>
-        <u-icon name="/static/icons/PaymentRcharge.png" :size="46"></u-icon>
-        <view class="grid-text">{{this.featureLabels["received_payment"]}}</view>
+      <u-grid-item @click="handleItemClick($event, '/pages/receivedPaymentCenter/receivedPaymentCenter')">
+        <u-icon name="/static/icons/paymentRcharge.png" :size="46"></u-icon>
+        <view class="grid-text">回款</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/product/productList/productList', 'product#show')">
         <u-icon name="bag-fill" :size="46"></u-icon>
@@ -98,7 +98,7 @@
       handleItemClick (event, url, authKey) {
         let { policy } = this;
 
-        if ( policy.checkPermission({ authKey })) {
+        if (policy.checkPermission({ authKey })) {
           uni.navigateTo({
             url
           });

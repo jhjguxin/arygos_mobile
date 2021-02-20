@@ -14,6 +14,9 @@ export default ({ customField }) => {
   let rules = [
     {
       required: required, message: `${label}是必填的!`,
+      transform(value) {
+        return (_.isNil(value) ? value : String(value));
+      },
       trigger: ['blur', 'change']
     }
   ];
@@ -79,25 +82,46 @@ export default ({ customField }) => {
         {
           type: 'integer',
           message: `输入的${label}格式不正确!`,
+          transform(value) {
+            return Number.parseInt(value);
+          },
+          trigger: ['blur'],
+        },
+        {
+          type: 'integer',
+          max: 999999999,
+          message: `输入${label}太大!`,
           trigger: ['blur']
         },
         {
-          max: 255,
-          message: `输入内容过长!`,
+          type: 'integer',
+          min: -999999999,
+          message: `输入${label}太小!`,
           trigger: ['blur']
         }
       ]);
       break;
     case "float_field":
+      // https://github.com/yiminghe/async-validator/issues/101
       rules = _.concat(rules, [
         {
-          type: 'float',
+          type: 'number',
           message: `输入的${label}格式不正确!`,
+          transform(value) {
+            return Number.parseFloat(value);
+          },
           trigger: ['blur']
         },
         {
-          max: 255,
-          message: `输入内容过长!`,
+          type: 'number',
+          max: 999999999,
+          message: `输入${label}太大!`,
+          trigger: ['blur']
+        },
+        {
+          type: 'float',
+          min: -999999999,
+          message: `输入${label}太小!`,
           trigger: ['blur']
         }
       ]);
@@ -105,18 +129,23 @@ export default ({ customField }) => {
     case "currency_field":
       rules = _.concat(rules, [
         {
-          type: 'float',
+          type: 'number',
           message: `输入的${label}格式不正确!`,
+          transform(value) {
+            return Number.parseFloat(value);
+          },
           trigger: ['blur']
         },
         {
+          type: 'number',
           max: 999999999,
-          message: `输入金额过大!`,
+          message: `输入${label}太大!`,
           trigger: ['blur']
         },
         {
+          type: 'number',
           min: -999999999,
-          message: `输入金额过小!`,
+          message: `输入${label}太小!`,
           trigger: ['blur']
         }
       ]);

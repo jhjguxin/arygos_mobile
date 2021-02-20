@@ -63,6 +63,42 @@ const product_assets = (data) => {
   });
 };
 
+const received_payments = (data) => {
+  let { id } = data;
+  delete data["id"];
+
+  return http.request({
+    url: `/api/v2/contracts/${id}/received_payments`,
+    method: 'GET',
+    needAuth: true,
+    data,
+  });
+};
+
+const received_payment_plans = (data) => {
+  let { id } = data;
+  delete data["id"];
+
+  return http.request({
+    url: `/api/v2/contracts/${id}/received_payment_plans`,
+    method: 'GET',
+    needAuth: true,
+    data,
+  });
+};
+
+const invoiced_payments = (data) => {
+  let { id } = data;
+  delete data["id"];
+
+  return http.request({
+    url: `/api/v2/contracts/${id}/invoiced_payments`,
+    method: 'GET',
+    needAuth: true,
+    data,
+  });
+};
+
 const update = (data) => {
   let { id } = data;
   delete data["id"];
@@ -96,6 +132,7 @@ const mass_destroy = (data) => {
 export default {
   index, simple, create, show,
   contact_assetships, product_assets,
+  received_payments, received_payment_plans, invoiced_payments,
   update,
   transfer,
   mass_destroy

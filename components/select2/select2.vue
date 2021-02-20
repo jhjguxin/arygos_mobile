@@ -47,6 +47,7 @@
     contactApi,
     opportunityApi,
     contractApi,
+    receivedPaymentPlanApi,
     productApi,
     productCategoryApi,
     customerCommonSettingApi
@@ -62,7 +63,7 @@
         required,
         title = "",
         width = "80%",
-        params = {},
+        // params = {},
         query = "",
         placeholder,
         perPage = 10,
@@ -78,7 +79,6 @@
         width,
         placeholder,
         searchPlaceholder,
-        params,
         query,
         className: "select2-container",
         status: "nomore",
@@ -154,7 +154,8 @@
         this.fetchData({page: this.page});
       },
       fetchData: function ({page, query}) {
-        let { klassName, perPage: per_page, params } = this;
+        let { params } = this.$attrs;
+        let { klassName, perPage: per_page } = this;
         params = {
           ...params,
           per_page
@@ -219,6 +220,9 @@
             return api;
           case 'Contract':
             api = contractApi.simple({ query, page, ...params });
+            return api;
+          case 'ReceivedPaymentPlan':
+            api = receivedPaymentPlanApi.simple({ query, page, ...params });
             return api;
           case 'Product':
             api = productApi.simple({ query, page, ...params });

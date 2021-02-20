@@ -9,7 +9,7 @@
           <u-grid :col="2"  :border="false">
             <u-grid-item index="customer">
               <u-button type="primary" @click="handleItemClick($event, '/pages/customer/customerNew/customerNew', 'customer#create')" >
-                <u-icon name="account-fill" :size="40"></u-icon>新增{{this.featureLabels['customer']}}
+                <u-icon name="account-fill" :size="40"></u-icon>{{this.featureLabels['customer']}}
               </u-button>
             </u-grid-item>
             <u-grid-item>
@@ -30,28 +30,40 @@
             </u-grid-item>
             <u-grid-item index="event" @click="handleItemClick($event, '/pages/common/pickEntity/pickEntity?returnAction=eventNew')">
               <u-icon name="calendar" :size="46"></u-icon>
-              <view class="grid-text">新增任务</view>
+              <view class="grid-text">任务</view>
             </u-grid-item>
             <u-grid-item index="lead" @click="handleItemClick($event, '/pages/lead/leadNew/leadNew', 'lead#create')">
               <u-icon name="share-fill" :size="46"></u-icon>
-              <view class="grid-text">新增{{this.featureLabels['lead']}}</view>
+              <view class="grid-text">{{this.featureLabels['lead']}}</view>
             </u-grid-item>
             <u-grid-item index="contact" @click="handleItemClick($event, '/pages/contact/contactNew/contactNew', 'contact#create')">
               <u-icon name="/static/icons/contact.png" :size="46"></u-icon>
-              <view class="grid-text">新增{{this.featureLabels['contact']}}</view>
+              <view class="grid-text">{{this.featureLabels['contact']}}</view>
             </u-grid-item>
             <u-grid-item index="opportunity" @click="handleItemClick($event, '/pages/opportunity/opportunityNew/opportunityNew', 'opportunity#create')">
               <u-icon name="rmb" :size="46"></u-icon>
-              <view class="grid-text">新增{{this.featureLabels['opportunity']}}</view>
+              <view class="grid-text">{{this.featureLabels['opportunity']}}</view>
             </u-grid-item>
             <u-grid-item index="contract" @click="handleItemClick($event, '/pages/contract/contractNew/contractNew', 'contract#create')">
               <u-icon name="order" :size="46"></u-icon>
-              <view class="grid-text">新增{{this.featureLabels['contract']}}</view>
+              <view class="grid-text">{{this.featureLabels['contract']}}</view>
             </u-grid-item>
             <u-grid-item index="product" @click="handleItemClick($event, '/pages/product/productNew/productNew', 'product#create')">
               <u-icon name="bag" :size="46"></u-icon>
-              <view class="grid-text">新增{{this.featureLabels['product']}}</view>
+              <view class="grid-text">{{this.featureLabels['product']}}</view>
             </u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew', 'received_payment#create')">
+        <u-icon name="/static/icons/paymentRcharge.png" :size="46"></u-icon>
+        <view class="grid-text">{{this.featureLabels["received_payment"]}}</view>
+      </u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/receivedPaymentPlan/receivedPaymentPlanNew/receivedPaymentPlanNew', 'received_payment_plan#crud')">
+        <u-icon name="/static/icons/receivedPaymentPlan.png" :size="46"></u-icon>
+        <view class="grid-text">{{this.featureLabels["received_payment_plan"]}}</view>
+      </u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/invoicedPayment/invoicedPaymentNew/invoicedPaymentNew', 'invoiced_payment#create')">
+        <u-icon name="/static/icons/invoicedPayment.png" :size="46"></u-icon>
+        <view class="grid-text">{{this.featureLabels["invoiced_payment"]}}</view>
+      </u-grid-item>
           </u-grid>
         </u-row>
       </view>

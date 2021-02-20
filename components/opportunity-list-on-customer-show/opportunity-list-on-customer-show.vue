@@ -69,9 +69,9 @@
         "expect_amount",
         "expect_sign_date", "sign_possibility", "extra.note"
       ];
-      this.customFields = _.map(customFieldNames, (customFieldName)=>
+      this.customFields = _.compact(_.map(customFieldNames, (customFieldName)=>
         _.find(customFields, (customField)=> customField.name == customFieldName)
-      );
+      ));
       this.fetchListData({});
     },
     methods: {
