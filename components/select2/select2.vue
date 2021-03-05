@@ -193,7 +193,9 @@
           if (page > 1) {
             this.$set(this, "list", _.concat(this.list, list));
           } else {
-            this.$set(this, "list", list);
+            this.$set(
+              this, "list", _.uniqBy(_.concat(_.filter(this.list, "checked"), list), "id")
+            );
           }
         })
       },

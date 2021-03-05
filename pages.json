@@ -11,7 +11,10 @@
       "^custom-form-field": "@/components/custom_form/custom-form-field",
       "^collapse-custom-field": "@/components/custom_form/collapse-custom-field",
       "^column-filter-form": "@/components/column-filter-form/column-filter-form.vue",
-      "^column-filter-(.*)": "@/components/column-filter-form/fields/column-filter-$1.vue"
+      "^column-filter-(.*)": "@/components/column-filter-form/fields/column-filter-$1.vue",
+      "^report-filter-form": "@/components/report-filter-form/report-filter-form.vue",
+      "^report-filter-(.*)": "@/components/report-filter-field/report-filter-$1.vue"
+
     }
   },
   "pages": [
@@ -518,6 +521,166 @@
       {
         "navigationBarTitleText": "文章详情",
         "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/report/salesFunnel/salesFunnel",
+      "style" :
+      {
+        "navigationBarTitleText": "销售漏斗",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/revisitLogLoggable/revisitLogLoggable",
+      "style" :
+      {
+        "navigationBarTitleText": "跟进对象汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/revisitLogCategory/revisitLogCategory",
+      "style" :
+      {
+        "navigationBarTitleText": "跟进类型汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/entityAddCreatedAt/entityAddCreatedAt",
+      "style" :
+      {
+        "navigationBarTitleText": "业务新增按时间汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/entityAddUser/entityAddUser",
+      "style" :
+      {
+        "navigationBarTitleText": "业务新增按负责人汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/entityAddCreator/entityAddCreator",
+      "style" :
+      {
+        "navigationBarTitleText": "业务新增按创建人汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/ReceivedPaymentPlan/ReceivedPaymentPlan",
+      "style" :
+      {
+        "navigationBarTitleText": "回款计划汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/wonOpportunity/wonOpportunity",
+      "style" :
+      {
+        "navigationBarTitleText": "赢单商机汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/contract/contract",
+      "style" :
+      {
+        "navigationBarTitleText": "合同汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/customerCountUser/customerCountUser",
+      "style" :
+      {
+        "navigationBarTitleText": "客户按用户排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/customerCountDepartment/customerCountDepartment",
+      "style" :
+      {
+        "navigationBarTitleText": "客户按部门排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/opportunityAmountUser/opportunityAmountUser",
+      "style" :
+      {
+        "navigationBarTitleText": "商机金额按用户排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/opportunityAmountDepartment/opportunityAmountDepartment",
+      "style" :
+      {
+        "navigationBarTitleText": "商机金额按部门排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/contractAmountUser/contractAmountUser",
+      "style" :
+      {
+        "navigationBarTitleText": "销售额按用户排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/contractAmountDepartment/contractAmountDepartment",
+      "style" :
+      {
+        "navigationBarTitleText": "销售额按部门排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/receivedPaymentAmountUser/receivedPaymentAmountUser",
+      "style" :
+      {
+        "navigationBarTitleText": "回款记录按用户排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/receivedPaymentAmountDepartment/receivedPaymentAmountDepartment",
+      "style" :
+      {
+        "navigationBarTitleText": "回款记录按部门排名",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/productSalesProduct/productSalesProduct",
+      "style" :
+      {
+        "navigationBarTitleText": "产品销售按产品汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/productSalesProductCategory/productSalesProductCategory",
+      "style" :
+      {
+        "navigationBarTitleText": "产品销售按产品分类汇总",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/report/productSalesYear/productSalesYear",
+      "style" :
+      {
+        "navigationBarTitleText": "产品销售按年汇总",
+        "enablePullDownRefresh": true
       }
     }
   ],
