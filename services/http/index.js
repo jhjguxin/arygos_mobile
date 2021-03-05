@@ -42,6 +42,8 @@ import reminderApi from './api/reminder';
 
 import duplicateApi from './api/duplicate';
 
+import reportCenterApi from './api/report_center';
+
 import userSettingApi from './api/user_setting';
 
 /**
@@ -81,6 +83,7 @@ export {
   salesActivityApi,
   eventApi,
   reminderApi,
+  reportCenterApi,
   duplicateApi,
   userSettingApi
 }
