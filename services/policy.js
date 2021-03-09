@@ -59,11 +59,11 @@ export default class Policy {
     let deferred = Q.defer();
     let {
       getters: {
-        getPermissions: { permissions, usercenter_permission }
+        getPermissions: { permissions = [], usercenter_permission }
       }
     } = this.app.$store;
 
-    if (_.isArray(permissions)) {
+    if (permissions.length > 0) {
       deferred.resolve({ permissions, usercenter_permission });
     } else {
       permissionApi.index()

@@ -112,18 +112,19 @@
 
             _.delay(()=> {
               // REVIEW 跳转到 tabBar 页面只能使用 switchTab 跳转
-              uni.switchTab({
-                url: "/pages/workbench/workbench",
-                success() {
-                  _.delay(()=>{
+              _.delay(()=>{
+                uni.switchTab({
+                  url: "/pages/workbench/workbench",
+                  success() {
                     uni.showToast({
                       icon: 'success',
                       title: '登陆成功',
-                      duration: 1000
+                      duration: 2000
                     });
-                  }, 200)
-                }
-              })
+                  }
+                })
+              }, 800)
+
             }, 600);
           } else {
             uni.showToast({
