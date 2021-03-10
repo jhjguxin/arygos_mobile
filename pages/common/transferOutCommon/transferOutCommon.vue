@@ -37,59 +37,65 @@
 
   export default {
     data() {
-      let { query: {ids, klassName, successUrl, id } } = this.$route;
-      ids = ids.split(",");
-      let api = {
-        lead_common: leadCommonApi,
-        customer_common: customerCommonApi
-      }[_.snakeCase(klassName)];
-      successUrl = successUrl || {
-        lead_common: "/pages/leadCommon/leadList/leadList",
-        customer_common: "/pages/customerCommon/customerList/customerList"
-      }[_.snakeCase(klassName)];
-
       return {
-        klassName,
-        api,
-        id,
-        successUrl,
-        permitChecker: {
-          authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#transfer`
-        },
+        klassName: "",
+        api: {},
+        id: 0,
+        successUrl: "",
+        permitChecker: {},
         card: {
           full: false,
           title: "转移给他人",
           subTitle: ""
         },
-        form: {
-          model: {
-            ids: ids,
-            user_id: null
-          },
-          item: {
-            user_id: {
-              label: "转移给",
-              placeholder: "请选择转移用户"
-            }
-          },
-          rules: {
-            user_id: [
-              {
-                required: true,
-                type: 'object',
-                message: '请选择用户',
-              }
-            ]
-          },
-        },
+        form: {},
         featureLabels: getApp().globalData.featureLabels
       };
     },
-    mounted() {
-      let { klassName, featureLabels = {}, form: {rules} } = this;
+    async onLoad(options) {
+      let { ids, klassName, successUrl, id } = options;
+      ids = ids.split(",");
+      this.api = {
+        lead_common: leadCommonApi,
+        customer_common: customerCommonApi
+      }[_.snakeCase(klassName)];
+
+      this.klassName = klassName;
+      this.id = id;
+      this.form = {
+        model: {
+          ids,
+          user_id: null
+        },
+        item: {
+          user_id: {
+            label: "转移给",
+            placeholder: "请选择转移用户"
+          }
+        },
+        rules: {
+          user_id: [
+            {
+              required: true,
+              type: 'object',
+              message: '请选择用户',
+            }
+          ]
+        }
+      };
+      this.permitChecker = {
+        authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#transfer`
+      };
+      this.successUrl = successUrl || {
+        lead_common: "/pages/leadCommon/leadList/leadList",
+        customer_common: "/pages/customerCommon/customerList/customerList"
+      }[_.snakeCase(klassName)];
+
       this.card.subTitle = featureLabels[_.snakeCase(klassName)];
 
       this.$refs.uForm.setRules(rules);
+    },
+    mounted() {
     },
     methods: {
       handleSave({values}) {
@@ -100,7 +106,7 @@
           let { data: {code, remark} } = res;
 
           if (Number(code) === 0) {
-            uni.navigateTo({
+            uni.redirectTo({
               url
             });
             _.delay(()=>{

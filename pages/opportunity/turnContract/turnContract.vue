@@ -13,18 +13,14 @@
 
 <script>
   import CustomFieldForm from 'services/custom_field_form';
-  import Auth from 'services/auth';
   import {
     opportunityApi,
   } from "services/http";
 
   export default {
     data() {
-      let currentUser = Auth.currentUser();
-      let { query: {id: opportunityId } } = this.$route;
-
       return {
-        opportunityId,
+        opportunityId: 0,
         formReady: false,
         klassName: "Contract",
         customFields: [],
@@ -32,11 +28,14 @@
         featureLabels: getApp().globalData.featureLabels,
       }
     },
-    async onLoad() {
-      let { klassName, opportunityId, featureLabels } = this;
+    async onLoad(options) {
+      let { id: opportunityId } = options;
+
+      let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let model = await this.doBuildcontract({ id: opportunityId });
 
+      this.opportunityId = opportunityId;
       this.$set(this, "customFields", customFields);
       this.$set(this, "record", model);
       if (model) this.$set(this, "formReady", true);

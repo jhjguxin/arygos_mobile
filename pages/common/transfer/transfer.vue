@@ -37,55 +37,61 @@
 
   export default {
     data() {
-      let { query: {ids, klassName, successUrl } } = this.$route;
+      return {
+        ids:[],
+        klassName: "",
+        api: {},
+        successUrl: "",
+        permitChecker: {},
+        card: {
+          full: false,
+          title: "转移给他人",
+          subTitle: ""
+        },
+        form: {},
+        featureLabels: getApp().globalData.featureLabels
+      };
+    },
+    async onLoad(options) {
+      let { ids, klassName, successUrl } = options;
+
       ids = ids.split(",");
-      let api = {
+      this.api = {
         lead: leadApi,
         customer: customerApi,
         opportunity: opportunityApi,
         contract: contractApi
       }[_.snakeCase(klassName)];
-      successUrl = successUrl || {
+      this.successUrl = successUrl || {
         lead: "/pages/lead/leadList/leadList",
         customer: "/pages/customer/customerList/customerList",
         opportunity: "/pages/opportunity/opportunityList/opportunityList",
         contract: "/pages/contract/contractList/contractList"
       }[_.snakeCase(klassName)];
 
-      return {
-        klassName,
-        api,
-        successUrl,
-        permitChecker: {
-          authKey: `${_.snakeCase(klassName)}#transfer`
+      this.form = {
+        model: {
+          ids,
+          user_id: null
         },
-        card: {
-          full: false,
-          title: "转移给他人",
-          subTitle: ""
+        item: {
+          user_id: {
+            label: "转移给",
+            placeholder: "请选择转移用户"
+          }
         },
-        form: {
-          model: {
-            ids: ids,
-            user_id: null
-          },
-          item: {
-            user_id: {
-              label: "转移给",
-              placeholder: "请选择转移用户"
+        rules: {
+          user_id: [
+            {
+              required: true,
+              type: 'object',
+              message: '请选择用户',
             }
-          },
-          rules: {
-            user_id: [
-              {
-                required: true,
-                type: 'object',
-                message: '请选择用户',
-              }
-            ]
-          },
-        },
-        featureLabels: getApp().globalData.featureLabels
+          ]
+        }
+      };
+      this.permitChecker = {
+        authKey: `${_.snakeCase(klassName)}#transfer`
       };
     },
     mounted() {
@@ -103,7 +109,7 @@
           let { data: {code, remark} } = res;
 
           if (Number(code) === 0) {
-            uni.navigateTo({
+            uni.redirectTo({
               url
             });
             _.delay(()=>{
@@ -128,6 +134,7 @@
       },
       handleSubmit() {
         this.$refs.uForm.validate(valid => {
+
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

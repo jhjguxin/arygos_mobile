@@ -157,11 +157,10 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        id,
+        id: 0,
         klassName: "Opportunity",
         isInvalidData: false,
         model: {},
@@ -195,51 +194,20 @@
           ],
           current: 0
         },
-        salesActivityList: {
-          params: {
-            opportunity_id: id
-          }
-        },
-        contactAssetshipList: {
-          params: {
-            id
-          }
-        },
+        salesActivityList: {},
+        contactAssetshipList: {},
         contactAssetshipEdit: {
           url: null
         },
-        productAssetList: {
-          params: {
-            id
-          }
-        },
+        productAssetList: {},
         productAssetEdit: {
           url: null
         },
-        attachmentList: {
-          params: {
-            attachmentable_type: "Opportunity",
-            attachmentable_id: id
-          }
-        },
-        attachmentNew: {
-          params: {
-            attachmentable_type: "Opportunity",
-            attachmentable_id: id
-          }
-        },
-        eventList: {
-          params: {
-            related_item_type: "Opportunity",
-            related_item_id: id
-          }
-        },
-        eventNew: {
-          url: `/pages/event/eventNew/eventNew?related_item_type=Opportunity&related_item_id=${id}`
-        },
-        revisitLogNew: {
-          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Opportunity&loggable_id=${id}`
-        },
+        attachmentList: {},
+        attachmentNew: {},
+        eventList: {},
+        eventNew: {},
+        revisitLogNew: {},
         salesActionSheet: {
           list: [
             {
@@ -261,21 +229,66 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/opportunity/opportunityEdit/opportunityEdit?id=${id}`,
-        turnContractUrl: `/pages/opportunity/turnContract/turnContract?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Opportunity`
+        editUrl: "",
+        turnContractUrl: "",
+        transferUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchOpportunityShow({ id });
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
+
+      this.salesActivityList = {
+        params: {
+          opportunity_id: id
+        }
+      };
+      this.contactAssetshipList = {
+        params: {
+          id
+        }
+      };
+      this.productAssetList = {
+        params: {
+          id
+        }
+      };
       this.contactAssetshipEdit.url = `/pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit?id=${id}&klassName=Opportunity&customerId=${model.customer_id}`;
       this.productAssetEdit.url = `/pages/productAsset/productAssetMultiEdit/productAssetMultiEdit?id=${id}&klassName=Opportunity`;
+      this.attachmentList = {
+        params: {
+          attachmentable_type: "Opportunity",
+          attachmentable_id: id
+        }
+      };
+      this.attachmentNew = {
+        params: {
+          attachmentable_type: "Opportunity",
+          attachmentable_id: id
+        }
+      };
+      this.eventList = {
+        params: {
+          related_item_type: "Opportunity",
+          related_item_id: id
+        }
+      };
+      this.eventNew = {
+        url: `/pages/event/eventNew/eventNew?related_item_type=Opportunity&related_item_id=${id}`
+      };
+      this.revisitLogNew = {
+        url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Opportunity&loggable_id=${id}`
+      };
+      this.editUrl = `/pages/opportunity/opportunityEdit/opportunityEdit?id=${id}`;
+      this.turnContractUrl = `/pages/opportunity/turnContract/turnContract?id=${id}`;
+      this.transferUrl = `/pages/common/transfer/transfer?ids=${id}&klassName=Opportunity`;
 
       uni.setNavigationBarTitle({
         title: model.title || "商机详情"

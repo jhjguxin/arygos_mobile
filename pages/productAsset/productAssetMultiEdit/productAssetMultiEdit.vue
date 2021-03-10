@@ -96,16 +96,12 @@
 
   export default {
     data() {
-      let { query: {id, klassName, customerId} } = this.$route;
-      const apis = {
-        Contract: contractApi,
-        Opportunity: opportunityApi
-      };
       const featureLabels = getApp().globalData.featureLabels
 
       return {
-        id, klassName,
-        api: apis[klassName],
+        id: 0,
+        klassName: "",
+        api: null,
         models: [],
         card: {
           border: true,
@@ -148,7 +144,16 @@
         featureLabels: getApp().globalData.featureLabels
       }
     },
-    async onLoad() {
+    async onLoad(options) {
+      let { id, klassName, customerId } = options;
+      const apis = {
+        Contract: contractApi,
+        Opportunity: opportunityApi
+      };
+
+      this.id = id;
+      this.api = apis[klassName];
+      this.klassName = klassName;
       let { featureLabels } = this;
 
       uni.setNavigationBarTitle({

@@ -21,26 +21,30 @@
 
   export default {
     data() {
+      return {
+        contractId: 0,
+        formReady: false,
+        klassName: "ReceivedPaymentPlan",
+        customFields: [],
+        record: {},
+        featureLabels: getApp().globalData.featureLabels
+      }
+    },
+    async onLoad(options) {
+      let { contract_id: contractId } = options;
+
+      let { klassName, featureLabels } = this;
+      let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let currentUser = Auth.currentUser();
 
-      let record = {
+      this.contractId = contractId;
+      this.record = {
         user_id: currentUser.id,
         user: {
           id: currentUser.id,
           name: currentUser.name
         }
       };
-      return {
-        formReady: false,
-        klassName: "ReceivedPaymentPlan",
-        customFields: [],
-        record,
-        featureLabels: getApp().globalData.featureLabels
-      }
-    },
-    async onLoad() {
-      let { klassName, featureLabels } = this;
-      let customFields = await CustomFieldForm.instance().fetchData(klassName);
 
       await this.setContract()
 
@@ -53,8 +57,7 @@
     },
     methods: {
       async setContract() {
-        let { record } = this;
-        let { query: { contract_id: id } } = this.$route;
+        let { record, contractId: id } = this;
         if (_.isNil(id)) return;
 
         let res = await contractApi.show({id});

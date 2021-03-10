@@ -33,53 +33,19 @@
 
   export default {
     data() {
-      let { query: {ids, klassName } } = this.$route;
-      ids = ids.split(",");
-      let api = {
-        lead_common: leadCommonApi,
-        customer_common: customerCommonApi
-      }[_.snakeCase(klassName)];
-      let successUrl = {
-        lead_common: "/pages/lead/leadList/leadList",
-        customer_common: "/pages/customer/customerList/customerList"
-      }[_.snakeCase(klassName)];
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        klassName,
-        api,
-        successUrl,
-        permitChecker: {
-          authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#turn_${_.snakeCase(klassName)}`
-        },
+        klassName: "",
+        api: {},
+        successUrl: "",
+        permitChecker: {},
         card: {
           full: false,
           title: `转入`,
           subTitle: ""
         },
-        form: {
-          model: {
-            ids: ids,
-            common_id: null
-          },
-          item: {
-            common_id: {
-              label: "转移至",
-              placeholder: `请选择转移的${featureLabels[_.snakeCase(klassName)]}`,
-              list: [],
-              show: false,
-              border: false
-            }
-          },
-          rules: {
-            common_id: [
-              {
-                required: true,
-                message: `请选择转移的${featureLabels[_.snakeCase(klassName)]}`,
-              }
-            ]
-          },
-        },
+        form: {},
         featureLabels: featureLabels
       };
     },
@@ -91,8 +57,47 @@
 
       this.fetchCommonList();
     },
-    onLoad() {
-      let { klassName, featureLabels } = this;
+    async onLoad(options) {
+      let { ids, klassName, successUrl, id } = options;
+      let { featureLabels } = this;
+
+      ids = ids.split(",");
+      this.klassName = klassName;
+      this.api = {
+        lead_common: leadCommonApi,
+        customer_common: customerCommonApi
+      }[_.snakeCase(klassName)];
+      this.permitChecker = {
+        authKey: `${_.snakeCase(_.replace(klassName, "Common", ""))}#turn_${_.snakeCase(klassName)}`
+      };
+      this.successUrl = {
+        lead_common: "/pages/lead/leadList/leadList",
+        customer_common: "/pages/customer/customerList/customerList"
+      }[_.snakeCase(klassName)];
+      
+      this.form = {
+        model: {
+          ids: ids,
+          common_id: null
+        },
+        item: {
+          common_id: {
+            label: "转移至",
+            placeholder: `请选择转移的${featureLabels[_.snakeCase(klassName)]}`,
+            list: [],
+            show: false,
+            border: false
+          }
+        },
+        rules: {
+          common_id: [
+            {
+              required: true,
+              message: `请选择转移的${featureLabels[_.snakeCase(klassName)]}`,
+            }
+          ]
+        },
+      };
 
       uni.setNavigationBarTitle({
         title: `转入${featureLabels[_.snakeCase(klassName)]}`

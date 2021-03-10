@@ -92,11 +92,10 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        id,
+        id: 0,
         klassName: "receivedPaymentPlan",
         isInvalidData: false,
         model: {},
@@ -119,13 +118,8 @@
           current: null
         },
         receivedPaymentNew: {
-          url: `/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew?contract_id=${id}`
         },
-        receivedPaymentList: {
-          params: {
-            id
-          }
-        },
+        receivedPaymentList: {},
         salesActionSheet: {
           list: [
             {
@@ -140,13 +134,25 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/receivedPaymentPlan/receivedPaymentPlanEdit/receivedPaymentPlanEdit?id=${id}`
+        editUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchreceivedPaymentPlanShow({ id });
+
+      this.id = id;
+      this.receivedPaymentList = {
+        params: {
+          id
+        }
+      };
+      this.receivedPaymentNew = {
+        url: `/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew?contract_id=${id}`
+      };
+      this.editUrl = `/pages/receivedPaymentPlan/receivedPaymentPlanEdit/receivedPaymentPlanEdit?id=${id}`;
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));

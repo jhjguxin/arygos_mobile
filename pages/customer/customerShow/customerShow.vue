@@ -145,11 +145,10 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        id,
+        id: 0,
         klassName: "Customer",
         isInvalidData: false,
         model: {},
@@ -186,50 +185,15 @@
           ],
           current: 0
         },
-        salesActivityList: {
-          params: {
-            customer_id: id
-          }
-        },
-        contactListOnCustomerShow: {
-          params: {
-            id
-          }
-        },
-        opportunityListOnCustomerShow: {
-          params: {
-            id
-          }
-        },
-        contractListOnCustomerShow: {
-          params: {
-            id
-          }
-        },
-        attachmentList: {
-          params: {
-            attachmentable_type: "Customer",
-            attachmentable_id: id
-          }
-        },
-        attachmentNew: {
-          params: {
-            attachmentable_type: "Customer",
-            attachmentable_id: id
-          }
-        },
-       eventList: {
-          params: {
-            related_item_type: "Customer",
-            related_item_id: id
-          }
-        },
-        eventNew: {
-          url: `/pages/event/eventNew/eventNew?related_item_type=Customer&related_item_id=${id}`
-        },
-        revisitLogNew: {
-          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Customer&loggable_id=${id}`
-        },
+        salesActivityList: {},
+        contactListOnCustomerShow: {},
+        opportunityListOnCustomerShow: {},
+        contractListOnCustomerShow: {},
+        attachmentList: {},
+        attachmentNew: {},
+        eventList: {},
+        eventNew: {},
+        revisitLogNew: {},
         salesActionSheet: {
           list: [
             {
@@ -254,15 +218,64 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/customer/customerEdit/customerEdit?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Customer`,
-        transferIntoCommonUrl: `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=CustomerCommon`
+        editUrl: "",
+        transferUrl: "",
+        transferIntoCommonUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchCustomerShow({ id });
+
+      this.salesActivityList = {
+        params: {
+          customer_id: id
+        }
+      };
+      this.contactListOnCustomerShow = {
+        params: {
+          id
+        }
+      };
+      this.opportunityListOnCustomerShow = {
+        params: {
+          id
+        }
+      };
+      this.contractListOnCustomerShow = {
+        params: {
+          id
+        }
+      };
+      this.attachmentList = {
+        params: {
+          attachmentable_type: "Customer",
+          attachmentable_id: id
+        }
+      };
+      this.attachmentNew = {
+        params: {
+          attachmentable_type: "Customer",
+          attachmentable_id: id
+        }
+      };
+      this.eventList = {
+        params: {
+          related_item_type: "Customer",
+          related_item_id: id
+        }
+      };
+      this.eventNew = {
+        url: `/pages/event/eventNew/eventNew?related_item_type=Customer&related_item_id=${id}`
+      };
+      this.revisitLogNew = {
+        url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Customer&loggable_id=${id}`
+      };
+      this.editUrl = `/pages/customer/customerEdit/customerEdit?id=${id}`;
+      this.transferUrl = `/pages/common/transfer/transfer?ids=${id}&klassName=Customer`;
+      this.transferIntoCommonUrl = `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=CustomerCommon`;
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));

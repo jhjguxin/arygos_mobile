@@ -8,7 +8,7 @@
     :padding="card.padding"
     :show-foot="card.showFoot"
     :border="card.border"
-    v-if="model"
+    v-if="model.id"
     class="u-m-t-10 u-m-b-10"
   >
     <u-row slot="body" class="u-p-l-10 u-p-r-10">
@@ -68,79 +68,80 @@
   import dayjs from 'dayjs';
   import { knowledgeArticleApi } from 'services/http';
 
- export default {
-  data() {
-    let { query: {id} } = this.$route;
-
-    return {
-      id,
-      model: null,
-      card: {
-        border: true,
-        margin: "0 20rpx",
-        padding: 20,
-        showFoot: true
+  export default {
+    data() {
+      return {
+        id: 0,
+        model: {},
+        card: {
+          border: true,
+          margin: "0 20rpx",
+          padding: 20,
+          showFoot: true
+        }
       }
-    }
-  },
-  async onLoad() {
-    let model = await this.fetchKnowledgeArticleShow();
-    this.model = model;
+    },
+    async onLoad(options) {
+      let { id } = options;
+      this.id = id;
 
-    if (model) {
-      _.delay(()=> {
-        this.handleUpdateViews()
-      }, 2000)
-    }
+      let model = await this.fetchKnowledgeArticleShow();
+      this.model = model;
 
-    uni.setNavigationBarTitle({
-      title: model.title || "文章详情"
-    });
-  },
-  methods: {
-    async fetchKnowledgeArticleShow() {
-      let { id } = this;
+      if (model) {
+        _.delay(()=> {
+          this.handleUpdateViews()
+        }, 2000)
+      }
 
-      let res = await knowledgeArticleApi.show({id});
-      let {
-        data: {
-          code, remark, data: model
-        }
-      } = res;
+      uni.setNavigationBarTitle({
+        title: model.title || "文章详情"
+      });
+    },
+    methods: {
+      async fetchKnowledgeArticleShow() {
+        let { id } = this;
 
-      _.delay(()=>{
-        uni.hideLoading();
-      }, 100);
+        let res = await knowledgeArticleApi.show({id});
+        let {
+          data: {
+            code, remark, data: model
+          }
+        } = res;
 
-      if (code == 0) {
-        model = {
-          ...model,
-          title: model.sticky_at ? `[置顶]${model.title}` : model.title,
-          tagsName: model.tags.join(", "),
-          createdAt: dayjs(model.created_at).format("YYYY-MM-DD HH:mm"),
-          updatedAt: dayjs(model.updated_at).format("YYYY-MM-DD HH:mm")
-        }
-
-        return model;
-      } else {
         _.delay(()=>{
-          uni.showToast({
-            icon: 'none',
-            title: remark || "获取数据失败",
-            duration: 1000
-          });
-        }, 200);
-        this.isInvalidData = true;
+          uni.hideLoading();
+        }, 100);
 
-        return null;
-      }
-    },
-    handleUpdateViews() {
-      let { id } = this;
-      knowledgeArticleApi.update_views({ id });
-    },
+        if (code == 0) {
+          model = {
+            ...model,
+            title: model.sticky_at ? `[置顶]${model.title}` : model.title,
+            tagsName: model.tags.join(", "),
+            createdAt: dayjs(model.created_at).format("YYYY-MM-DD HH:mm"),
+            updatedAt: dayjs(model.updated_at).format("YYYY-MM-DD HH:mm")
+          }
+
+          return model;
+        } else {
+          _.delay(()=>{
+            uni.showToast({
+              icon: 'none',
+              title: remark || "获取数据失败",
+              duration: 1000
+            });
+          }, 200);
+          this.isInvalidData = true;
+
+          return null;
+        }
+      },
+      handleUpdateViews() {
+        let { id } = this;
+        knowledgeArticleApi.update_views({ id });
+      },
+    }
   }
-}
 </script>
 
 <style>

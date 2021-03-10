@@ -124,10 +124,8 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
-
       return {
-        id,
+        id: 0,
         klassName: "Lead",
         isInvalidData: false,
         model: {},
@@ -155,35 +153,12 @@
           ],
           current: 0
         },
-        salesActivityList: {
-          params: {
-            lead_id: id
-          }
-        },
-        attachmentList: {
-          params: {
-            attachmentable_type: "Lead",
-            attachmentable_id: id
-          }
-        },
-        attachmentNew: {
-          params: {
-            attachmentable_type: "Lead",
-            attachmentable_id: id
-          }
-        },
-       eventList: {
-          params: {
-            related_item_type: "Lead",
-            related_item_id: id
-          }
-        },
-        eventNew: {
-          url: `/pages/event/eventNew/eventNew?related_item_type=Lead&related_item_id=${id}`
-        },
-        revisitLogNew: {
-          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Lead&loggable_id=${id}`
-        },
+        salesActivityList: {},
+        attachmentList: {},
+        attachmentNew: {},
+        eventList: {},
+        eventNew: {},
+        revisitLogNew: {},
         salesActionSheet: {
           list: [
             {
@@ -208,16 +183,51 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/lead/leadEdit/leadEdit?id=${id}`,
-        turnCustomerUrl: `/pages/lead/turnCustomer/turnCustomer?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Lead`,
-        transferIntoCommonUrl: `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=LeadCommon`
+        editUrl: "",
+        turnCustomerUrl: "",
+        transferUrl: "",
+        transferIntoCommonUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchLeadShow({ id });
+
+      this.salesActivityList = {
+        params: {
+          lead_id: id
+        }
+      };
+      this.attachmentList = {
+        params: {
+          attachmentable_type: "Lead",
+          attachmentable_id: id
+        }
+      };
+      this.attachmentNew = {
+        params: {
+          attachmentable_type: "Lead",
+          attachmentable_id: id
+        }
+      };
+      this.eventList = {
+        params: {
+          related_item_type: "Lead",
+          related_item_id: id
+        }
+      }
+      this.eventNew = {
+        url: `/pages/event/eventNew/eventNew?related_item_type=Lead&related_item_id=${id}`
+      }
+      this.revisitLogNew = {
+        url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Lead&loggable_id=${id}`
+      };
+      this.editUrl =`/pages/lead/leadEdit/leadEdit?id=${id}`;
+      this.turnCustomerUrl = `/pages/lead/turnCustomer/turnCustomer?id=${id}`;
+      this.transferUrl = `/pages/common/transfer/transfer?ids=${id}&klassName=Lead`;
+      this.transferIntoCommonUrl = `/pages/common/transferIntoCommon/transferIntoCommon?ids=${id}&klassName=LeadCommon`;
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));

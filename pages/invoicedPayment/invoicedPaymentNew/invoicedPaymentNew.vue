@@ -31,6 +31,7 @@
         }
       };
       return {
+        contractId: 0,
         formReady: false,
         klassName: "InvoicedPayment",
         customFields: [],
@@ -38,10 +39,12 @@
         featureLabels: getApp().globalData.featureLabels
       }
     },
-    async onLoad() {
+    async onLoad(options) {
+      let { contract_id: contractId } = options;
       let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
 
+      this.contractId = contractId;
       await this.setContract();
 
       this.$set(this, "customFields", customFields);
@@ -53,8 +56,7 @@
     },
     methods: {
       async setContract() {
-        let { record } = this;
-        let { query: { contract_id: id } } = this.$route;
+        let { record, contractId: id } = this;
         if (_.isNil(id)) return;
 
         let res = await contractApi.show({id});

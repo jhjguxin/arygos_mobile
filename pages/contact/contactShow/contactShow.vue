@@ -101,10 +101,8 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
-
       return {
-        id,
+        id: 0,
         klassName: "Contact",
         isInvalidData: false,
         model: {},
@@ -126,11 +124,7 @@
           ],
           current: 0
         },
-        salesActivityList: {
-          params: {
-            contact_id: id
-          }
-        },
+        salesActivityList: {},
         salesActionSheet: {
           list: [
             {
@@ -145,13 +139,23 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/contact/contactEdit/contactEdit?id=${id}`
+        editUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchContactShow({ id });
+
+      this.id = id;
+      this.salesActivityList = {
+        params: {
+          contact_id: id
+        }
+      };
+      this.editUrl = `/pages/contact/contactEdit/contactEdit?id=${id}`;
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));

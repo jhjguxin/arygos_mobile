@@ -62,25 +62,13 @@
 
   export default {
     data() {
-      let { query: {id, klassName, customerId} } = this.$route;
-      const apis = {
-        Contract: contractApi,
-        Opportunity: opportunityApi
-      };
       const featureLabels = getApp().globalData.featureLabels
 
       return {
-        id, klassName,
-        api: apis[klassName],
+        id: 0, klassName: "",
+        api: {},
         models: [],
-        select2: {
-          title: featureLabels.contact,
-          klassName: "Contact",
-          placeholder: `请选择${featureLabels.contact}`,
-          params: {
-            customer_id: customerId
-          }
-        },
+        select2: {},
         categorySelect: {
           placeholder: `请选择${featureLabels.contact}角色`,
           list: []
@@ -88,8 +76,26 @@
         featureLabels: getApp().globalData.featureLabels
       }
     },
-    async onLoad() {
+    async onLoad(options) {
+      let { id, klassName, customerId } = options;
       let { featureLabels } = this;
+
+      const apis = {
+        Contract: contractApi,
+        Opportunity: opportunityApi
+      };
+
+      this.api = apis[klassName];
+      this.id = id;
+      this.klassName = klassName;
+      this.select2 = {
+        title: featureLabels.contact,
+        klassName: "Contact",
+        placeholder: `请选择${featureLabels.contact}`,
+        params: {
+          customer_id: customerId
+        }
+      };
 
       uni.setNavigationBarTitle({
         title: featureLabels["contact"]
@@ -214,7 +220,7 @@
         this.models = models;
       },
       handleAddContactAssetship(e) {
-        let { query: {id, klassName } } = this.$route;
+        let { id, klassName } = this;
         let { models } = this;
 
         models.push({

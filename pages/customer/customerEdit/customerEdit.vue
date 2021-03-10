@@ -21,29 +21,31 @@
 
   export default {
     data() {
-      let currentUser = Auth.currentUser();
-      let { query: {id} } = this.$route;
+      return {
+        id: 0,
+        formReady: false,
+        klassName: "Customer",
+        customFields: [],
+        record: {},
+        featureLabels: getApp().globalData.featureLabels
+      }
+    },
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName, featureLabels } = this;
+      let customFields = await CustomFieldForm.instance().fetchData(klassName);
+      let model = await this.fetchCustomerShow({ id });
 
-      let record = {
+      let currentUser = Auth.currentUser();
+
+      this.id = id;
+      this.record = {
         user_id: currentUser.id,
         user: {
           id: currentUser.id,
           name: currentUser.name
         }
       };
-      return {
-        id,
-        formReady: false,
-        klassName: "Customer",
-        customFields: [],
-        record,
-        featureLabels: getApp().globalData.featureLabels
-      }
-    },
-    async onLoad() {
-      let { klassName, id, featureLabels } = this;
-      let customFields = await CustomFieldForm.instance().fetchData(klassName);
-      let model = await this.fetchCustomerShow({ id });
 
       this.$set(this, "customFields", customFields);
       this.$set(this, "record", model);

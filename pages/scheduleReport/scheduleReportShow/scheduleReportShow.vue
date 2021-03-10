@@ -75,9 +75,8 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
       return {
-        id,
+        id: 0,
         model: null,
         markings: [],
         card: {
@@ -119,7 +118,10 @@
         },
       }
     },
-    async onLoad() {
+    async onLoad(options) {
+      let { id } = options;
+
+      this.id = id;
       let model = await this.fetchScheduleReportShow();
       this.model = model;
 

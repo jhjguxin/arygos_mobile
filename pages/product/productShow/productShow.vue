@@ -82,10 +82,8 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
-
       return {
-        id,
+        id: 0,
         klassName: "Product",
         isInvalidData: false,
         model: {},
@@ -107,18 +105,8 @@
           ],
           current: null
         },
-        attachmentList: {
-          params: {
-            attachmentable_type: "Product",
-            attachmentable_id: id
-          }
-        },
-        attachmentNew: {
-          params: {
-            attachmentable_type: "Product",
-            attachmentable_id: id
-          }
-        },
+        attachmentList: {},
+        attachmentNew: {},
         salesActionSheet: {
           list: [
             {
@@ -137,18 +125,34 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/product/productEdit/productEdit?id=${id}`
+        editUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchProductShow({ id });
 
+      this.id = id;
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
       this.tabs.current = 0;
+
+      this.attachmentList = {
+        params: {
+          attachmentable_type: "Product",
+          attachmentable_id: id
+        }
+      };
+      this.attachmentNew = {
+        params: {
+          attachmentable_type: "Product",
+          attachmentable_id: id
+        }
+      };
+      this.editUrl = `/pages/product/productEdit/productEdit?id=${id}`;
 
       let { salesActionSheet: { list } } = this;
       list[0] = {

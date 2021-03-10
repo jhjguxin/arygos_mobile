@@ -21,11 +21,8 @@
 
   export default {
     data() {
-      let currentUser = Auth.currentUser();
-      let { query: {id: leadId } } = this.$route;
-
       return {
-        leadId,
+        leadId: 0,
         formReady: false,
         klassName: "Customer",
         customFields: [],
@@ -33,11 +30,13 @@
         featureLabels: getApp().globalData.featureLabels,
       }
     },
-    async onLoad() {
-      let { klassName, leadId, featureLabels } = this;
+    async onLoad(options) {
+      let { id: leadId } = options;
+      let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let model = await this.doBuildCustomer({ id: leadId });
 
+      this.leadId = leadId;
       this.$set(this, "customFields", customFields);
       this.$set(this, "record", model);
       if (model) this.$set(this, "formReady", true);

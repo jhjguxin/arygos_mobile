@@ -77,7 +77,8 @@
 
   export default {
     data() {
-      let { query: {loggable_type, loggable_id} } = this.$route;
+      // uniq 不能使用 this.$route 获取页面参数应该在 onLoad 中获取
+      // let { query: {loggable_type, loggable_id} } = this.$route;
       const currentUser = getApp().$store.getters.getUser;
 
       return {
@@ -85,133 +86,7 @@
         formReady: false,
         loggable: {},
         customerId: null,
-        form: {
-          model: {
-            content: null,
-            category: null,
-            revisit_at: dayjs().format("YYYY-MM-DD HH:mm"),
-            remind_at: dayjs().add(1, "weeks").format("YYYY-MM-DD HH:mm"),
-            loggable: "",
-            contacts: [],
-            loggableStatus: null,
-            loggable_type, loggable_id
-          },
-          item: {
-            content: {
-              label: "内容",
-              placeholder: "请填写跟进内容",
-              autoHeight: true
-            },
-            category: {
-              label: "跟进类型",
-              placeholder: "请选择跟进类型",
-              list: [],
-              show: false,
-              border: false
-            },
-            revisit_at: {
-              label: "跟进时间",
-              placeholder: "请选择跟进时间",
-              params: {
-                year: true,
-                month: true,
-                day: true,
-                hour: true,
-                minute: true,
-                second: false
-              },
-              show: false,
-              border: false
-            },
-            loggable: {
-              label: "跟进对象"
-            },
-            loggableStatus: {
-              label: "",
-              placeholder: "",
-              list: [],
-              show: false,
-              border: false
-            },
-            contacts: {
-              label: "联系人",
-              placeholder: "请选择联系人",
-              show: false,
-              params: {
-                customer_id: null
-              }
-            },
-            remind_at: {
-              label: "下次跟进时间",
-              placeholder: "请选择下次跟进时间",
-              params: {
-                year: true,
-                month: true,
-                day: true,
-                hour: true,
-                minute: true,
-                second: false
-              },
-              show: false,
-              border: false
-            }
-          },
-          rules: {
-            content: [
-              {
-                required: true,
-                message: '请填写跟进内容',
-              }
-            ],
-            category: [
-              {
-                required: true,
-                message: '请选择跟类型',
-              }
-            ],
-            revisit_at: [
-              {
-                required: true,
-                message: '请填写跟进时间',
-              },
-              {
-                asyncValidator: (rule, value, callback) => {
-                  try {
-                    let min = dayjs().add(-1, 'weeks').format("YYYY-MM-DD HH:mm");
-
-                    if (min && dayjs(value) < dayjs(min)) {
-                      callback(new Error(`输入的跟进时间不能小于${min}!`));
-                    }
-                    return callback();
-                  } catch (err) {
-                    console.error("校验失败", err);
-                    callback(new Error(`输入的跟进时间格式不正确!`));
-                  }
-                },
-                trigger: ['change']
-              }
-            ],
-            remind_at: [
-              {
-                asyncValidator: (rule, value, callback) => {
-                  try {
-                    let min = dayjs();
-
-                    if (min && dayjs(value) < dayjs(min)) {
-                      callback(new Error(`输入的开始时间不能小于当前时间!`));
-                    }
-
-                    return callback();
-                  } catch (err) {
-                    console.error("校验失败", err);
-                    callback(new Error(`输入的开始时间格式不正确!`));
-                  }
-                },
-                trigger: ['change']
-              }
-            ],
-          }
-        },
+        form: {},
         featureLabels: getApp().globalData.featureLabels
       };
     },
@@ -220,8 +95,137 @@
 
       this.$refs.uForm.setRules(rules);
     },
-    async onLoad() {
-      let { klassName, featureLabels, form: {model: { loggable_type }} } = this;
+    async onLoad(options) {
+      let {loggable_type, loggable_id} = options;
+      let { klassName, featureLabels } = this;
+
+      this.form = {
+        model: {
+          content: null,
+          category: null,
+          revisit_at: dayjs().format("YYYY-MM-DD HH:mm"),
+          remind_at: dayjs().add(1, "weeks").format("YYYY-MM-DD HH:mm"),
+          loggable: "",
+          contacts: [],
+          loggableStatus: null,
+          loggable_type, loggable_id
+        },
+        item: {
+          content: {
+            label: "内容",
+            placeholder: "请填写跟进内容",
+            autoHeight: true
+          },
+          category: {
+            label: "跟进类型",
+            placeholder: "请选择跟进类型",
+            list: [],
+            show: false,
+            border: false
+          },
+          revisit_at: {
+            label: "跟进时间",
+            placeholder: "请选择跟进时间",
+            params: {
+              year: true,
+              month: true,
+              day: true,
+              hour: true,
+              minute: true,
+              second: false
+            },
+            show: false,
+            border: false
+          },
+          loggable: {
+            label: "跟进对象"
+          },
+          loggableStatus: {
+            label: "",
+            placeholder: "",
+            list: [],
+            show: false,
+            border: false
+          },
+          contacts: {
+            label: "联系人",
+            placeholder: "请选择联系人",
+            show: false,
+            params: {
+              customer_id: null
+            }
+          },
+          remind_at: {
+            label: "下次跟进时间",
+            placeholder: "请选择下次跟进时间",
+            params: {
+              year: true,
+              month: true,
+              day: true,
+              hour: true,
+              minute: true,
+              second: false
+            },
+            show: false,
+            border: false
+          }
+        },
+        rules: {
+          content: [
+            {
+              required: true,
+              message: '请填写跟进内容',
+            }
+          ],
+          category: [
+            {
+              required: true,
+              message: '请选择跟类型',
+            }
+          ],
+          revisit_at: [
+            {
+              required: true,
+              message: '请填写跟进时间',
+            },
+            {
+              asyncValidator: (rule, value, callback) => {
+                try {
+                  let min = dayjs().add(-1, 'weeks').format("YYYY-MM-DD HH:mm");
+
+                  if (min && dayjs(value) < dayjs(min)) {
+                    callback(new Error(`输入的跟进时间不能小于${min}!`));
+                  }
+                  return callback();
+                } catch (err) {
+                  console.error("校验失败", err);
+                  callback(new Error(`输入的跟进时间格式不正确!`));
+                }
+              },
+              trigger: ['change']
+            }
+          ],
+          remind_at: [
+            {
+              asyncValidator: (rule, value, callback) => {
+                try {
+                  let min = dayjs();
+
+                  if (min && dayjs(value) < dayjs(min)) {
+                    callback(new Error(`输入的开始时间不能小于当前时间!`));
+                  }
+
+                  return callback();
+                } catch (err) {
+                  console.error("校验失败", err);
+                  callback(new Error(`输入的开始时间格式不正确!`));
+                }
+              },
+              trigger: ['change']
+            }
+          ],
+        }
+      };
 
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let categoryCustomField = _.find(customFields, (customField) => customField.name == "category");

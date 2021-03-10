@@ -20,29 +20,22 @@
 
   export default {
     data() {
-      let currentUser = Auth.currentUser();
-      let { query: {id} } = this.$route;
-
-      let record = {
-        user_id: currentUser.id,
-        user: {
-          id: currentUser.id,
-          name: currentUser.name
-        }
-      };
       return {
-        id,
+        id: 0,
         formReady: false,
         klassName: "ReceivedPayment",
         customFields: [],
-        record,
+        record: {},
         featureLabels: getApp().globalData.featureLabels
       }
     },
-    async onLoad() {
-      let { klassName, id, featureLabels } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
       let model = await this.fetchReceivedPaymentShow({ id });
+
+      this.id = id;
 
       this.$set(this, "customFields", customFields);
       this.$set(this, "record", model);

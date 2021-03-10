@@ -22,11 +22,10 @@
 
   export default {
     data() {
-      let { query: { current = 0, returnAction = "revisitLogNew" } } = this.$route;
       const featureLabels = getApp().globalData.featureLabels;
 
       return {
-        returnAction,
+        returnAction: "revisitLogNew",
         tabsSwiper: {
           list: [
             {
@@ -43,7 +42,7 @@
             }
           ],
           isScroll: false,
-          current: current
+          current: 0
         },
         swiperItems: [
           {
@@ -65,7 +64,14 @@
         ]
       }
     },
-    onLoad() {
+    onLoad(options) {
+      let { current = 0, returnAction = "revisitLogNew" } = options;
+      this.tabsSwiper = {
+        ...this.tabsSwiper,
+        current
+      };
+      this.returnAction = returnAction;
+
       _.delay(()=> {
         this.loadEntityItemData();
       },10);

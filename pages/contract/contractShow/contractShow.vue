@@ -197,11 +197,10 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        id,
+        id: 0,
         klassName: "Contract",
         isInvalidData: false,
         model: {},
@@ -244,75 +243,22 @@
           ],
           current: 0
         },
-        salesActivityList: {
-          params: {
-            contract_id: id
-          }
-        },
-        receivedPaymentPlanList: {
-          params: {
-            id
-          }
-        },
-        receivedPaymentPlanNew: {
-          url: `/pages/receivedPaymentPlan/receivedPaymentPlanNew/receivedPaymentPlanNew?contract_id=${id}`
-        },
-        receivedPaymentList: {
-          params: {
-            id
-          }
-        },
-        receivedPaymentNew: {
-          url: `/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew?contract_id=${id}`
-        },
-        invoicedPaymentList: {
-          params: {
-            id
-          }
-        },
-        invoicedPaymentNew: {
-          url: `/pages/invoicedPayment/invoicedPaymentNew/invoicedPaymentNew?contract_id=${id}`
-        },
-        contactAssetshipList: {
-          params: {
-            id
-          }
-        },
-        contactAssetshipEdit: {
-          url: null
-        },
-        productAssetList: {
-          params: {
-            id
-          }
-        },
-        productAssetEdit: {
-          url: null
-        },
-        attachmentList: {
-          params: {
-            attachmentable_type: "Contract",
-            attachmentable_id: id
-          }
-        },
-        attachmentNew: {
-          params: {
-            attachmentable_type: "Contract",
-            attachmentable_id: id
-          }
-        },
-       eventList: {
-          params: {
-            related_item_type: "Contract",
-            related_item_id: id
-          }
-        },
-        eventNew: {
-          url: `/pages/event/eventNew/eventNew?related_item_type=Contract&related_item_id=${id}`
-        },
-        revisitLogNew: {
-          url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Contract&loggable_id=${id}`
-        },
+        salesActivityList: {},
+        receivedPaymentPlanList: {},
+        receivedPaymentPlanNew: {},
+        receivedPaymentList: {},
+        receivedPaymentNew: {},
+        invoicedPaymentList: {},
+        invoicedPaymentNew: {},
+        contactAssetshipList: {},
+        contactAssetshipEdit: {},
+        productAssetList: {},
+        productAssetEdit: {},
+        attachmentList: {},
+        attachmentNew: {},
+        eventList: {},
+        eventNew: {},
+        revisitLogNew: {},
         salesActionSheet: {
           list: [
             {
@@ -334,20 +280,92 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/contract/contractEdit/contractEdit?id=${id}`,
-        transferUrl: `/pages/common/transfer/transfer?ids=${id}&klassName=Contract`,
+        editUrl: "",
+        transferUrl: "",
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchContractShow({ id });
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
       this.model= model;
-      this.contactAssetshipEdit.url = `/pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit?id=${id}&klassName=Contract&customerId=${model.customer_id}`;
-      this.productAssetEdit.url = `/pages/productAsset/productAssetMultiEdit/productAssetMultiEdit?id=${id}&klassName=Contract`;
+
+      this.salesActivityList = {
+        params: {
+          contract_id: id
+        }
+      };
+      this.receivedPaymentPlanList = {
+        params: {
+          id
+        }
+      };
+      this.receivedPaymentPlanNew = {
+        url: `/pages/receivedPaymentPlan/receivedPaymentPlanNew/receivedPaymentPlanNew?contract_id=${id}`
+      };
+      this.receivedPaymentList = {
+        params: {
+          id
+        }
+      };
+      this.receivedPaymentNew = {
+        url: `/pages/receivedPayment/receivedPaymentNew/receivedPaymentNew?contract_id=${id}`
+      };
+      this.invoicedPaymentList = {
+        params: {
+          id
+        }
+      };
+      this.invoicedPaymentNew = {
+        url: `/pages/invoicedPayment/invoicedPaymentNew/invoicedPaymentNew?contract_id=${id}`
+      };
+      this.contactAssetshipList = {
+         params: {
+           id
+         }
+       };
+      this.contactAssetshipEdit = {
+        url: `/pages/contactAssetship/contactAssetshipMultiEdit/contactAssetshipMultiEdit?id=${id}&klassName=Contract&customerId=${model.customer_id}`
+      };
+      this.productAssetList = {
+        params: {
+          id
+        }
+      };
+      this.productAssetEdit = {
+        url: `/pages/productAsset/productAssetMultiEdit/productAssetMultiEdit?id=${id}&klassName=Contract`
+      };
+      this.attachmentList = {
+        params: {
+          attachmentable_type: "Contract",
+          attachmentable_id: id
+        }
+      };
+      this.attachmentNew = {
+        params: {
+          attachmentable_type: "Contract",
+          attachmentable_id: id
+        }
+      };
+      this.eventList = {
+        params: {
+          related_item_type: "Contract",
+          related_item_id: id
+        }
+      };
+      this.eventNew = {
+        url: `/pages/event/eventNew/eventNew?related_item_type=Contract&related_item_id=${id}`
+      };
+      this.revisitLogNew = {
+        url: `/pages/revisitLog/revisitLogNew/revisitLogNew?loggable_type=Contract&loggable_id=${id}`
+      };
+      this.editUrl = `/pages/contract/contractEdit/contractEdit?id=${id}`;
+      this.transferUrl = `/pages/common/transfer/transfer?ids=${id}&klassName=Contract`;
 
       uni.setNavigationBarTitle({
         title: model.title || "合同详情"

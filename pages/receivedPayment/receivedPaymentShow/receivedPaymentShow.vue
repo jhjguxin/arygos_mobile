@@ -79,10 +79,8 @@
 
   export default {
     data() {
-      let { query: {id} } = this.$route;
-
       return {
-        id,
+        id: 0,
         klassName: "ReceivedPayment",
         isInvalidData: false,
         model: {},
@@ -115,13 +113,17 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: `/pages/receivedPayment/receivedPaymentEdit/receivedPaymentEdit?id=${id}`
+        editUrl: ""
       }
     },
-    async onLoad() {
-      let { klassName, id } = this;
+    async onLoad(options) {
+      let { id } = options;
+      let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchReceivedPaymentShow({ id });
+
+      this.id = id;
+      this.editUrl = `/pages/receivedPayment/receivedPaymentEdit/receivedPaymentEdit?id=${id}`;
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));

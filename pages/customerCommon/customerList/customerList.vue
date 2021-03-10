@@ -69,6 +69,7 @@
           list: [],
           current: 0
         },
+        tabIndex: 0,
         customerCommons: [],
         customerCommonId: null,
         customerCommon: null,
@@ -101,10 +102,12 @@
         featureLabels: getApp().globalData.featureLabels // 自定义模块名
       };
     },
-    async onLoad() {
+    async onLoad(options) {
+      let { index = 0 } = options;
       let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
 
+      this.tabIndex = index;
       this.customFields = customFields;
       this.ShowCustomFields = _(customFields).filter((customField) => {
         return customField.category == "common"
@@ -136,7 +139,7 @@
         }
       },
       async fetchCustomerCommons() {
-        let { query: { index = 0 } } = this.$route;
+        let { tabIndex: index } = this;
         let res = await customerCommonApi.customer_common_settings();
         let {
           data: {
