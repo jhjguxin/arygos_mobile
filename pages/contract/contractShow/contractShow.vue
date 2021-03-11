@@ -372,6 +372,13 @@
       });
     },
     methods: {
+      onBackPress() {
+        // 拦截掉默认back, 使用 navigateTo 重载列表页
+        uni.navigateTo({
+          url: "/pages/contract/contractList/contractList"
+        })
+        return true;
+      },
       async fetchContractShow ({ id }) {
         uni.showLoading({
           title: '加载中'

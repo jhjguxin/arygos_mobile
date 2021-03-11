@@ -56,6 +56,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       async setContract() {
         let { record, contractId: id } = this;
         if (_.isNil(id)) return;

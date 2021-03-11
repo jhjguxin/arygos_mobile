@@ -215,6 +215,12 @@
       this.$refs.uForm.setRules(rules);
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       handleSave({values}) {
         values.user_ids = _.map(values.user_ids, "value");
 
@@ -226,7 +232,7 @@
 
             // REVIEW 尝试刷新任务列表
             let prevPage = pages[pages.length - 2]; //上一个页面
-            prevPage?.$refs?.eventList?.fetchListData({reload: true});
+            prevPage?.$vm.$refs?.eventList?.fetchListData({reload: true});
 
             uni.navigateBack({
               delta: 1

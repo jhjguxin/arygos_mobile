@@ -272,6 +272,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       handleSave({values}) {
         let { loggableStatusCustomField } = this;
 
@@ -298,7 +304,7 @@
 
             // REVIEW 尝试刷新任务列表
             let prevPage = pages[pages.length - 2]; //上一个页面
-            prevPage?.$refs?.salesActivityList?.fetchListData({});
+            prevPage?.$vm.$refs?.salesActivityList?.fetchListData({});
 
             uni.navigateBack({
               delta: 1

@@ -14,7 +14,7 @@
   "author": "francis.j",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/uni-ui": "^1.2.10",
+    "@dcloudio/uni-ui": "^1.2.11",
     "dayjs": "^1.10.4",
     "fsevents": "^2.3.2",
     "lodash": "^4.17.20",

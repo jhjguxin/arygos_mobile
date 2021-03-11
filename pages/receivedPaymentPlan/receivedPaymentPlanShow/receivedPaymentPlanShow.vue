@@ -164,6 +164,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/receivedPaymentPlan/receivedPaymentPlanList/receivedPaymentPlanList"
+        })
+        return true;
+      },
       async fetchreceivedPaymentPlanShow ({ id }) {
         uni.showLoading({
           title: '加载中'

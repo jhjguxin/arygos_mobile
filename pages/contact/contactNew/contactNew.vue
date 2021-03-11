@@ -50,6 +50,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       handleSave(values) {
         contactApi.create({contact: values}).then((res)=> {
           let { data: {code, remark} } = res;

@@ -238,6 +238,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/lead/leadList/leadList"
+        })
+        return true;
+      },
       async fetchLeadShow ({ id }) {
         uni.showLoading({
           title: '加载中'

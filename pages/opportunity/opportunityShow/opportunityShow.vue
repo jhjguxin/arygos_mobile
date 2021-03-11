@@ -295,6 +295,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/opportunity/opportunityList/opportunityList"
+        })
+        return true;
+      },
       async fetchOpportunityShow ({ id }) {
         uni.showLoading({
           title: '加载中'

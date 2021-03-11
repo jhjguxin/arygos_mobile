@@ -99,6 +99,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/wiki/knowledgeArticleList/knowledgeArticleList"
+        })
+        return true;
+      },
       async fetchKnowledgeArticleShow() {
         let { id } = this;
 

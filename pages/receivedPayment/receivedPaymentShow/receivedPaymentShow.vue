@@ -135,6 +135,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/receivedPayment/receivedPaymentList/receivedPaymentList"
+        })
+        return true;
+      },
       async fetchReceivedPaymentShow ({ id }) {
         uni.showLoading({
           title: '加载中'

@@ -183,6 +183,12 @@
       }
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       handleSave({values}) {
         let schedule_report = {
           ..._.pick(values, "cycle_type", "due_at", "summary", "schedule"),

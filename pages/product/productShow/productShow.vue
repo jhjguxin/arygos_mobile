@@ -165,6 +165,12 @@
       });
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/product/productList/productList"
+        })
+        return true;
+      },
       async fetchProductShow ({ id }) {
         uni.showLoading({
           title: '加载中'

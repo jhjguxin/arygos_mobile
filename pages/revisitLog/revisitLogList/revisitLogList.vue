@@ -133,6 +133,12 @@
       this.fetchRevisitLog({reload: true });
     },
     methods: {
+      onBackPress() {
+        uni.switchTab({
+          url: "/pages/workbench/workbench"
+        })
+        return true;
+      },
       /**
        * 下拉刷新回调函数
        */

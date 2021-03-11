@@ -1,9 +1,9 @@
 {
-    "name" : "arygos_mobile",
+    "name" : "Arygos",
     "appid" : "__UNI__837DD40",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.1",
+    "versionCode" : 101,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
@@ -78,8 +78,7 @@
                     }
                 }
             }
-        },
-        "nvueLaunchMode" : ""
+        }
     },
     /* SDK配置 */
     "quickapp" : {},

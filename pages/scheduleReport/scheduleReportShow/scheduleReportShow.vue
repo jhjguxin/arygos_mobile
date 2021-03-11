@@ -133,6 +133,12 @@
       this.fetchMarkings()
     },
     methods: {
+      onBackPress() {
+        uni.navigateTo({
+          url: "/pages/scheduleReport/scheduleReportList/scheduleReportList"
+        })
+        return true;
+      },
       async fetchScheduleReportShow() {
         let { id } = this;
 

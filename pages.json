@@ -67,11 +67,11 @@
     {
       "path" : "pages/me/me",
       "style": {
-        "navigationBarTitleText": "我的"
-      },
-      "app-plus": {
-        "titleNView": {
-          "autoBackButton": false
+        "navigationBarTitleText": "我的",
+        "app-plus": {
+          "titleNView": {
+            "autoBackButton": false
+          }
         }
       }
     },

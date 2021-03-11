@@ -203,7 +203,7 @@
 
               // REVIEW 尝试刷新任务列表
               let prevPage = pages[pages.length - 2]; //上一个页面
-              prevPage?.$refs?.productAssetList?.fetchListData({reload: true});
+              prevPage?.$vm.$refs?.productAssetList?.fetchListData({reload: true});
 
               uni.navigateBack({
                 delta: 1,
