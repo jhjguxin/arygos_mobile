@@ -43,7 +43,7 @@ export default class CacheStore {
       if (data.ex > dayjs().unix()) {
         return data.value
       } else {
-        this.removeKey (key);
+        this.removeKey(key);
         return null;
       }
     } else {

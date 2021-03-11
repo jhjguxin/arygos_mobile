@@ -100,6 +100,28 @@ export default {
             response = newResponse;
           }
         }
+        if (options.dataType) {
+          // REVIEW 小程序 App 不支持 null
+          // https://uniapp.dcloud.io/use
+          // https://ask.dcloud.net.cn/question/99391
+          // https://ask.dcloud.net.cn/article/37342
+          // const replacer = function (key, value) {
+          //   // Filtering out properties
+          //   if (_.isNil(value)) {
+          //     return "";
+          //   }
+          //   return value;
+          // }
+
+          // // response.data = JSON.parse(
+          // //   JSON.stringify(response.data, replacer)
+          // // )
+
+          // REVIEW 如果后端返回登陆过期则清除本地存储退出登陆
+          if (response.data.code == 100401) {
+            uni.clearStorage();
+          }
+        }
 
         // 统一的响应日志记录
         _reslog(response);

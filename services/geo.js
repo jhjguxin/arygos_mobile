@@ -83,7 +83,7 @@ export default class Geo {
         deferred.reject(districts_res);
       }
 
-      CacheStore.instance().put(cacheKey, data, 3600);
+      CacheStore.instance().put(cacheKey, data, 600);
 
       deferred.resolve(data);
     }

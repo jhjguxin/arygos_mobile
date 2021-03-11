@@ -76,18 +76,26 @@
   export default {
     data() {
       return {
-        featureLabels: getApp().globalData.featureLabels
+        featureLabels: {}
       }
     },
-    async onLoad(option) {
-      console.debug('加载工作台', option);
+    onShow () {
+      console.debug('显示工作台');
 
-      // REVIEW onLaunch 和 onLoad 是并行执行的, 需要在首页使用 promise 保证初始化完成
-      if (Object.keys(this.featureLabels) == 0) {
-        await getApp().globalData.initGlobalData();
-        _.delay(()=> {
-          this.featureLabels = getApp().globalData.featureLabels;
-        }, 10)
+      let { getters: {getHasLogin: hasLogin } } = this.$store;
+
+      // 检查用户登陆状态
+      if (hasLogin) {
+        this.featureLabels = getApp().globalData.featureLabels;
+
+        // REVIEW onLaunch 和 onLoad 是并行执行的, 需要在首页使用 promise 保证初始化完成
+        if (Object.keys(this.featureLabels) == 0) {
+          getApp().globalData.initGlobalData().then(()=> {
+            _.delay(()=> {
+              this.featureLabels = getApp().globalData.featureLabels;
+            }, 50)
+          });
+        }
       }
     },
     async mounted (){
