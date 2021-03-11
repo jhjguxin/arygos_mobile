@@ -9,7 +9,7 @@
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
       >
-        <u-row slot="body" gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.id">
+        <u-row slot="body" gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.name">
           <u-col span="3" text-align="right" class="u-font-xs">
             {{customField.label}}
           </u-col>
@@ -105,7 +105,7 @@
               ...item,
               receiveDate: dayjs(item.receive_date).format("YYYY-MM-DD"),
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
-              url: `/pages/invoicedPaymentPlan/invoicedPaymentPlanShow/invoicedPaymentPlanShow?id=${item.id}`
+              url: `/pages/receivedPaymentPlan/receivedPaymentPlanShow/receivedPaymentPlanShow?id=${item.id}`
             })
           })
 
