@@ -122,6 +122,6 @@
 
 <style>
   .column-filter-fields {
-    min-height: 800rpx;
+    min-height: 60vh;
   }
 </style>
