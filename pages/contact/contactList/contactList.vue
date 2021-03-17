@@ -23,16 +23,18 @@
             :margin="card.margin"  :padding="card.padding"
             @click="handleItemClick($event, item.id)"
           >
-            <u-row slot="body" gutter="10" justify="space-between" v-for="customField in ShowCustomFields" :key="customField.name">
-              <u-col span="3" text-align="right" class="u-font-xs">
-                {{customField.label}}
-              </u-col>
-              <u-col span="9">
-                <custom-field-on-list :customField="customField" :record="item" />
-              </u-col>
-            </u-row>
-            <u-row slot="foot" gutter="0" justify="space-between">
-            </u-row>
+            <view slot="body">
+              <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
+                <u-col span="3" text-align="right" class="u-font-xs">
+                  {{customField.label}}
+                </u-col>
+                <u-col span="9">
+                  <custom-field-on-list :customField="customField" :record="item" />
+                </u-col>
+              </u-row>
+            </view>
+            <view slot="foot">
+            </view>
           </u-card>
 
           <u-row class="item-footer" slot="footer" gutter="0" align="center">
@@ -265,9 +267,9 @@
 
 <style>
   .item-body {
-    width: 580rpx;
+    width: 80vw;
   }
   .item-footer {
-    width: 120rpx;
+    width: 20vw;
   }
 </style>

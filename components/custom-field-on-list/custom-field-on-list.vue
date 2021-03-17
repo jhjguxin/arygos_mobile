@@ -1,40 +1,38 @@
 <template>
   <view>
-    <slot>
-      <view v-if="fieldType === 'mobile_field'" >
-        <u-link :href="href" v-if="displayValue">
-          {{displayValue}}
-        </u-link>
-      </view>
-      <view v-else-if="fieldType === 'tel_field'" >
-        <u-link :href="href" v-if="displayValue">
-          {{displayValue}}
-        </u-link>
-      </view>
-      <text v-else-if="fieldType === 'select2_field'">
-        <text
-          v-if="href" style="color: #2979ff;"
-          @tap.stop="handleSelect2Click"
-        >
-          {{displayValue}}
-        </text>
-        <text v-else>
-          {{displayValue}}
-        </text>
-      </text>
-      <view v-else-if="fieldType === 'select_field'" >
-        <u-tag :text="displayValue" v-if="displayValue"/>
-      </view>
-      <view v-else-if="fieldType === 'field_map_field'" >
-        <u-tag :text="displayValue" v-if="displayValue"/>
-      </view>
-      <view v-else-if="fieldType === 'multi_select'" v-for="opt in value" :key="opt">
-        <u-tag :text="opt"/>
-      </view>
-      <view v-else>
+    <view v-if="fieldType === 'mobile_field'" >
+      <u-link :href="href" v-if="displayValue">
         {{displayValue}}
-      </view>
-    </slot>
+      </u-link>
+    </view>
+    <view v-else-if="fieldType === 'tel_field'" >
+      <u-link :href="href" v-if="displayValue">
+        {{displayValue}}
+      </u-link>
+    </view>
+    <text v-else-if="fieldType === 'select2_field'">
+      <text
+        v-if="href" style="color: #2979ff;"
+        @tap.stop="handleSelect2Click"
+      >
+        {{displayValue}}
+      </text>
+      <text v-else>
+        {{displayValue}}
+      </text>
+    </text>
+    <view v-else-if="fieldType === 'select_field'" >
+      <u-tag :text="displayValue" v-if="displayValue"/>
+    </view>
+    <view v-else-if="fieldType === 'field_map_field'" >
+      <u-tag :text="displayValue" v-if="displayValue"/>
+    </view>
+    <view v-else-if="fieldType === 'multi_select'" v-for="opt in value" :key="opt">
+      <u-tag :text="opt"/>
+    </view>
+    <view v-else>
+      {{displayValue}}
+    </view>
   </view>
 </template>
 

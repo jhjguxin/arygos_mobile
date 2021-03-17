@@ -1,47 +1,45 @@
 <template>
   <view :style="style">
-    <slot>
-      <u-link v-if="fieldType === 'mobile_field'"  :href="href">
+    <u-link v-if="fieldType === 'mobile_field'"  :href="href">
+      {{displayValue}}
+    </u-link>
+    <u-link v-else-if="fieldType === 'tel_field'"  :href="href">
+      {{displayValue}}
+    </u-link>
+    <u-link v-else-if="fieldType === 'url_field'"  :href="href">
+      {{displayValue}}
+    </u-link>
+    <text v-else-if="fieldType === 'select2_field'">
+      <text
+        v-if="href" style="color: #2979ff;"
+        @tap.stop="handleSelect2Click"
+      >
         {{displayValue}}
-      </u-link>
-      <u-link v-else-if="fieldType === 'tel_field'"  :href="href">
-        {{displayValue}}
-      </u-link>
-      <u-link v-else-if="fieldType === 'url_field'"  :href="href">
-        {{displayValue}}
-      </u-link>
-      <text v-else-if="fieldType === 'select2_field'">
-        <text
-          v-if="href" style="color: #2979ff;"
-          @tap.stop="handleSelect2Click"
-        >
-          {{displayValue}}
-        </text>
-        <text v-else>
-          {{displayValue}}
-        </text>
       </text>
-      <u-tag v-else-if="fieldType === 'select_field' && displayValue"  :text="displayValue">
-      </u-tag>
-      <u-tag v-else-if="fieldType === 'field_map_field' && displayValue" :text="displayValue">
-      </u-tag>
-      <u-tag v-else-if="fieldType === 'multi_select' && displayValue" v-for="opt in displayValue" :key="opt" :text="opt">
-      </u-tag>
-      <view v-else-if="fieldType === 'file_field' && displayValue">
-        <u-row v-for="item in displayValue"
-        :key="item.id" style="width: 45vh;">
-          <u-col span="10">{{item.name}}</u-col>
-          <u-col span="2">
-            <u-link :href="item.file_url" >
-              查看
-            </u-link>
-          </u-col>
-        </u-row>
-      </view>
       <text v-else>
         {{displayValue}}
       </text>
-    </slot>
+    </text>
+    <u-tag v-else-if="fieldType === 'select_field' && displayValue"  :text="displayValue">
+    </u-tag>
+    <u-tag v-else-if="fieldType === 'field_map_field' && displayValue" :text="displayValue">
+    </u-tag>
+    <u-tag v-else-if="fieldType === 'multi_select' && displayValue" v-for="opt in displayValue" :key="opt" :text="opt">
+    </u-tag>
+    <view v-else-if="fieldType === 'file_field' && displayValue">
+      <u-row v-for="item in displayValue"
+      :key="item.id" style="width: 45vh;">
+        <u-col span="10">{{item.name}}</u-col>
+        <u-col span="2">
+          <u-link :href="item.file_url" >
+            查看
+          </u-link>
+        </u-col>
+      </u-row>
+    </view>
+    <text v-else>
+      {{displayValue}}
+    </text>
   </view>
 </template>
 
