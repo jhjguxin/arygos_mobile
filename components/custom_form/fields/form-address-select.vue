@@ -37,9 +37,18 @@
       }
     },
     async created() {
+      let { customField: { name }} = this;
+
       let { value } = this;
       await this.fetchData();
       this.setDefaultValue();
+
+      value = {
+        province_id: value[0],
+        city_id: value[1],
+        district_id: value[2],
+      }
+      this.$emit("fieldChange", {name, value});
     },
     methods: {
       handleConfirm(e) {

@@ -12,6 +12,7 @@
     :header="header"
     @on-success="handleUploadSuccess"
     @on-uploaded="handleUploaded"
+    @on-remove="handleRemove"
     v-if="uploadReady"
   ></u-upload>
   <u-loading mode="flower" v-else></u-loading>
@@ -25,7 +26,7 @@
   export default {
     data() {
       let {
-        fileList,
+        "file-list": fileList,
         maxCount = 8,
         uploadText = "选择文件",
         formData = {},
@@ -132,6 +133,8 @@
 
         if (bypass_model) {
           await this.handleBypassModel(data, index, lists, name);
+        } else {
+          this.doAddFile(data, index)
         }
       },
       handleBypassModel (data, index, lists, name) {
@@ -165,28 +168,44 @@
             data,
             method: 'POST',
             success: (res) => {
-              let { data: { key } } = res;
-              let upload = this.$refs.uUpload;
-              if (key) {
-                upload.lists[index].response = res.data;
-
-                this.$emit("upload", upload.lists);
-              } else {
-                upload.remove(index);
-              }
+              let { data } = res;
+              this.doAddFile(data, index)
             }
           })
         }
       },
       handleUploaded() {
+      },
+      doAddFile(data, up_index) {
+        let { key } = data;
         let upload = this.$refs.uUpload;
-        let {
-          qiniu: {bypass_model},
-        } = this;
+        if (key) {
+          let { fileList } = this;
+          let item = upload.lists[up_index];
+          item = {
+            ...item,
+            response: data
+          }
 
-        if (! bypass_model) {
-          this.$emit("upload", upload.lists);
+          let index = _.findIndex(fileList, (v)=> (
+            v?.response?.payload['id'] == item.response?.payload['id']
+          ));
+          if (index == -1) {
+            fileList.push(item)
+          }
+
+          this.$emit("upload", fileList);
+        } else {
+          upload.remove(up_index);
         }
+      },
+      handleRemove(index) {
+        let { fileList } = this;
+        // REVIEW upload.lists 会丢弃 response 属性
+        fileList.splice(index, 1);
+        this.fileList = fileList;
+
+        this.$emit("upload", fileList);
       }
     },
     computed: {

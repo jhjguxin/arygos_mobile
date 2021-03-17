@@ -27,6 +27,17 @@
       </u-tag>
       <u-tag v-else-if="fieldType === 'multi_select' && displayValue" v-for="opt in displayValue" :key="opt" :text="opt">
       </u-tag>
+      <view v-else-if="fieldType === 'file_field' && displayValue">
+        <u-row v-for="item in displayValue"
+        :key="item.id" style="width: 45vh;">
+          <u-col span="10">{{item.name}}</u-col>
+          <u-col span="2">
+            <u-link :href="item.file_url" >
+              查看
+            </u-link>
+          </u-col>
+        </u-row>
+      </view>
       <text v-else>
         {{displayValue}}
       </text>
@@ -133,6 +144,15 @@
               break;
             case "geo_address_field":
               value = _.at(record, customColumnName)[0];
+              break;
+            case "file_field":
+              value = _.at(record, customColumnName)[0];
+              value = _.map(value, (v)=> (
+                {
+                  name: _.truncate(v.name, {length: 20}),
+                  file_url: v.file_url
+                }
+              ))
               break;
           }
 

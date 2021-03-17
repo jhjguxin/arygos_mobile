@@ -43,6 +43,24 @@ export default ({ record, customField }) => {
     case "geo_address_field":
       value = _.at(record, "extra.detail_address")[0];
       break;
+    case "file_field":
+      value = _.at(record, customFieldName)[0];
+
+      value = _.map(value, (v) => {
+        // let thumbUrl = customField.file_type == "image" ? v.file_url : undefined;
+
+        return ({
+          uid: `attach-${v.id}`,
+          name: v.name,
+          progress: 100,
+          error: false,
+          url: v.file_url,
+          response: {
+            payload: v
+          }
+        });
+      });
+      break;
   }
 
   return value;

@@ -35,7 +35,7 @@
         errorType = ['message', 'border-bottom', 'toast']
       } = this.$attrs;
 
-      let rules = {}
+      let rules = {};
 
       _.map(customFields, (customField) => {
         let _rules = parseRule({ customField });
