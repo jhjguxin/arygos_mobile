@@ -43,6 +43,25 @@
                 <view class="u-order-desc u-font-sm ">提醒时间：{{item.remindAt}}</view>
                 <view class="u-order-desc u-font-sm">跟进时间：{{item.revisitAt}}</view>
                 <view class="u-order-desc u-font-sm" v-if="item.contactNames.length > 0">{{featureLabels.contact}}：{{item.contactNames}}</view>
+                <view class="u-order-desc u-font-sm u-padding-5 u-flex" v-if="item.image_attachments.length > 0">
+                  <u-image
+                    :src="attachment.file_url"
+                    width="150rpx" height="150rpx"
+                    mode="aspectFit"
+                    @click="handleItemClick($event, attachment)"
+                    v-for="attachment in item.image_attachments"
+                    :key="attachment.id"
+                  ></u-image>
+                </view>
+                <view class="u-order-desc u-font-sm u-padding-5" v-if="item.file_attachments.length > 0">
+                 <u-row v-for="attachment in item.file_attachments"
+                 :key="attachment.id">
+                   <u-col span="10" @click="handleItemClick($event, attachment)">{{attachment.name}}</u-col>
+                   <u-col span="2">
+                     {{attachment.fileSize}}
+                   </u-col>
+                 </u-row>
+                </view>
                 <view class="u-order-desc u-font-sm">来自：
                   <text
                     v-if="item.sales_activity.refer_url" style="color: #2979ff;"
@@ -83,6 +102,8 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
+  import prettyBytes from 'pretty-bytes';
+  import mime from 'mime-types';
   import { revisitLogApi } from 'services/http';
   import CustomField from 'services/custom_field';
 
@@ -212,6 +233,13 @@
               remindAt: item.remind_at ? dayjs(item.remind_at).format("YYYY-MM-DD HH:mm") : null,
               revisitAt: dayjs(item.revisit_at).format("YYYY-MM-DD HH:mm"),
               createdAt: dayjs(item.created_at).format("YYYY-MM-DD HH:mm"),
+              file_attachments: _.map(item.file_attachments, (attachment)=> {
+                return ({
+                  ...attachment,
+                  createdAt: dayjs(attachment.created_at).format("YYYY-MM-DD HH:mm"),
+                  fileSize: prettyBytes(attachment.file_file_size)
+                })
+              }),
               sales_activity: {
                 ...item.sales_activity,
                 refer_url: urlMap[item.sales_activity.refer_type],
@@ -282,6 +310,58 @@
         uni.navigateTo({
           url
         })
+      },
+      handleItemClick (event, item) {
+        let { file_url: filePath, file_content_type } = item;
+
+        uni.showLoading({
+            title: '文件下载中'
+        });
+
+        uni.downloadFile({
+          url: encodeURI(filePath),
+          success(res) {
+            uni.hideLoading();
+
+            let isImage = _.startsWith(file_content_type, "image/");
+            const documentExts = [
+              "doc", "xls", "ppt", "pdf", "docx", "xlsx", "pptx"
+            ];
+            let isDocument = _.includes(
+              documentExts, mime.extension(file_content_type)
+            );
+
+            if (isImage) {
+              uni.previewImage({
+                urls: [res.tempFilePath]
+              });
+            } else if (isDocument){
+              uni.openDocument({
+                filePath: res.tempFilePath,
+                fail(e) {
+                  uni.hideLoading();
+                  uni.showToast({
+                    icon: 'none',
+                    title: '文件打开失败！'
+                  });
+                }
+              });
+            } else {
+              uni.saveFile({});
+            }
+          },
+          fail() {
+            uni.hideLoading();
+            uni.showToast({
+              icon: 'none',
+              title: '附件下载出错！'
+            });
+          },
+          complete() {
+            uni.hideLoading();
+          }
+        });
+
       }
     }
   };

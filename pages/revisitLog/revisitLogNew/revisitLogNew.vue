@@ -59,7 +59,20 @@
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
           <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
         </u-form-item>
-
+        <u-form-item prop="image_attachment_ids" :label="form.item.image_attachment_ids.label">
+          <attachment-upload
+            :maxCount="form.item.image_attachment_ids.max"
+            :deletable="true"
+            @upload="handleImageAttachmentUpload"
+          />
+        </u-form-item>
+        <u-form-item prop="file_attachment_ids" :label="form.item.file_attachment_ids.label">
+          <attachment-upload
+            :maxCount="form.item.file_attachment_ids.max"
+            :deletable="true"
+            @upload="handleFileAttachmentUpload"
+          />
+        </u-form-item>
         <u-button @click="handleSubmit" type="primary" :disabled="! formReady">提交</u-button>
       </u-form>
   </view>
@@ -108,6 +121,8 @@
           loggable: "",
           contacts: [],
           loggableStatus: null,
+          image_attachment_ids: [],
+          file_attachment_ids: [],
           loggable_type, loggable_id
         },
         item: {
@@ -168,6 +183,14 @@
             },
             show: false,
             border: false
+          },
+          image_attachment_ids: {
+            label: "图片",
+            max: 5
+          },
+          file_attachment_ids: {
+            label: "附件",
+            max: 5
           }
         },
         rules: {
@@ -282,7 +305,7 @@
         let { loggableStatusCustomField } = this;
 
         let revisit_log = {
-          ..._.pick(values, "category", "content", "revisit_at", "remind_at"),
+          ..._.pick(values, "category", "content", "revisit_at", "remind_at", "image_attachment_ids", "file_attachment_ids"),
           loggable_attrs: {
             ..._.pick(values, "loggable_id", "loggable_type"),
           }
@@ -372,6 +395,24 @@
         let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
 
         this.form.model.remind_at = value;
+      },
+      handleImageAttachmentUpload(lists) {;
+        if (_.isArray(lists)) {
+          let _value = _.map(lists, (v)=> (
+            v?.response?.payload['id']
+          ));
+
+          this.form.model.image_attachment_ids = _value;
+        }
+      },
+      handleFileAttachmentUpload(lists) {;
+        if (_.isArray(lists)) {
+          let _value = _.map(lists, (v)=> (
+            v?.response?.payload['id']
+          ));
+
+          this.form.model.file_attachment_ids = _value;
+        }
       },
       handleReset() {
         let { uForm } = this.$refs;

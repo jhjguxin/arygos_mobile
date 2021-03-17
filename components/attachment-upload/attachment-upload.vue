@@ -36,6 +36,7 @@
         height,
         header
        } = this.$attrs;
+       fileList = fileList || [];
 
       return {
         action: "",
