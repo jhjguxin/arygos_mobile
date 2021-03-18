@@ -144,7 +144,7 @@
         }
       }
     },
-   onLoad() {
+   onShow() {
     this.fetchListData({});
     this.fetchTodoDot();
     _.delay(()=> {
