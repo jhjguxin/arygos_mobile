@@ -22,7 +22,7 @@
           <u-grid :col="4"  :border="false">
             <u-grid-item index="revisit_log" @click="handleItemClick($event, '/pages/common/pickEntity/pickEntity?returnAction=revisitLogNew')">
               <u-icon name="/static/icons/revisitLog.png" :size="46"></u-icon>
-              <view class="grid-text">写{{this.featureLabels['revisit_log']}}</view>
+              <view class="grid-text">{{this.featureLabels['revisit_log']}}</view>
             </u-grid-item>
             <u-grid-item index="schedule_report" @click="handleItemClick($event, '/pages/scheduleReport/scheduleReportNew/scheduleReportNew')">
               <u-icon name="/static/icons/scheduleReport.png" :size="46"></u-icon>
