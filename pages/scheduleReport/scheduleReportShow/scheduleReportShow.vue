@@ -13,10 +13,18 @@
       <view slot="body" class="u-flex">
         <u-row gutter="16" style="width: 85%;">
           <u-col span="12" class="u-font-lg">总结：</u-col>
-          <u-col span="12" class="u-font-sm u-border-bottom">{{model.summary}}</u-col>
+          <u-col span="12" class="u-font-sm u-border-bottom u-p-b-10">{{model.summary}}</u-col>
           <u-col span="12" class="u-font-lg">计划：</u-col>
-          <u-col span="12" class="u-font-sm u-border-bottom">{{model.schedule}}</u-col>
-
+          <u-col span="12" class="u-font-sm u-border-bottom u-p-b-10">{{model.schedule}}</u-col>
+          <u-col span="12" class="u-font-sm">
+            附件：<u-row v-for="attachment in model.file_attachments"
+            :key="attachment.id">
+              <u-col span="9" @click="handleItemClick($event, attachment)">{{attachment.name}}</u-col>
+              <u-col span="3">
+                {{attachment.fileSize}}
+              </u-col>
+            </u-row>
+          </u-col>
         </u-row>
         <view
           class="u-font-40 u-type-error u-text-center "
@@ -71,6 +79,8 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
+  import prettyBytes from 'pretty-bytes';
+  import mime from 'mime-types';
   import { scheduleReportApi } from 'services/http';
 
   export default {
@@ -163,6 +173,13 @@
           model = {
             ...model,
             title: `${model.user?.name}的${model.cycle_type_i18n}(${dayjs(model.due_at).format(format)})`,
+            file_attachments: _.map(model.file_attachments, (attachment)=> {
+              return ({
+                ...attachment,
+                createdAt: dayjs(attachment.created_at).format("YYYY-MM-DD HH:mm"),
+                fileSize: prettyBytes(attachment.file_file_size)
+              })
+            }),
             createdAt: dayjs(model.created_at).format("YYYY-MM-DD HH:mm"),
             ccUsers: _.map(model.cc_users, "name").join(", ") || "无",
           }
@@ -299,6 +316,58 @@
           this.doDestroy({marking_id});
         }
       },
+handleItemClick (event, item) {
+        let { file_url: filePath, file_content_type } = item;
+
+        uni.showLoading({
+            title: '文件下载中'
+        });
+
+        uni.downloadFile({
+          url: encodeURI(filePath),
+          success(res) {
+            uni.hideLoading();
+
+            let isImage = _.startsWith(file_content_type, "image/");
+            const documentExts = [
+              "doc", "xls", "ppt", "pdf", "docx", "xlsx", "pptx"
+            ];
+            let isDocument = _.includes(
+              documentExts, mime.extension(file_content_type)
+            );
+
+            if (isImage) {
+              uni.previewImage({
+                urls: [res.tempFilePath]
+              });
+            } else if (isDocument){
+              uni.openDocument({
+                filePath: res.tempFilePath,
+                fail(e) {
+                  uni.hideLoading();
+                  uni.showToast({
+                    icon: 'none',
+                    title: '文件打开失败！'
+                  });
+                }
+              });
+            } else {
+              uni.saveFile({});
+            }
+          },
+          fail() {
+            uni.hideLoading();
+            uni.showToast({
+              icon: 'none',
+              title: '附件下载出错！'
+            });
+          },
+          complete() {
+            uni.hideLoading();
+          }
+        });
+
+      }
     }
   }
 </script>
