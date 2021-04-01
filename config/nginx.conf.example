@@ -1,0 +1,24 @@
+server {
+  listen 80;
+  server_name arygos_h5.ikcrm.com;
+  root /data0/crm_deploy/arygos_h5_staging;
+
+  gzip on;
+  gzip_min_length  500;
+  gzip_proxied     any;
+  gzip_comp_level 9;
+  gzip_types text/css text/xml application/javascript;
+
+  location ~ ^/static/ {
+    gzip_static on;
+    expires max;
+    etag on;
+    add_header Cache-Control public;
+  }
+
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}
