@@ -4,7 +4,6 @@
 import _ from 'lodash';
 import { CacheStore } from './../common/utils';
 import { constantApi } from './http/index';
-const Q = require('q');
 
 export default class ConstGlobal {
   static _instance = null;
@@ -31,28 +30,27 @@ export default class ConstGlobal {
   }
 
   async fetchConstGlobal() {
-    const cacheKey = ConstGlobal.cacheKey;
-    let deferred = Q.defer();
+    return new Promise(async (resolve, reject) => {
+      const cacheKey = ConstGlobal.cacheKey;
 
-    if (CacheStore.instance().keyExists(cacheKey)) {
-      let res = CacheStore.instance().get(cacheKey)
+      if (CacheStore.instance().keyExists(cacheKey)) {
+        let res = CacheStore.instance().get(cacheKey)
 
-      deferred.resolve(res);
-    } else {
-      constantApi.global()
-        .then((res) => {
-          let { data: {data, code} } = res;
+        resolve(res);
+      } else {
+        constantApi.global()
+          .then((res) => {
+            let { data: {data, code} } = res;
 
-          if (code == 0) {
-            CacheStore.instance().put(cacheKey, data, 300);
+            if (code == 0) {
+              CacheStore.instance().put(cacheKey, data, 300);
 
-            deferred.resolve(data);
-          } else {
-            deferred.reject(data);
-          }
-        });
-    }
-
-    return deferred.promise;
+              resolve(data);
+            } else {
+              reject(data);
+            }
+          });
+      }
+    })
   }
 }

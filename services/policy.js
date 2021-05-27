@@ -3,7 +3,6 @@
  */
 import _ from 'lodash';
 import { permissionApi } from './http';
-const Q = require('q');
 
 export default class Policy {
   static _policyInstance = null;
@@ -56,29 +55,29 @@ export default class Policy {
   }
 
   async fetchPermission() {
-    let deferred = Q.defer();
-    let {
-      getters: {
-        getPermissions: { permissions = [], usercenter_permission }
+    return new Promise((resolve, reject) => {
+      let {
+        getters: {
+          getPermissions: { permissions = [], usercenter_permission }
+        }
+      } = this.app.$store;
+
+      if (permissions.length > 0) {
+        resolve({ permissions, usercenter_permission });
+      } else {
+        permissionApi.index()
+          .then((res) => {
+            let { data: {code, data }} = res;
+            if (Number(code) == 0) {
+              let  { permissions, usercenter_permission } = data;
+              this.app.$store.dispatch('setPermissions', permissions, usercenter_permission);
+
+              resolve({ permissions, usercenter_permission });
+            }
+
+            resolve([]);
+          });
       }
-    } = this.app.$store;
-
-    if (permissions.length > 0) {
-      deferred.resolve({ permissions, usercenter_permission });
-    } else {
-      permissionApi.index()
-        .then((res) => {
-          let { data: {code, data }} = res;
-          if (Number(code) == 0) {
-            let  { permissions, usercenter_permission } = data;
-            this.app.$store.dispatch('setPermissions', permissions, usercenter_permission);
-
-            deferred.resolve({ permissions, usercenter_permission });
-          }
-
-          deferred.resolve([]);
-        });
-    }
-    return deferred.promise;
+    })
   }
 }

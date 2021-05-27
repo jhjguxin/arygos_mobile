@@ -3,7 +3,6 @@
  */
 import _ from 'lodash';
 import dayjs from 'dayjs';
-const Q = require('q');
 import { CacheStore } from './../common/utils';
 import { reminderApi } from './http/index';
 
@@ -26,27 +25,26 @@ export default class RedDot {
   }
 
   todoDot() {
-    const cacheKey = RedDot.cacheKeyTodo;
-    let deferred = Q.defer();
+    return new Promise((resolve, reject) => {
+      const cacheKey = RedDot.cacheKeyTodo;
 
-    if (CacheStore.instance().keyExists(cacheKey)) {
-      let res = CacheStore.instance().get(cacheKey);
+      if (CacheStore.instance().keyExists(cacheKey)) {
+        let res = CacheStore.instance().get(cacheKey);
 
-      deferred.resolve(res);
-    } else {
-      let dates = [dayjs().format("YYYY-MM-DD")];
-      reminderApi.todo_dot({ dates }).then((res)=> {
-        let {data: { data: {dates: _dates} }} = res;
-        let value = 0;
-        if (_dates[0]) value = String(_dates[0][1]);
+        resolve(res);
+      } else {
+        let dates = [dayjs().format("YYYY-MM-DD")];
+        reminderApi.todo_dot({ dates }).then((res)=> {
+          let {data: { data: {dates: _dates} }} = res;
+          let value = 0;
+          if (_dates[0]) value = String(_dates[0][1]);
 
-        CacheStore.instance().put(cacheKey, value, 600);
+          CacheStore.instance().put(cacheKey, value, 600);
 
-        deferred.resolve(value);
-      });
+          resolve(value);
+        });
 
-    }
-
-    return deferred.promise;
+      }
+    })
   }
 }
