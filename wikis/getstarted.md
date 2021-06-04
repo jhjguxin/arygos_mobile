@@ -5,7 +5,7 @@
 主要使用的插件
 
 - compile-node-sass
-- ThorUI组件库
+- uview-ui 组件库
 - vuex
 
 ## 注意  
@@ -77,5 +77,6 @@
 - [uniapp 文档](https://uniapp.dcloud.io/api/)
 - [Vue CLI](https://cli.vuejs.org/zh/guide/)
 - [uformjs](https://uformjs.org/)
+- [thorui](https://thorui.cn/doc/)
 - [component-dynamic-async](https://v3.vuejs.org/guide/component-dynamic-async.html)
 - [uniapp 组件](https://uniapp.dcloud.io/use?id=vue-%e7%bb%84%e4%bb%b6)

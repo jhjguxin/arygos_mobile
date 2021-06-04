@@ -276,6 +276,54 @@
       }
     },
     {
+      "path" : "pages/approval/approvalList/approvalList",
+      "style" :
+      {
+        "navigationBarTitleText": "审批",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path" : "pages/approval/approvalDetail/approvalDetail",
+      "style" :
+      {
+        "navigationBarTitleText": "审批详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/approval/approvalApplying/approvalApplying",
+      "style" :
+      {
+        "navigationBarTitleText": "发起审批",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/approval/approvalApprove/approvalApprove",
+      "style" :
+      {
+        "navigationBarTitleText": "审批通过",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/approval/approvalDeny/approvalDeny",
+      "style" :
+      {
+        "navigationBarTitleText": "审批否决",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path" : "pages/approval/approvalRevert/approvalRevert",
+      "style" :
+      {
+        "navigationBarTitleText": "撤销审批",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path" : "pages/product/productNew/productNew",
       "style": {
         "navigationBarTitleText": "新增产品"

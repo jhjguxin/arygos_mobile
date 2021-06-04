@@ -154,6 +154,7 @@
   import _ from 'lodash';
   import { opportunityApi } from 'services/http';
   import CustomField from 'services/custom_field';
+  import ApprovalSetting from 'services/approval_setting';
 
   export default {
     data() {
@@ -218,6 +219,10 @@
               subText: '感谢您的分享'
             },
             {
+              text: '审批流',
+              disabled: true
+            },
+            {
               text: '删除',
               color: 'red',
               subText: '删除后不可恢复'
@@ -231,7 +236,8 @@
         featureLabels: getApp().globalData.featureLabels,
         editUrl: "",
         turnContractUrl: "",
-        transferUrl: ""
+        transferUrl: "",
+        approvalDetailUrl: ""
       }
     },
     async onLoad(options) {
@@ -240,6 +246,15 @@
       let { klassName } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
       let model = await this.fetchOpportunityShow({ id });
+      let approvalSetting = await ApprovalSetting.instance();
+
+      if (approvalSetting.isEnable({ name: _.snakeCase(klassName) })) {
+        let { salesActionSheet } = this;
+
+        salesActionSheet.list[2].disabled = false;
+        this.salesActionSheet = salesActionSheet;
+        this.approvalDetailUrl = `/pages/approval/approvalDetail/approvalDetail?approvable_id=${id}&approvable_type=${klassName}`;
+      }
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
@@ -380,6 +395,13 @@
           return;
         }
         if (index == 2) {
+          let { approvalDetailUrl } = this;
+          uni.navigateTo({
+            url: approvalDetailUrl
+          });
+          return;
+        }
+        if (index == 3) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({
             title: `确定删除${featureLabels[_.snakeCase(klassName)]}？`,
@@ -395,7 +417,7 @@
             }
           });
         }
-        if (index == 3) {
+        if (index == 4) {
           uni.switchTab({
             url: '/pages/workbench/workbench',
 

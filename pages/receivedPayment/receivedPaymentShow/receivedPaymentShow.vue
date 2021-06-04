@@ -76,6 +76,7 @@
   import dayjs from 'dayjs';
   import { receivedPaymentApi } from 'services/http';
   import CustomField from 'services/custom_field';
+  import ApprovalSetting from 'services/approval_setting';
 
   export default {
     data() {
@@ -102,6 +103,10 @@
         salesActionSheet: {
           list: [
             {
+              text: '审批流',
+              disabled: true
+            },
+            {
               text: '删除',
               color: 'red',
               subText: '删除后不可恢复'
@@ -113,7 +118,8 @@
           show: false
         },
         featureLabels: getApp().globalData.featureLabels,
-        editUrl: ""
+        editUrl: "",
+        approvalDetailUrl: ""
       }
     },
     async onLoad(options) {
@@ -124,6 +130,15 @@
 
       this.id = id;
       this.editUrl = `/pages/receivedPayment/receivedPaymentEdit/receivedPaymentEdit?id=${id}`;
+      let approvalSetting = await ApprovalSetting.instance();
+
+      if (approvalSetting.isEnable({ name: _.snakeCase(klassName) })) {
+        let { salesActionSheet } = this;
+
+        salesActionSheet.list[0].disabled = false;
+        this.salesActionSheet = salesActionSheet;
+        this.approvalDetailUrl = `/pages/approval/approvalDetail/approvalDetail?approvable_id=${id}&approvable_type=${klassName}`;
+      }
 
       this.customFields = customFields;
       this.customFieldsObject = Object.assign({}, ...customFields.map(customField => ({[customField.name]: customField})));
@@ -211,6 +226,13 @@
       },
       handleSalesActionSheetClick (index) {
         if (index == 0) {
+          let { approvalDetailUrl } = this;
+          uni.navigateTo({
+            url: approvalDetailUrl
+          });
+          return;
+        }
+        if (index == 1) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({
             title: `确定删除${featureLabels[_.snakeCase(klassName)]}？`,
@@ -226,7 +248,7 @@
             }
           });
         }
-        if (index == 1) {
+        if (index == 2) {
           let { editUrl } = this;
           uni.switchTab({
             url: '/pages/workbench/workbench',
