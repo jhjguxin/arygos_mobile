@@ -127,7 +127,10 @@
           _.findIndex(province?.children, (opt) => opt.value == city.value),
           _.findIndex(city?.children, (opt) => opt.value == value[2]),
         ];
-        this.$set(this, 'defaultValue', defaultValue);
+
+        if (! _.isNil(defaultValue[0])) {
+          this.$set(this, 'defaultValue', defaultValue);
+        }
       }
     },
     computed: {

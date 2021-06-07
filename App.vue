@@ -15,11 +15,13 @@ export default {
       // REVIEW onLaunch 和 onLoad 是并行执行的
       getApp().globalData.initGlobalData();
 
-      _.delay(()=> {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        });
-      }, 50);
+      if (!getApp().globalData.config.debug) {
+        _.delay(()=> {
+          uni.switchTab({
+            url: "/pages/workbench/workbench"
+          });
+        }, 50);
+      }
 
       RedDot.instance().todoDot().then((value)=> {
         if (value) {

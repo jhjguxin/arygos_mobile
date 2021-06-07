@@ -42,6 +42,10 @@
         <u-icon name="/static/icons/paymentRcharge.png" :size="46"></u-icon>
         <view class="grid-text">回款</view>
       </u-grid-item>
+      <u-grid-item @click="handleItemClick($event, '/pages/approval/approvalList/approvalList')" v-if="showApprovalList">
+        <u-icon name="/static/icons/approval.png" :size="46"></u-icon>
+        <view class="grid-text">审批</view>
+      </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/product/productList/productList', 'product#show')">
         <u-icon name="bag-fill" :size="46"></u-icon>
         <view class="grid-text">{{this.featureLabels["product"]}}</view>
@@ -72,11 +76,14 @@
     mapMutations
   } from 'vuex';
   import Policy from 'services/policy';
+  import Feature from 'services/feature';
+  import ApprovalSetting from 'services/approval_setting';
 
   export default {
     data() {
       return {
-        featureLabels: {}
+        featureLabels: {},
+        showApprovalList: false
       }
     },
     onShow () {
@@ -100,6 +107,16 @@
     },
     async mounted (){
       let policy = await Policy.instance();
+      let approvalSetting = await ApprovalSetting.instance();
+      let feature = await Feature.instance();
+
+      let model_names = [
+        'Contract', 'ReceivedPayment', 'Opportunity'
+      ];
+      model_names = _.filter(model_names, (name) => (feature.isEnable({ name: _.snakeCase(name) })));
+      let showApprovalList = ! _.every(model_names, (name) => !approvalSetting.isEnable({ name: _.snakeCase(name) }));
+
+      this.showApprovalList = showApprovalList;
       this.policy = policy;
     },
     methods: {

@@ -53,6 +53,7 @@
   import dayjs from 'dayjs';
   import { opportunityApi } from 'services/http';
   import CustomField from 'services/custom_field';
+  import ApprovalSetting from 'services/approval_setting';
 
   export default {
     components: {},
@@ -96,6 +97,21 @@
     async onLoad() {
       let { klassName, featureLabels } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
+      let approvalSetting = await ApprovalSetting.instance();
+
+      if (approvalSetting.isEnable({ name: _.snakeCase(klassName) })) {
+        let { swipeAction } = this;
+        swipeAction.options.splice(0, 0, {
+          text: '审批流',
+          style: {
+            backgroundColor: 'blue'
+          }
+        })
+
+        this.swipeAction = {
+          ...swipeAction
+        }
+      }
 
       this.customFields = customFields;
       this.ShowCustomFields = _(customFields).filter((customField) => {
@@ -239,10 +255,27 @@
         this.list = list;
       },
       handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
-          let { list } = this;
+        let { swipeAction: { options } } = this;
+        let { list, klassName } = this;
+
+        let option = options[option_index];
+
+        if (option.text === "删除") {
           let id = list[index]?.id;
           this.doDestroy({id})
+        }
+        if (option.text === "审批流") {
+          let id = list[index]?.id;
+          let url =  `/pages/approval/approvalDetail/approvalDetail?approvable_id=${id}&approvable_type=${klassName}`;
+
+
+          uni.navigateTo({
+            url,
+            success: () => {
+              list[index].swipeAction.show = false;
+              this.list = list;
+            }
+          });
         }
       },
       handleSearch ({query, searchColumnName }) {

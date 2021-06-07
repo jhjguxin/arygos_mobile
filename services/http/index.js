@@ -17,6 +17,8 @@ import invoicedPaymentApi from './api/invoiced_payment';
 import receivedPaymentApi from './api/received_payment';
 import receivedPaymentPlanApi from './api/received_payment_plan';
 
+import approvalApi  from './api/approval';
+
 import productApi from './api/product';
 import productCategoryApi from './api/product_category';
 
@@ -69,6 +71,7 @@ export {
   invoicedPaymentApi,
   receivedPaymentApi,
   receivedPaymentPlanApi,
+  approvalApi,
   productApi,
   productCategoryApi,
   leadCommonApi,
