@@ -55,29 +55,28 @@ export default class Policy {
   }
 
   async fetchPermission() {
-    return new Promise((resolve, reject) => {
-      let {
-        getters: {
-          getPermissions: { permissions = [], usercenter_permission }
-        }
-      } = this.app.$store;
-
-      if (permissions.length > 0) {
-        resolve({ permissions, usercenter_permission });
-      } else {
-        permissionApi.index()
-          .then((res) => {
-            let { data: {code, data }} = res;
-            if (Number(code) == 0) {
-              let  { permissions, usercenter_permission } = data;
-              this.app.$store.dispatch('setPermissions', permissions, usercenter_permission);
-
-              resolve({ permissions, usercenter_permission });
-            }
-
-            resolve([]);
-          });
+    let {
+      getters: {
+        getPermissions: { permissions = [], usercenter_permission = null }
       }
-    })
+    } = this.app.$store;
+
+    if (permissions.length > 0) {
+      return { permissions, usercenter_permission };
+    }
+
+    try {
+      const res = await permissionApi.index();
+      let { data: { code, data } } = res;
+      if (Number(code) == 0) {
+        let { permissions, usercenter_permission = null } = data;
+        this.app.$store.dispatch('setPermissions', { permissions, usercenter_permission });
+        return { permissions, usercenter_permission };
+      }
+    } catch (e) {
+      console.warn('[Policy] 获取权限失败', e);
+    }
+
+    return { permissions: [], usercenter_permission: null };
   }
 }
