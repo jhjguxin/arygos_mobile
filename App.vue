@@ -2,6 +2,8 @@
 import _ from "lodash";
 import {config} from './config';
 import Feature from './services/feature';
+import Policy from './services/policy';
+import ApprovalSetting from './services/approval_setting';
 import RedDot from './services/red_dot';
 
 export default {
@@ -53,12 +55,20 @@ export default {
   globalData: {
     config,
     initGlobalData: async () => {
-      const feature = await Feature.instance()
-      getApp().globalData.feature = feature;
-      getApp().globalData.featureLabels = feature?.labels;
+      const feature = await Feature.instance();
+      const policy = await Policy.instance();
+      const approvalSetting = await ApprovalSetting.instance();
+
+      const app = getApp();
+      app.globalData.feature = feature;
+      app.globalData.featureLabels = feature?.labels || {};
+      app.globalData.policy = policy;
+      app.globalData.approvalSetting = approvalSetting;
     },
     feature: null,
-    featureLabels: {}
+    featureLabels: {},
+    policy: null,
+    approvalSetting: null
   }
 };
 </script>

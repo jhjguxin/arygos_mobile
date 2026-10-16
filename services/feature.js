@@ -61,27 +61,24 @@ export default class Feature {
   }
 
   async fetchFeature() {
-    return new Promise((resolve, reject) => {
-      const cacheKey = Feature.cacheKey;
+    const cacheKey = Feature.cacheKey;
 
-      if (CacheStore.instance().keyExists(cacheKey)) {
-        let res = CacheStore.instance().get(cacheKey)
+    if (CacheStore.instance().keyExists(cacheKey)) {
+      return CacheStore.instance().get(cacheKey);
+    }
 
-        resolve(res);
-      } else {
-        constantApi.feature()
-          .then((res) => {
-            let { data: {data, code} } = res;
+    try {
+      const res = await constantApi.feature();
+      let { data: { data, code } } = res;
 
-            if (code == 0) {
-              CacheStore.instance().put(cacheKey, data, 300);
-
-              resolve(data);
-            } else {
-              reject(data);
-            }
-          });
+      if (code == 0) {
+        CacheStore.instance().put(cacheKey, data, 300);
+        return data;
       }
-    })
+    } catch (e) {
+      console.warn('[Feature] 获取功能配置失败', e);
+    }
+
+    return {};
   }
 }

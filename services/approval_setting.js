@@ -41,29 +41,26 @@ export default class ApprovalSetting {
       return false;
     }
   }
-  
-   async fetchApprovalSetting() {
-     return new Promise((resolve, reject) => {
-       const cacheKey = ApprovalSetting.cacheKey;
- 
-       if (CacheStore.instance().keyExists(cacheKey)) {
-         let res = CacheStore.instance().get(cacheKey)
 
-         resolve(res);
-       } else {
-         approvalApi.current()
-           .then((res) => {
-             let { data: {data, code} } = res;
+  async fetchApprovalSetting() {
+    const cacheKey = ApprovalSetting.cacheKey;
 
-             if (code == 0) {
-               CacheStore.instance().put(cacheKey, data, 300);
+    if (CacheStore.instance().keyExists(cacheKey)) {
+      return CacheStore.instance().get(cacheKey);
+    }
 
-               resolve(data);
-             } else {
-               reject(data);
-             }
-           });
-       }
-     })
-   }
+    try {
+      const res = await approvalApi.current();
+      let { data: { data, code } } = res;
+
+      if (code == 0) {
+        CacheStore.instance().put(cacheKey, data, 300);
+        return data;
+      }
+    } catch (e) {
+      console.warn('[ApprovalSetting] 获取审批配置失败', e);
+    }
+
+    return {};
+  }
 }
