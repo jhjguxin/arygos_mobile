@@ -98,34 +98,33 @@
       this.auth = new Auth();
     },
     methods: {
-      doAuthLogin(data) {
+      async doAuthLogin(data) {
         let { auth } = this;
 
-        authApi.login(data).then((res) => {
+        try {
+          const res = await authApi.login(data);
           let { data: { code, data: user, remark } } = res;
 
           if (code == 0) {
-            auth.login(user);
+            await auth.login(user);
 
-            // REVIEW onLaunch 和 onLoad 是并行执行的
-            getApp().globalData.initGlobalData();
+            // REVIEW onLaunch 和 onLoad 是并行执行的, 因此需要等待全局数据初始化完成后再进入工作台
+            await getApp().globalData.initGlobalData();
 
             _.delay(()=> {
-              // REVIEW 跳转到 tabBar 页面只能使用 switchTab 跳转
-              _.delay(()=>{
-                uni.switchTab({
-                  url: "/pages/workbench/workbench",
-                  success() {
-                    uni.showToast({
-                      icon: 'success',
-                      title: '登陆成功',
-                      duration: 2000
-                    });
-                  }
-                })
-              }, 800)
-
-            }, 600);
+              // REVIEW 用 reLaunch 代替 switchTab：workbench 同时是启动页 (pages[0])
+              // 和当前激活 tab，switchTab 不会重新触发 onShow，只能用 reLaunch 强制重建页面
+              uni.reLaunch({
+                url: "/pages/workbench/workbench",
+                success() {
+                  uni.showToast({
+                    icon: 'success',
+                    title: '登陆成功',
+                    duration: 2000
+                  });
+                }
+              })
+            }, 300);
           } else {
             uni.showToast({
               icon: 'none',
@@ -133,7 +132,13 @@
               duration: 1000
             })
           }
-        })
+        } catch (e) {
+          uni.showToast({
+            icon: 'none',
+            title: "网络异常，请重试",
+            duration: 1000
+          })
+        }
       },
       handleSubmit() {
         this.$refs.uForm.validate(valid => {

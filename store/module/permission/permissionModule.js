@@ -4,15 +4,15 @@ const state = {
 };
 
 const mutations = {
-  setPermissions(state, permissions, usercenter_permission) {
+  setPermissions(state, { permissions, usercenter_permission }) {
     state.permissions = permissions;
     state.usercenter_permission = usercenter_permission;
   }
 };
 
 const actions = {
-  setPermissions ({commit}, permissions, usercenter_permission) {
-    commit("setPermissions", permissions, usercenter_permission);
+  setPermissions ({commit}, payload) {
+    commit("setPermissions", payload);
   }
 };
 
