@@ -49,6 +49,14 @@
           @fieldChange="handleFieldChange"
           v-if="column.field_type === 'address_select'"
         />
+        <column-filter-numeric-field
+          :customField="column.customField"
+          :value="column.value"
+          @fieldChange="handleFieldChange"
+          v-if="column.field_type === 'integer_field'
+             || column.field_type === 'float_field'
+             || column.field_type === 'currency_field'"
+        />
       </view>
     </view>
     <u-row gutter="16" justify="space-between" align="bottom">
@@ -107,6 +115,29 @@
         let { filterColumns } = this.$attrs;
         let { model } = this;
 
+        // REVIEW 数字范围交叉校验：最小值不能大于最大值，阻止提交
+        let invalidNumeric = _.find(filterColumns, (column) => {
+          if (! _.includes(['integer_field', 'float_field', 'currency_field'], column.field_type)) {
+            return false;
+          }
+
+          let start = model[`${column.name}-start`];
+          let end = model[`${column.name}-end`];
+
+          return (start !== "" && start != null)
+            && (end !== "" && end != null)
+            && parseFloat(start) > parseFloat(end);
+        });
+
+        if (invalidNumeric) {
+          uni.showToast({
+            icon: 'none',
+            title: "最小值不能大于最大值",
+            duration: 1000
+          });
+          return;
+        }
+
         let filters = parseFilter({ model, filterColumns });
 
         this.filters = filters;
@@ -143,6 +174,11 @@
             // REVIEW 重建初始化选中值因为 dropdown 组件收起会销毁当前组件
             let value;
             if (_.includes(['datetime_field', 'date_field'], customField.field_type)) {
+              value = {
+                start: model[`${name}-start`],
+                end: model[`${name}-end`]
+              };
+            } else if (_.includes(['integer_field', 'float_field', 'currency_field'], customField.field_type)) {
               value = {
                 start: model[`${name}-start`],
                 end: model[`${name}-end`]
