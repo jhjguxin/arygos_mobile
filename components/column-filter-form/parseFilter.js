@@ -52,6 +52,19 @@ export default ({ model, filterColumns }) => {
           })
         }
         break;
+      case "integer_field": case "float_field": case "currency_field":
+        value = [
+          model[`${name}-start`],
+          model[`${name}-end`],
+        ];
+
+        // REVIEW 至少一个边界非空；不能用 _.compact —— 0 是合法数值但 lodash 视其为 falsey
+        if (value[0] !== "" && value[0] != null || value[1] !== "" && value[1] != null) {
+          filters.push({
+            "name": name, "op": "within", "value": value
+          })
+        }
+        break;
       default:
         break;
     }
