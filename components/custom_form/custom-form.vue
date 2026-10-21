@@ -29,11 +29,14 @@
   import parseCustomField from "@/components/custom_form/parseCustomField";
 
   export default {
+    props: {
+      klassName: { type: String, default: '' },
+      record: { type: Object, default: undefined },
+      customFields: { type: Array, default: () => [] },
+      errorType: { type: Array, default: () => ['message', 'border-bottom', 'toast'] }
+    },
     data() {
-      let {
-        klassName = "",  record, customFields = [],
-        errorType = ['message', 'border-bottom', 'toast']
-      } = this.$attrs;
+      const { klassName, record, customFields, errorType } = this;
 
       let rules = {};
 
@@ -51,7 +54,9 @@
 
       return {
         name: "",
-        klassName,  record, customFields,
+        klassName,
+        record,
+        customFields: [...customFields],
         rules, errorType,
         formFields: [],
         model: {}

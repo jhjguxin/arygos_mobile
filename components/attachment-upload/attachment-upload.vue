@@ -20,6 +20,7 @@
 
 <script>
   import {config} from '@/config';
+  import _ from 'lodash';
   import ConstGlobal from '@/services/const_global';
   import { authApi, attachmentApi } from '@/services/http/qiniu';
   import { useStore } from '@/store';

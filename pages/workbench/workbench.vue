@@ -74,6 +74,7 @@
   import Feature from '@/services/feature';
   import ApprovalSetting from '@/services/approval_setting';
   import { useStore } from '@/store';
+  import _ from 'lodash';
 
   export default {
     data() {
