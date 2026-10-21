@@ -50,9 +50,6 @@
 
 
 <script>
-  import {
-    mapActions
-  } from 'vuex';
   import { authApi } from 'services/http';
   import Auth from 'services/auth';
   import _ from 'lodash';

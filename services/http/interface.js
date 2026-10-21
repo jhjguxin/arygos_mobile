@@ -1,4 +1,5 @@
 import {config} from 'config';
+import { useStore } from '@/store';
 const qs = require('qs');
 
 /**
@@ -68,7 +69,7 @@ export default {
     */
 
     if (options.needAuth) {
-      const userToken = getApp().$store.getters.getAuthToken;
+      const userToken = useStore().getAuthToken;
       const header = {
         'Authorization': `Bearer token="${userToken}", device="h5"`
       };

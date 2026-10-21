@@ -57,6 +57,7 @@
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
   import { eventApi } from 'services/http';
+  import { useStore } from '@/store';
 
   export default {
     data() {
@@ -102,7 +103,7 @@
       this.fetchListData({});
     },
     created() {
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
       this.currentUser = currentUser;
     },
     methods: {

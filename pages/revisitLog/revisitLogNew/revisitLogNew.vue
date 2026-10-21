@@ -83,6 +83,7 @@
   import _ from "lodash";
   import dayjs from "dayjs";
   import CustomFieldForm from 'services/custom_field_form';
+  import { useStore } from '@/store';
   import {
     revisitLogApi,
     leadApi, customerApi, opportunityApi, contractApi
@@ -92,7 +93,7 @@
     data() {
       // uniq 不能使用 this.$route 获取页面参数应该在 onLoad 中获取
       // let { query: {loggable_type, loggable_id} } = this.$route;
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
 
       return {
         klassName: "RevisitLog",

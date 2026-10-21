@@ -22,6 +22,7 @@
   import {config} from 'config';
   import ConstGlobal from '../../services/const_global';
   import { authApi, attachmentApi } from 'services/http/qiniu';
+  import { useStore } from '@/store';
 
   export default {
     data() {
@@ -55,7 +56,7 @@
     },
     async created() {
       let constGlobal = await ConstGlobal.instance();
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
 
       let { global_config: {file_storage, qiniu} } = constGlobal;
 
@@ -69,7 +70,7 @@
     },
     methods: {
       initFileSystemUpload () {
-        const userToken = getApp().$store.getters.getAuthToken;
+        const userToken = useStore().getAuthToken;
         const header = {
           'Authorization': `Bearer token="${userToken}", device="h5"`
         };

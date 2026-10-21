@@ -5,12 +5,14 @@ import Feature from './services/feature';
 import Policy from './services/policy';
 import ApprovalSetting from './services/approval_setting';
 import RedDot from './services/red_dot';
+import { useStore } from './store';
 
 export default {
   onLaunch: function() {
     console.log('App Launch，app启动');
 
-    let { getters: {getHasLogin: hasLogin } } = this.$store;
+    const store = useStore();
+    const hasLogin = store.getHasLogin;
 
     // 检查用户登陆状态
     if (hasLogin) {
@@ -75,5 +77,5 @@ export default {
 
 <style lang="scss">
   /*每个页面公共css */
-  @import "uview-ui/index.scss";
+  @import "uview-plus/index.scss";
 </style>

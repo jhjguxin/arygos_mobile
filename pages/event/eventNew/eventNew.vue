@@ -48,6 +48,7 @@
   import _ from "lodash";
   import dayjs from "dayjs";
   import { eventApi } from 'services/http';
+  import { useStore } from '@/store';
 
   export default {
     data() {
@@ -57,7 +58,7 @@
     },
     onLoad(options) {
       let {related_item_type, related_item_id } = options;
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
 
       this.form = {
         model: {

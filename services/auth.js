@@ -5,6 +5,7 @@
 import _ from 'lodash';
 import Policy from './policy';
 import Feature from './feature';
+import { useStore } from '@/store';
 
 export default class Auth {
   static currentUser() {
@@ -19,27 +20,21 @@ export default class Auth {
   }
 
   async login(user) {
-    this.app.$store.dispatch('login', user);
+    useStore().login(user);
     await this.policy.fetchPermission();
     await this.feature.fetchFeature();
   }
 
   currentUser() {
-    let { getUser } = this.app.$store.getters;
-
-    return getUser;
+    return useStore().getUser;
   }
 
   userToken() {
-    let { getAuthToken } = this.app.$store.getters;
-    
-    return getAuthToken;
+    return useStore().getAuthToken;
   }
 
   isLogin() {
-    let { getHasLogin } = this.app.$store.getters;
-
-    return getHasLogin;
+    return useStore().getHasLogin;
   }
 
   logout() {

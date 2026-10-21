@@ -70,14 +70,10 @@
 </template>
 
 <script>
-  import {
-    mapGetters,
-    mapState,
-    mapMutations
-  } from 'vuex';
   import Policy from 'services/policy';
   import Feature from 'services/feature';
   import ApprovalSetting from 'services/approval_setting';
+  import { useStore } from '@/store';
 
   export default {
     data() {
@@ -89,7 +85,7 @@
     onShow () {
       console.debug('显示工作台');
 
-      let { getters: {getHasLogin: hasLogin } } = this.$store;
+      const hasLogin = useStore().getHasLogin;
 
       // 检查用户登陆状态
       if (hasLogin) {

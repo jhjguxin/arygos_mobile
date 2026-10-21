@@ -38,6 +38,7 @@
 <script>
   import _ from 'lodash';
   import { userSettingApi } from 'services/http';
+  import { useStore } from '@/store';
     
   export default {
     data() {
@@ -59,7 +60,7 @@
     },
     mounted() {
       let { storeKey } = this;
-      this.filterColumns = this.$store.getters.getFilterColumns(storeKey) || [];
+      this.filterColumns = useStore().getFilterColumns(storeKey) || [];
 
       this.fetchData();
     },
@@ -163,7 +164,7 @@
         }
         
         let columns = _.filter(defaultFilterColumns, "checked").map((column) => ({...column}));
-        this.$store.dispatch('setFilterColumns', {name: storeKey, columns});
+        useStore().setFilterColumns({name: storeKey, columns});
         this.filterColumns = columns;
       },
       handleFilterConfirm (filters, model) {
