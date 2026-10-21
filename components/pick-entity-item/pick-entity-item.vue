@@ -34,8 +34,12 @@
   } from "services/http";
 
   export default {
+  props: {
+      klassName: { }
+  },
+
     data() {
-      let { klassName } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName: klassName,

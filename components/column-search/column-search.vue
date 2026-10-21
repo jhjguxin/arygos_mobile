@@ -24,6 +24,10 @@
 
 
   export default {
+  props: {
+      klassName: klass_name: { }
+  },
+
     data() {
       return {
         query: null,
@@ -46,7 +50,7 @@
     },
     methods: {
       fetchData () {
-        let { klassName: klass_name } = this.$attrs;
+        /* moved to props */
         userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
           let { data: {code, remark, data}} = res;
 

@@ -63,8 +63,13 @@
   import { salesActivityApi } from '@/services/http';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" },
+      params: { type: Object, default: () => ({}) }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
       return {
         models: [],
         isLoading: true,
@@ -109,7 +114,7 @@
     methods: {
       fetchListData (page = 1) {
         let { category, models, timeLine, perPage } = this;
-        let { params = {} } = this.$attrs;
+        let params = { ...this.params };
         params.page = page;
         params.per_page = perPage;
         params.category = category;

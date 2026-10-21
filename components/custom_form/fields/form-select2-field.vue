@@ -26,14 +26,17 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+      mode: { type: String, default: "selector" }
+  },
+
     data() {
       // props 获取数据
-      let {
-        customField,
-        record, klassName,
-        value,
-        mode = "selector"
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         customField,

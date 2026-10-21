@@ -26,31 +26,29 @@
   import { useStore } from '@/store';
 
   export default {
+    props: {
+      'file-list': { type: Array, default: () => [] },
+      maxCount: { type: Number, default: 8 },
+      uploadText: { type: String, default: '选择文件' },
+      formData: { type: Object, default: () => ({}) },
+      autoUpload: { type: Boolean, default: true },
+      deletable: { type: Boolean, default: false },
+      width: {}, height: {}, header: {}
+    },
     data() {
-      let {
-        "file-list": fileList,
-        maxCount = 8,
-        uploadText = "选择文件",
-        formData = {},
-        autoUpload = true,
-        deletable = false,
-        width,
-        height,
-        header
-       } = this.$attrs;
-       fileList = fileList || [];
+       const fileList = this['file-list'] || [];
 
       return {
         action: "",
-        width,
-        height,
+        width: this.width,
+        height: this.height,
         fileList,
-        maxCount,
-        uploadText,
-        header,
-        formData,
-        autoUpload,
-        deletable,
+        maxCount: this.maxCount,
+        uploadText: this.uploadText,
+        header: this.header,
+        formData: this.formData,
+        autoUpload: this.autoUpload,
+        deletable: this.deletable,
         qiniu: {},
         uploadReady: false,
       };

@@ -42,11 +42,12 @@
   import dayjs from 'dayjs';
 
   export default {
+  props: {
+      customField: { default: () => ({}) }
+  },
+
     data() {
-      let {
-        customField = {}
-      } = this.$attrs;
-      let { field_type: fieldType } = customField;
+      let { field_type: fieldType } = this.customField;
 
       return {
         customField,
@@ -73,9 +74,7 @@
             select_klass_name: selectKlassName
             }
           } = this;
-          let {
-            record
-          } = this.$attrs;
+          /* moved to props */
           let value;
           
           switch (fieldType) {

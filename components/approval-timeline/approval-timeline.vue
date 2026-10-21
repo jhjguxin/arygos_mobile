@@ -82,9 +82,14 @@
   import dayjs from 'dayjs';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" }
+      approvalDetail: { }
+  },
+
     name:"approval-timeline",
     data() {
-      let { style = "height: 55vh;", approvalDetail } = this.$attrs;
+      /* moved to props */
 
       approvalDetail = {
         ...approvalDetail,

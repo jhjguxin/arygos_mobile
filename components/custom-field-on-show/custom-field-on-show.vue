@@ -49,22 +49,24 @@
   import dayjs from 'dayjs';
 
   export default {
+  props: {
+      customField: { default: () => ({}) },
+      style: { default: () => ({}) },
+      inline: { default: false }
+  },
+
     data() {
-      let {
-        customField = {},
-        style = {},
-        inline
-      } = this.$attrs;
-      let { field_type: fieldType } = customField;
-      if (inline) style = {
+      let { field_type: fieldType } = this.customField;
+      let localStyle = this.style;
+      if (this.inline) localStyle = {
         ...style,
         display: "inline-block"
       };
 
       return {
-        customField,
+        customField: this.customField,
         fieldType,
-        style,
+        style: localStyle,
         href: null,
       }
     },
@@ -81,9 +83,7 @@
     computed: {
       displayValue: {
         get () {
-          let {
-            record
-          } = this.$attrs;
+          /* moved to props */
           let {
             customField: {
               name,

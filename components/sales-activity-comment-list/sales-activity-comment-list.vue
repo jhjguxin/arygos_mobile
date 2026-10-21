@@ -55,8 +55,16 @@
   import { salesActivityApi } from '@/services/http';
 
   export default {
+  props: {
+      sales_activity_id: { }
+      width: { type: String, default: "85%" }
+      sales_activity_id: id: { }
+      sales_activity_id: id: { }
+      sales_activity_id: id: { }
+  },
+
     data() {
-      let { sales_activity_id, width = "85%" } = this.$attrs;
+      /* moved to props */
 
       return {
         sales_activity_id,
@@ -106,7 +114,7 @@
     },
     methods: {
       fetchListData () {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
 
         this.isLoading = true;
         salesActivityApi.comments({ id }).then((res)=> {
@@ -132,7 +140,7 @@
         })
       },
       createComment() {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
         let { form: {model: { content }} } = this;
 
         let params = {
@@ -166,7 +174,7 @@
         })
       },
       doDestroy ({comment_id}) {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
 
         let params = {
           sales_activity: {id},
@@ -200,7 +208,7 @@
         }, 100)
       },
       handleSubmitClick () {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             this.createComment();
           }

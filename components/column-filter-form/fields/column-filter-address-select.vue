@@ -17,13 +17,18 @@
   import Geo from '@/services/geo';
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+  },
+
     data() {
       // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         name,  fieldType, customField,

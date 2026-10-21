@@ -112,7 +112,7 @@
         })
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
 
           if (valid) {
             let { form: { model: values }} = this;

@@ -11,12 +11,16 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      value: { }
+  },
+
     data() {
       // props 获取数据
-      let {
-        name,  fieldType, customField,
-        value
-      } = this.$attrs;
+      /* moved to props */
       let list = _.map(customField.collection_options, (opt) => (
         {
           label: opt[0],

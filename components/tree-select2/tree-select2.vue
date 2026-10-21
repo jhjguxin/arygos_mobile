@@ -23,11 +23,19 @@
   import {
     departmentApi,
     productCategoryApi
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
+    props: {
+      klassName: {},
+      value: {},
+      required: { type: Boolean, default: false },
+      title: { type: String, default: "" },
+      params: { type: Object, default: () => ({}) },
+      placeholder: { type: String, default: "" },
+      mode: { type: String, default: "selector" }
+    },
     data() {
-      // props 获取数据
       let {
         klassName,
         value = {},
@@ -35,12 +43,13 @@
         title = "",
         params = {},
         placeholder,
-        mode = "selector" // selector 单选，多选 multi
-      } = this.$attrs;
+        mode = "selector"
+      } = this;
 
       return {
         klassName,
-        value, mode,
+        selectedValue: value,
+        mode,
         required,
         title,
         params,
@@ -51,8 +60,13 @@
         modalOpen: false,
         rangeKey: "label",
         idKey: "value",
-        multiple:  (mode == "multi"),
+        multiple: (mode == "multi"),
         selectParent: true
+      }
+    },
+    watch: {
+      value(val) {
+        this.selectedValue = val;
       }
     },
     created() {
@@ -67,13 +81,13 @@
 
         value = (mode == "selector") ? value[0] : value;
 
-        this.value = value;
+        this.selectedValue = value;
         this.$emit("select", {value});
       },
       fetchData: function () {
-        let { klassName, params, value, mode } = this;
+        let { klassName, params, selectedValue, mode } = this;
 
-        let ids = (mode == "selector") ? [value?.value] : _.map(value, "value");
+        let ids = (mode == "selector") ? [selectedValue?.value] : _.map(selectedValue, "value");
 
         this.requestApi({ klassName, params }).then((res) => {
           let {
@@ -118,11 +132,11 @@
     computed: {
       valueDisplay: {
         get: function() {
-          let { mode, value } = this;
+          let { mode, selectedValue } = this;
 
-          if (_.isNil(value)) return;
+          if (_.isNil(selectedValue)) return;
 
-          return mode == "selector" ? value.label : _.map(value, "label").join(", ");
+          return mode == "selector" ? selectedValue.label : _.map(selectedValue, "label").join(", ");
         },
         set: function (value) {
         }

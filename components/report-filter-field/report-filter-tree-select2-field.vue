@@ -16,12 +16,14 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      customField: { }
+      klassName: { }
+  },
+
     data() {
       // props 获取数据
-      let {
-        customField,
-        klassName,
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         customField,

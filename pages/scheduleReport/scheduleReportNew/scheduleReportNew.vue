@@ -271,7 +271,7 @@
         this.form.model.file_attachments = file_attachments;
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

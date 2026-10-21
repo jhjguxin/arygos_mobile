@@ -60,8 +60,13 @@
   import { useStore } from '@/store';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" }
+      params: { }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
 
       return {
         style,
@@ -108,7 +113,7 @@
     },
     methods: {
       fetchListData ({ page, reload }) {
-        let { params } = this.$attrs;
+        /* moved to props */
         let { perPage: per_page, models = [], timeLine, currentUser } = this;
 
         if (reload) {

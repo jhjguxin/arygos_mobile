@@ -131,7 +131,7 @@
       handleSubmit() {
         console.debug("fields", this.$refs.uForm.fields, "model", this.model);
 
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { formFields, model } = this;
             let values = {};

@@ -181,13 +181,18 @@
   import getFormField from "@/components/custom_form/getFormField";
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+  },
+
     data() {
       // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+      /* moved to props */
 
       let componentName =  getFormField({
         customField

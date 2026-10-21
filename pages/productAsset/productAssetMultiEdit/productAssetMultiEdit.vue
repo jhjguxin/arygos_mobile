@@ -288,7 +288,7 @@
         })
       },
       handleAddProductSubmit(e) {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             this.addProductAsset()
           } else {

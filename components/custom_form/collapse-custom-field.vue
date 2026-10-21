@@ -11,10 +11,12 @@
   import _ from "lodash";
   
   export default {
+  props: {
+      klassName: { type: String, default: "" }
+  },
+
     data() {
-      let {
-        klassName = "",
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         collapsed: false,

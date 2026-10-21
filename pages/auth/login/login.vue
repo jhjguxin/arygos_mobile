@@ -138,7 +138,7 @@
         }
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           let { form: {login, password} } = this;
           if (valid) this.doAuthLogin({login, password});
         });

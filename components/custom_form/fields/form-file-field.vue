@@ -13,12 +13,17 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+  },
+
     data() {
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         name,  fieldType, customField,

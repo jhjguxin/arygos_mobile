@@ -78,11 +78,14 @@
 
 <script>
   export default {
+  props: {
+      filters: { }
+      filterColumns: { }
+      filterColumns: { }
+  },
+
     data() {
-      let {
-        filters,
-        filterColumns
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         filters,
@@ -100,7 +103,7 @@
         this.filters = filters;
       },
       handleSubmit () {
-        let { filterColumns } = this.$attrs;
+        /* moved to props */
         let { filters } = this;
 
         // let filters = parseFilter({ filters, filterColumns });

@@ -27,8 +27,14 @@
   import { attachmentApi } from '@/services/http';
 
   export default {
+  props: {
+      title: { type: String, default: "附件" },
+      buttonText: { type: String, default: "新增附件" },
+      params: { type: Object, default: () => ({}) }
+  },
+
     data() {
-      let { title = "附件", buttonText = "新增附件" } = this.$attrs;
+      /* moved to props */
 
       return {
         title,
@@ -62,7 +68,7 @@
     },
     methods: {
       handleUpdate () {
-        let { params: {attachmentable_type, attachmentable_id} } = this.$attrs;
+        let { attachmentable_type, attachmentable_id } = this.params || {};
         let { form: {model: {attachment_id: id }}} = this;
 
         let params = {
@@ -118,7 +124,7 @@
         }
       },
       handleConfirm() {
-        this.$refs.uForm.validate((valid) => {
+        this.$refs.uForm.validate().then((valid) => {
           if (valid) {
             this.handleUpdate();
           } else {

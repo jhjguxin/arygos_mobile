@@ -26,14 +26,13 @@
   import dayjs from 'dayjs';
 
   export default {
+    props: {
+      name: {}, fieldType: {}, customField: {},
+      model: { default: () => ({}) }
+    },
     data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        model = {}
-      } = this.$attrs;
-      let { start: startName, end: endName } = customField;
-      let { [`${startName}`]: start, [`${endName}`]: end } = model;
+      let { start: startName, end: endName } = this.customField;
+      let { [`${startName}`]: start, [`${endName}`]: end } = this.model;
       start = start || dayjs().format("YYYY-MM-DD");
       end = end || dayjs().format("YYYY-MM-DD");
 

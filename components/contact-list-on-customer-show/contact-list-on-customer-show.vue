@@ -34,8 +34,13 @@
   import CustomField from '@/services/custom_field';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" }
+      params: { }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
@@ -76,7 +81,7 @@
     },
     methods: {
       fetchListData ({ page, reload }) {
-        let { params } = this.$attrs;
+        /* moved to props */
         let { perPage: per_page, models = [] } = this;
 
         if (reload) {

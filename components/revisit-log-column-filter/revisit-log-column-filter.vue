@@ -26,8 +26,12 @@
   import { userSettingApi } from '@/services/http';
 
   export default {
+  props: {
+      storeKey: { }
+  },
+
     data() {
-      let { storeKey } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName: "RevisitLog",

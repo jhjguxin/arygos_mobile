@@ -29,8 +29,14 @@
   import CustomFieldGroup from '@/services/custom_field_group';
 
   export default {
+  props: {
+      klassName: { }
+      style: { type: String, default: "height: 55vh;" }
+      model: { }
+  },
+
     data() {
-      let { klassName, style = "height: 55vh;" } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName,
@@ -52,7 +58,7 @@
     computed: {
       model: {
         get() {
-          let { model } = this.$attrs;
+          /* moved to props */
 
           return model;
         },

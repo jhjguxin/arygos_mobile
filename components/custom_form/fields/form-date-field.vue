@@ -11,13 +11,18 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+  },
+
     data() {
       // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+      /* moved to props */
       if (_.isNil(value)) value = "";
 
       return {

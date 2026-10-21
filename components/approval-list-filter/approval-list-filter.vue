@@ -31,13 +31,12 @@
 
 <script>
   export default {
+    props: {
+      filters: { default: () => ({}) }
+    },
     data() {
-      let {
-        filters = {},
-      } = this.$attrs;
-
       return {
-        filters,
+        filters: this.filters,
         formReady: false
       };
     },

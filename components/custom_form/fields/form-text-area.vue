@@ -14,13 +14,19 @@
   import _ from "lodash";
 
   export default {
+  props: {
+      name: { }
+      fieldType: { }
+      customField: { }
+      record: { }
+      klassName: { }
+      value: { }
+      autoHeight: { type: Boolean, default: true }
+  },
+
     data() {
       // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value, autoHeight = true
-      } = this.$attrs;
+      /* moved to props */
 
       return {
         name,  fieldType, customField,

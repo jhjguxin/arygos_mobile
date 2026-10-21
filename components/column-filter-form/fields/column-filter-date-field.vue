@@ -26,14 +26,13 @@
   import dayjs from 'dayjs';
 
   export default {
+    props: {
+      name: {}, fieldType: {}, customField: {},
+      record: {}, klassName: {},
+      value: { default: () => ({}) }
+    },
     data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value = {}
-      } = this.$attrs;
-      let { start, end} = value;
+      let { start, end} = this.value;
 
       return {
         name,  fieldType, customField,

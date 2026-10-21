@@ -126,7 +126,7 @@
         this.$emit("sortColumnChange", sort);
       },
       handleFilterColumnSwitchChange (e, value) {
-        let { klassName } = this.$attrs;
+        let klassName = this.klassName;
         let { value: checked } = e;
         let { defaultFilterColumns, maxFilterColumn, storeKey } = this;
         
