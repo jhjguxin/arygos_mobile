@@ -1,6 +1,6 @@
 import {config} from '@/config';
 import { useStore } from '@/store';
-const qs = require('qs');
+import qs from 'qs';
 
 /**
  * 通用uni-app网络请求

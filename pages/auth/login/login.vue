@@ -54,7 +54,7 @@
   import Auth from '@/services/auth';
   import _ from 'lodash';
 
-  import logo from 'static/logo.png';
+  import logo from '@/static/logo.png';
 
   export default {
     data() {
