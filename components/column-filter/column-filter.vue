@@ -41,12 +41,15 @@
   import { useStore } from '@/store';
     
   export default {
+    props: {
+      klassName: { type: String, required: true },
+      storeKey: { type: String, default: '' }
+    },
     data() {
-      let { klassName, storeKey } = this.$attrs;
-      storeKey = storeKey || klassName;
+      const storeKey = this.storeKey || this.klassName;
 
       return {
-        klassName,
+        klassName: this.klassName,
         storeKey,
         sortValue: "",
         order: "asc",
@@ -67,7 +70,7 @@
     methods: {
       fetchData () {
         let { sortValue, order, filterColumns } = this;
-        let { klassName: klass_name } = this.$attrs;
+        const klass_name = this.klassName;
         userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
           let { data: {code, remark, data}} = res;
           

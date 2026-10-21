@@ -76,13 +76,13 @@
   import parseFilter from '@/components/column-filter-form/parseFilter';
 
   export default {
+    props: {
+      klassName: { type: String, default: '' },
+      model: { type: Object, default: () => ({}) },
+      customFields: { type: Array, default: () => [] },
+      filterColumns: { type: Array, default: () => [] }
+    },
     data() {
-      let {
-        klassName = "",
-        model = {},
-        customFields = []
-      } = this.$attrs;
-
       return {
         klassName,
         formReady: false,
@@ -112,7 +112,7 @@
         this.model = model;
       },
       handleSubmit () {
-        let { filterColumns } = this.$attrs;
+        let { filterColumns } = this;
         let { model } = this;
 
         // REVIEW 数字范围交叉校验：最小值不能大于最大值，阻止提交
@@ -160,7 +160,7 @@
     computed: {
       filterColumns: {
         get () {
-          let { filterColumns } = this.$attrs;
+          let { filterColumns } = this;
           let { customFields, model } = this;
 
           if (_.isEmpty(customFields)) return null;
