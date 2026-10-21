@@ -1,15 +1,7 @@
-let config;
-if (process.env.NODE_ENV === "production") {
-  config = require('./production')
-} else (
-  config = require('./default')
-)
+import { config as devConfig } from '@/config/default'
+import { config as prodConfig } from '@/config/production'
 
-config = {
-  ...config.config
-}
+const isProd = import.meta.env.MODE === 'production'
+const config = isProd ? { ...devConfig, ...prodConfig } : devConfig
 
-
-export {
-  config
-}
+export { config }

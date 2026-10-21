@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { attachmentApi } from 'services/http';
+  import { attachmentApi } from '@/services/http';
 
   export default {
     data() {

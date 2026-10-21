@@ -29,7 +29,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { notificationApi } from 'services/http';
+  import { notificationApi } from '@/services/http';
   
   export default {
     components: {},

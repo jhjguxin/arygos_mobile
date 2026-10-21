@@ -1,11 +1,11 @@
 <script>
 import _ from "lodash";
-import {config} from './config';
-import Feature from './services/feature';
-import Policy from './services/policy';
-import ApprovalSetting from './services/approval_setting';
-import RedDot from './services/red_dot';
-import { useStore } from './store';
+import {config} from '@/config';
+import Feature from '@/services/feature';
+import Policy from '@/services/policy';
+import ApprovalSetting from '@/services/approval_setting';
+import RedDot from '@/services/red_dot';
+import { useStore } from '@/store';
 
 export default {
   onLaunch: function() {

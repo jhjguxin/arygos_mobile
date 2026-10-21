@@ -29,7 +29,7 @@
             :show-foot="timeLine.card.showFoot"
             :border="timeLine.card.border"
           >
-            <view slot="body">
+            <template #body><view >
               <view class="u-order-desc">
                 状态：<u-tag :text="item.status_display" :type="item.statusTag.type"></u-tag>
               </view>
@@ -37,7 +37,7 @@
               <view class="u-order-desc">开始时间：{{item.remindAt}}</view>
               <view class="u-order-desc">提醒类型：{{item.remind_type_display}}</view>
               <view class="u-order-desc">参与人：{{item.userNames}}</view>
-            </view>
+            </view></template>
           </u-card>
           </u-swipe-action>
         </template>
@@ -56,7 +56,7 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { eventApi } from 'services/http';
+  import { eventApi } from '@/services/http';
   import { useStore } from '@/store';
 
   export default {

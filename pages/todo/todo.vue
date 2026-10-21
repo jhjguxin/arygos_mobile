@@ -54,7 +54,7 @@
           :show-foot="uPopup.card.showFoot"
           :border="uPopup.card.border"
         >
-          <view slot="body">
+          <template #body><view >
             <u-row gutter="16" class="u-p-10">
               <u-col span="3" class="u-font-sm">开始时间</u-col>
               <u-col span="9">{{uPopup.event.remindAt}}</u-col>
@@ -92,7 +92,7 @@
               <u-col span="3" class="u-font-sm">参与人</u-col>
               <u-col span="9">{{uPopup.event.userNames}}</u-col>
             </u-row>
-          </view>
+          </view></template>
         </u-card>
       </u-popup>
   </view>
@@ -101,8 +101,8 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { eventApi, reminderApi } from 'services/http';
-  import RedDot from 'services/red_dot';
+  import { eventApi, reminderApi } from '@/services/http';
+  import RedDot from '@/services/red_dot';
 
   export default {
     data() {

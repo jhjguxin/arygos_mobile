@@ -31,7 +31,7 @@
 
 <script>
   import _ from "lodash";
-  import { knowledgeArticleApi, knowledgeSectionApi, knowledgeTagApi } from 'services/http';
+  import { knowledgeArticleApi, knowledgeSectionApi, knowledgeTagApi } from '@/services/http';
 
   export default {
     data() {

@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="detail && approval_detail"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16"  v-if="customFieldsObject['approve_status']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['approve_status'].label}}</view>
@@ -35,7 +35,7 @@
               <custom-field-on-show :customField="customFieldsObject['finish_approve_at']" :record="approval_detail" />
             </u-col>
           </u-row>
-        </view>
+        </view></template>
       </u-card>
       <u-tabs-swiper
         ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
@@ -85,8 +85,8 @@
 
 <script>
   import _ from 'lodash';
-  import { contractApi, opportunityApi, receivedPaymentApi, approvalApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contractApi, opportunityApi, receivedPaymentApi, approvalApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {

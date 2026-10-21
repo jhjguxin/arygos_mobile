@@ -50,8 +50,8 @@
 
 
 <script>
-  import { authApi } from 'services/http';
-  import Auth from 'services/auth';
+  import { authApi } from '@/services/http';
+  import Auth from '@/services/auth';
   import _ from 'lodash';
 
   import logo from 'static/logo.png';

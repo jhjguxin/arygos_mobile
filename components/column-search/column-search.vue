@@ -20,7 +20,7 @@
 
 <script>
   import _ from "lodash";
-  import { userSettingApi } from 'services/http';
+  import { userSettingApi } from '@/services/http';
 
 
   export default {

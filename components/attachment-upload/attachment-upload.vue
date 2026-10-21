@@ -19,9 +19,9 @@
 </template>
 
 <script>
-  import {config} from 'config';
-  import ConstGlobal from '../../services/const_global';
-  import { authApi, attachmentApi } from 'services/http/qiniu';
+  import {config} from '@/config';
+  import ConstGlobal from '@/services/const_global';
+  import { authApi, attachmentApi } from '@/services/http/qiniu';
   import { useStore } from '@/store';
 
   export default {

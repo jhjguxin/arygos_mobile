@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16" v-if="customFieldsObject['extra.tel']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['extra.tel'].label}}</view>
@@ -47,7 +47,7 @@
           </u-row>
           <u-row gutter="16">
           </u-row>
-        </view>
+        </view></template>
       </u-card>
       <u-tabs-swiper
         ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
@@ -96,8 +96,8 @@
 
 <script>
   import _ from 'lodash';
-  import { contactApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contactApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {

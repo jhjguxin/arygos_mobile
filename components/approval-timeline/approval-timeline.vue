@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  import ApprovalSetting from 'services/approval_setting';
+  import ApprovalSetting from '@/services/approval_setting';
   import dayjs from 'dayjs';
 
   export default {

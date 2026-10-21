@@ -1,3 +1,3 @@
-import CacheStore from './cache_store';
+import CacheStore from '@/common/utils/cache_store';
 
 export { CacheStore };

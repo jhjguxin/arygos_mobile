@@ -13,7 +13,7 @@
           :show-head="card.showHead" :show-foot="card.showFoot"
           :margin="card.margin"  :padding="card.padding"
         >
-          <u-row slot="body"  gutter="10" justify="space-between">
+          <template #body><u-row gutter="10" justify="space-between">
             <u-col span="3" text-align="right" class="u-font-xs">
               标准单价
             </u-col>
@@ -47,7 +47,7 @@
               <u-input type="textarea" v-model="item.remark"
                 placeholder="请输入备注"></u-input>
             </u-col>
-          </u-row>
+          </u-row></template>
         </u-card>
       </u-swipe-action>
     </view>
@@ -91,8 +91,8 @@
 <script>
   import _ from "lodash";
   import dayjs from "dayjs";
-  import { contractApi, opportunityApi, productApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contractApi, opportunityApi, productApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {

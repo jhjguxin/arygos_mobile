@@ -25,8 +25,8 @@
 </template>
 
 <script>
-  import { authApi, organizationApi } from 'services/http';
-  import Auth from 'services/auth';
+  import { authApi, organizationApi } from '@/services/http';
+  import Auth from '@/services/auth';
   import _ from 'lodash';
   
   export default {

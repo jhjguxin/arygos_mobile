@@ -1,4 +1,4 @@
-import {config} from 'config';
+import {config} from '@/config';
 import { useStore } from '@/store';
 const qs = require('qs');
 
@@ -9,7 +9,7 @@ const qs = require('qs');
 
 /*
 // 开放的接口
-import http from './interface'
+import http from '@/services/http/interface'
 
 http.config.baseUrl = "http://localhost:8080/api/"
 

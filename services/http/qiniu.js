@@ -1,5 +1,5 @@
-import authApi from './qiniu/auth';
-import attachmentApi from './qiniu/attachment';
+import authApi from '@/services/http/qiniu/auth';
+import attachmentApi from '@/services/http/qiniu/attachment';
 
 export {
   authApi,

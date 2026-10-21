@@ -3,8 +3,8 @@
  */
 
 import _ from 'lodash';
-import Policy from './policy';
-import Feature from './feature';
+import Policy from '@/services/policy';
+import Feature from '@/services/feature';
 import { useStore } from '@/store';
 
 export default class Auth {

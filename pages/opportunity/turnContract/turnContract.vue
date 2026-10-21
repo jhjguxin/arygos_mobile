@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import CustomFieldForm from 'services/custom_field_form';
+  import CustomFieldForm from '@/services/custom_field_form';
   import {
     opportunityApi,
   } from "services/http";

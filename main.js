@@ -1,7 +1,7 @@
 import { createSSRApp } from 'vue'
-import App from './App'
+import App from '@/App'
 import uviewPlus from 'uview-plus'
-import { pinia } from './store'
+import { pinia } from '@/store'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 

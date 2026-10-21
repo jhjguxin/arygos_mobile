@@ -3,8 +3,8 @@
  */
 import _ from 'lodash';
 import dayjs from 'dayjs';
-import { CacheStore } from './../common/utils';
-import { reminderApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { reminderApi } from '@/services/http/index';
 
 export default class RedDot {
   static _instance = null;

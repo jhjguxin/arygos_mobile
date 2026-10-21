@@ -24,9 +24,9 @@
 
 <script>
   import _ from "lodash";
-  import parseInitialValue from "./parseInitialValue";
-  import parseRule from "./parseRule";
-  import parseCustomField from "./parseCustomField";
+  import parseInitialValue from "@/components/custom_form/parseInitialValue";
+  import parseRule from "@/components/custom_form/parseRule";
+  import parseCustomField from "@/components/custom_form/parseCustomField";
 
   export default {
     data() {

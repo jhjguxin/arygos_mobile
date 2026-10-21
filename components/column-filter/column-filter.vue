@@ -37,7 +37,7 @@
 
 <script>
   import _ from 'lodash';
-  import { userSettingApi } from 'services/http';
+  import { userSettingApi } from '@/services/http';
   import { useStore } from '@/store';
     
   export default {

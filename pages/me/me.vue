@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { organizationApi, notificationApi } from 'services/http';
+  import { organizationApi, notificationApi } from '@/services/http';
   import dayjs from 'dayjs';
   
   export default {

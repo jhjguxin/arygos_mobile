@@ -20,7 +20,7 @@
             :border="timeLine.card.border"
             :thumb="item.user.avatar_url"
           >
-            <view slot="body">
+            <template #body><view >
               <view class="u-order-desc">{{item.description}}</view>
               <view class="u-order-desc">来自：
                 <text
@@ -33,8 +33,8 @@
                   {{item.refer_name}}
                 </text>
               </view>
-            </view>
-            <u-row slot="foot">
+            </view></template>
+            <template #foot><u-row >
               <u-col span="4">
                 <u-icon
                   name="chat-fill" size="24" :label="item.commentCount"
@@ -45,7 +45,7 @@
                   :sales_activity_id="item.id" :ref="item.commentListRef"
                 />
               </u-col>
-            </u-row>
+            </u-row></template>
           </u-card>
         </template>
       </u-time-line-item>
@@ -60,7 +60,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { salesActivityApi } from 'services/http';
+  import { salesActivityApi } from '@/services/http';
 
   export default {
     data() {

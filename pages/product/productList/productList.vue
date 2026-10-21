@@ -16,15 +16,15 @@
         :options="swipeAction.options"
       >
         <uni-list-item :thumb="item.thumb" thumbSize="lg">
-          <u-card
-            class="item-body" slot="body" :title="item.name"
+          <template #body><u-card
+            class="item-body" :title="item.name"
 
             :border="card.border" :sub-title="item.no" :full="card.full"
             :show-head="card.showHead" :show-foot="card.showFoot"
             :margin="card.margin"  :padding="card.padding"
             @click="handleItemClick($event, item.id)"
           >
-            <view slot="body">
+            <template #body><view >
               <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
                 <u-col span="3" text-align="right" class="u-font-xs">
                   {{customField.label}}
@@ -33,14 +33,14 @@
                   <custom-field-on-list :customField="customField" :record="item" />
                 </u-col>
               </u-row>
-            </view>
-            <view slot="foot">
-            </view>
-          </u-card>
+            </view></template>
+            <template #foot><view >
+            </view></template>
+          </u-card></template>
 
-          <u-row class="item-footer" slot="footer" gutter="0" align="center">
+          <template #footer><u-row class="item-footer" gutter="0" align="center">
             <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
-          </u-row>
+          </u-row></template>
         </uni-list-item>
       </u-swipe-action>
     </uni-list>
@@ -52,8 +52,8 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { productApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { productApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     components: {},

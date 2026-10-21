@@ -178,7 +178,7 @@
 
 <script>
   import _ from "lodash";
-  import getFormField from "./getFormField";
+  import getFormField from "@/components/custom_form/getFormField";
 
   export default {
     data() {

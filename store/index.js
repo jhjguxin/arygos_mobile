@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { useAppStore } from './app'
+import { useAppStore } from '@/store/app'
 
 export const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

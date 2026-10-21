@@ -9,7 +9,7 @@
       :show-foot="card.showFoot"
       :border="card.border"
     >
-      <view slot="body">
+      <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.common_id.label" prop="common_id">
             <u-input
@@ -18,10 +18,10 @@
             <u-select mode="single-column" :list="form.item.common_id.list" v-model="form.item.common_id.show" @confirm="handleSelectCommonConfirm"></u-select>
           </u-form-item>
         </u-form>
-      </view>
-      <view slot="foot">
+      </view></template>
+      <template #foot><view >
         <u-button @click="handleSubmit" type="primary">提交</u-button>
-      </view>
+      </view></template>
     </u-card>
     <permit-checker :authKey="permitChecker.authKey" ></permit-checker>
   </view>
@@ -29,7 +29,7 @@
 
 <script>
   import _ from "lodash";
-  import { leadCommonApi, customerCommonApi } from 'services/http';
+  import { leadCommonApi, customerCommonApi } from '@/services/http';
 
   export default {
     data() {

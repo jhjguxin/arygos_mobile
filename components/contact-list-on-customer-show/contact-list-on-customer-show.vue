@@ -9,14 +9,14 @@
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
       >
-        <u-row slot="body" gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.name">
+        <template #body><u-row gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.name">
           <u-col span="3" text-align="right" class="u-font-xs">
             {{customField.label}}
           </u-col>
           <u-col span="9" class="u-padding-left-20">
             <custom-field-on-list :customField="customField" :record="item" />
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
     </view>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -30,8 +30,8 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { customerApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { customerApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {

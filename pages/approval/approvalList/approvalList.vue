@@ -17,14 +17,14 @@
         v-bind:key="item.id"
         :index="index"
       >
-        <u-card
-          class="item-body" slot="body" :title="item.approvable.name"
+        <template #body><u-card
+          class="item-body" :title="item.approvable.name"
           :border="card.border" :sub-title="item.applier.name" :full="card.full"
           :show-head="card.showHead" :show-foot="card.showFoot"
           :margin="card.margin"  :padding="card.padding"
           @click="handleItemClick($event, item)"
         >
-          <view slot="body">
+          <template #body><view >
             <u-row gutter="10" v-if="approvalTabs.current == 0">
               <u-col span="3" text-align="right" class="u-font-xs">
                 层级
@@ -59,14 +59,14 @@
                 {{item.finishApproveAt}}
               </u-col>
             </u-row>
-          </view>
-          <view slot="foot">
-          </view>
-        </u-card>
+          </view></template>
+          <template #foot><view >
+          </view></template>
+        </u-card></template>
 
-        <u-row class="item-footer" slot="footer" gutter="0" align="center">
+        <template #footer><u-row class="item-footer" gutter="0" align="center">
           <u-tag :text="item.approveStatusDisplay" v-if="item.approveStatusDisplay"/>
-        </u-row>
+        </u-row></template>
       </uni-list-item>
     </uni-list>
     <uni-load-more :status="status" v-if="!allModuleDisable" />
@@ -79,10 +79,10 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { approvalApi } from 'services/http';
-  import CustomField from 'services/custom_field';
-  import ApprovalSetting from 'services/approval_setting';
-  import Feature from 'services/feature';
+  import { approvalApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
+  import ApprovalSetting from '@/services/approval_setting';
+  import Feature from '@/services/feature';
 
   export default {
     components: {},

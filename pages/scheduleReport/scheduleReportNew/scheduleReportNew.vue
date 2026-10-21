@@ -94,7 +94,7 @@
   import dayjs from "dayjs";
   import {
     scheduleReportApi
-  } from 'services/http';
+  } from '@/services/http';
 
   export default {
     data() {

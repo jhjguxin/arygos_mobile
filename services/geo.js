@@ -3,8 +3,8 @@
  * 国家，省，市，区级联数据
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { geoApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { geoApi } from '@/services/http/index';
 
 export default class Geo {
   static _instance = null;

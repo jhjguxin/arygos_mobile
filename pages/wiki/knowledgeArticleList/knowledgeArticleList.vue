@@ -18,7 +18,7 @@
         class="u-m-t-10 u-m-b-10"
         @click="handleCardClick($event, item)"
       >
-        <u-row slot="body" class="u-flex u-line-5">
+        <template #body><u-row class="u-flex u-line-5">
           <u-col span="8" class="u-line-5">
           {{item.summary}}
           </u-col>
@@ -30,8 +30,8 @@
               v-if="item.thumb"
             ></u-image>
           </u-col>
-        </u-row>
-        <u-row gutter="10" slot="foot">
+        </u-row></template>
+        <template #foot><u-row gutter="10" >
           <u-col span="4">
             <u-icon
               name="bookmark" :label="item.knowledge_section.name"
@@ -52,7 +52,7 @@
               name="tags" :label="item.tagsName"
             ></u-icon>
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
     </view>
       <u-empty mode="list" v-show="models.length == 0"/>
@@ -68,7 +68,7 @@
 <script>
   import dayjs from 'dayjs';
   import _ from "lodash";
-  import { knowledgeArticleApi } from 'services/http';
+  import { knowledgeArticleApi } from '@/services/http';
 
   export default {
     data() {

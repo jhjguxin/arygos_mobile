@@ -11,7 +11,7 @@
     v-if="model.id"
     class="u-m-t-10 u-m-b-10"
   >
-    <u-row slot="body" class="u-p-l-10 u-p-r-10">
+    <template #body><u-row class="u-p-l-10 u-p-r-10">
       <view class="article-content">
         <rich-text :nodes="model.content"></rich-text>
       </view>
@@ -45,8 +45,8 @@
           更新时间：{{model.updatedAt}}
         </u-col>
       </u-row>
-    </u-row>
-    <view slot="foot">
+    </u-row></template>
+    <template #foot><view >
       <u-row gutter="10" class="u-font-sm">
         <u-col span="4">
           版块: {{model.knowledge_section.name}}
@@ -58,7 +58,7 @@
           发布人: {{model.user.name}}
         </u-col>
       </u-row>
-    </view>
+    </view></template>
   </u-card>
  </view>
 </template>
@@ -66,7 +66,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { knowledgeArticleApi } from 'services/http';
+  import { knowledgeArticleApi } from '@/services/http';
 
   export default {
     data() {

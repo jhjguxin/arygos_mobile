@@ -38,7 +38,7 @@
               :border="timeLine.card.border"
               :thumb="item.user.avatar_url"
             >
-              <view slot="body">
+              <template #body><view >
                 <view class="u-order-desc u-font-sm">{{item.content}}</view>
                 <view class="u-order-desc u-font-sm ">提醒时间：{{item.remindAt}}</view>
                 <view class="u-order-desc u-font-sm">跟进时间：{{item.revisitAt}}</view>
@@ -73,8 +73,8 @@
                     {{item.sales_activity.refer_name}}
                   </text>
                 </view>
-              </view>
-              <u-row slot="foot">
+              </view></template>
+              <template #foot><u-row >
                 <u-col span="4">
                   <u-icon
                     name="chat-fill" size="24" :label="item.sales_activity.commentCount"
@@ -85,7 +85,7 @@
                     :sales_activity_id="item.sales_activity.id" :ref="item.sales_activity.commentListRef"
                   />
                 </u-col>
-              </u-row>
+              </u-row></template>
             </u-card>
           </template>
         </u-time-line-item>
@@ -104,8 +104,8 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { revisitLogApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { revisitLogApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     components: {},

@@ -70,9 +70,9 @@
 </template>
 
 <script>
-  import Policy from 'services/policy';
-  import Feature from 'services/feature';
-  import ApprovalSetting from 'services/approval_setting';
+  import Policy from '@/services/policy';
+  import Feature from '@/services/feature';
+  import ApprovalSetting from '@/services/approval_setting';
   import { useStore } from '@/store';
 
   export default {

@@ -72,8 +72,8 @@
 
 <script>
   import _ from "lodash";
-  import CustomField from 'services/custom_field';
-  import parseFilter from './parseFilter';
+  import CustomField from '@/services/custom_field';
+  import parseFilter from '@/components/column-filter-form/parseFilter';
 
   export default {
     data() {

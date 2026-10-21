@@ -12,8 +12,8 @@
 
 <script>
   import _ from 'lodash';
-  import Feature from 'services/feature';
-  import Policy from 'services/policy';
+  import Feature from '@/services/feature';
+  import Policy from '@/services/policy';
 
   export default {
     data() {

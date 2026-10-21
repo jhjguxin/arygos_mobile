@@ -30,7 +30,7 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { attachmentApi } from 'services/http';
+  import { attachmentApi } from '@/services/http';
 
   export default {
     data() {

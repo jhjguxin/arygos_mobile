@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16" v-if="customFieldsObject['customer']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['customer'].label}}</view>
@@ -47,7 +47,7 @@
               <custom-field-on-show :customField="customFieldsObject['revisit_remind_at']" :record="model" />
             </u-col>
           </u-row>
-        </view>
+        </view></template>
       </u-card>
       <u-tabs-swiper
         ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
@@ -192,9 +192,9 @@
 
 <script>
   import _ from 'lodash';
-  import { contractApi } from 'services/http';
-  import CustomField from 'services/custom_field';
-  import ApprovalSetting from 'services/approval_setting';
+  import { contractApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
+  import ApprovalSetting from '@/services/approval_setting';
 
   export default {
     data() {

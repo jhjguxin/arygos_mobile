@@ -24,7 +24,7 @@
         :border="card.border"
         @click="handleCardClick($event, item)"
       >
-        <view slot="body" class="u-flex">
+        <template #body><view class="u-flex">
           <u-row gutter="16" style="width: 85%;">
             <u-col span="12" class="u-font-lg">总结</u-col>
             <u-col span="12" class="u-font-sm u-line-3 u-border-bottom">{{item.summary}}</u-col>
@@ -36,8 +36,8 @@
             style="width: 14%;"
             v-if="item.marking_at"
           >阅</view>
-        </view>
-        <u-row slot="foot">
+        </view></template>
+        <template #foot><u-row >
           <u-col span="4">
             <u-icon
               name="checkmark" :label="item.card.foot.markingUser"
@@ -48,7 +48,7 @@
               name="chat" :label="item.markings_count"
             ></u-icon>
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
       </u-swipe-action>
     </view>
@@ -65,7 +65,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { scheduleReportApi } from 'services/http';
+  import { scheduleReportApi } from '@/services/http';
 
   export default {
     components: {},

@@ -82,12 +82,12 @@
 <script>
   import _ from "lodash";
   import dayjs from "dayjs";
-  import CustomFieldForm from 'services/custom_field_form';
+  import CustomFieldForm from '@/services/custom_field_form';
   import { useStore } from '@/store';
   import {
     revisitLogApi,
     leadApi, customerApi, opportunityApi, contractApi
-  } from 'services/http';
+  } from '@/services/http';
 
   export default {
     data() {

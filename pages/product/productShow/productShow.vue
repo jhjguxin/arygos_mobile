@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16" justify="center">
             <u-col span="11">
               <u-swiper
@@ -22,7 +22,7 @@
           </u-row>
           <u-row gutter="16">
           </u-row>
-        </view>
+        </view></template>
       </u-card>
       <u-tabs-swiper
         ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
@@ -77,8 +77,8 @@
 
 <script>
   import _ from 'lodash';
-  import { productApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { productApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {

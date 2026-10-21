@@ -2,7 +2,7 @@
  * 权限服务
  */
 import _ from 'lodash';
-import { permissionApi } from './http';
+import { permissionApi } from '@/services/http';
 import { useStore } from '@/store';
 
 export default class Policy {

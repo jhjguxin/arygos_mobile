@@ -13,11 +13,11 @@
         v-for="customField in customFieldGroup.custom_fields"
         :key="customField.name"
       >
-        <view slot="label">
+        <template #label><view >
           <custom-field-on-show
             :customField="customField" :record="model"
           />
-        </view>
+        </view></template>
       </u-cell-item>
     </u-cell-group>
     <u-loading mode="flower" v-if="customFieldGroups.length == 0"></u-loading>
@@ -26,7 +26,7 @@
 
 <script>
   import _ from 'lodash';
-  import CustomFieldGroup from 'services/custom_field_group';
+  import CustomFieldGroup from '@/services/custom_field_group';
 
   export default {
     data() {

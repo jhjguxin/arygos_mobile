@@ -3,8 +3,8 @@
  * 开启状态, 审批层级, 抄送人
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { approvalApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { approvalApi } from '@/services/http/index';
 
 export default class ApprovalSetting {
   static _approvalSettingInstance = null;

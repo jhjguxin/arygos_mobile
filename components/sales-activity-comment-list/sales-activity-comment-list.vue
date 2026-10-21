@@ -9,7 +9,7 @@
         :padding="card.padding"
         :show-foot="card.showFoot"
       >
-        <view slot="body">
+        <template #body><view >
           <uni-list
             class="sales-activity-comment-list"
            >
@@ -23,13 +23,13 @@
               <uni-list-item
                 :title="item.user.name" :note="item.content"
               >
-                <view slot="body"  class="uni-list-item__content">
+                <template #body><view class="uni-list-item__content">
                   <u-row>
                     <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
                     <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
                   </u-row>
                   <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
-                </view>
+                </view></template>
               </uni-list-item>
             </u-swipe-action>
             <u-loading mode="circle" v-if="isLoading"></u-loading>
@@ -44,7 +44,7 @@
             </u-form-item>
           </u-form>
           <u-button type="primary" @click="handleSubmitClick">评论</u-button>
-        </view>
+        </view></template>
       </u-card>
     </u-popup>
 </template>
@@ -52,7 +52,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { salesActivityApi } from 'services/http';
+  import { salesActivityApi } from '@/services/http';
 
   export default {
     data() {

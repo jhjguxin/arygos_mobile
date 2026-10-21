@@ -10,7 +10,7 @@
       :border="card.border"
        v-if="form.model"
     >
-      <view slot="body">
+      <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.note.label" prop="note">
             <u-input
@@ -21,17 +21,17 @@
             />
           </u-form-item>
         </u-form>
-      </view>
-      <view slot="foot">
+      </view></template>
+      <template #foot><view >
         <u-button @click="handleSubmit" type="primary">提交</u-button>
-      </view>
+      </view></template>
     </u-card>
   </view>
 </template>
 
 <script>
   import _ from "lodash";
-  import { approvalApi } from 'services/http';
+  import { approvalApi } from '@/services/http';
 
   export default {
     data() {
