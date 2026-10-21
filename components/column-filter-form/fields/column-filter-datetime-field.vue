@@ -88,7 +88,7 @@
             return;
           }
         }
-        this.$set(this, key, value);
+        this[key] = value;
         
         if (key == "end" && _.isEmpty(start)) {
           this.selectStartShow = true;

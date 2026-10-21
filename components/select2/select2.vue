@@ -100,7 +100,7 @@
 
         let value = (mode == "selector") ? _.find(list, "checked") : _.filter(list, "checked");
 
-        this.$set(this, "value", value);
+        this.value = value;
 
         this.$emit("select", {value});
       },
@@ -143,7 +143,7 @@
           return;
         }
 
-        this.$set(this, "list", list);
+        this.list = list;
       },
       handleSearch: function(value) {
         this.page = 1;
@@ -191,11 +191,9 @@
           });
 
           if (page > 1) {
-            this.$set(this, "list", _.concat(this.list, list));
+            this.list = _.concat(this.list, list);
           } else {
-            this.$set(
-              this, "list", _.uniqBy(_.concat(_.filter(this.list, "checked"), list), "id")
-            );
+            this.list = _.uniqBy(_.concat(_.filter(this.list, "checked"), list), "id");
           }
         })
       },

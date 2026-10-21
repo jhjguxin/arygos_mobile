@@ -75,11 +75,11 @@
           } = res;
           
           
-          this.$set(this, "accountType", account_type);
-          this.$set(this, "accountTypeListItem", {
+          this.accountType = account_type;
+          this.accountTypeListItem = {
             title: `当前版本：${account_type_display}`,
             note: `有效期至: ${dayjs(expires_at).format('YYYY-MM-DD')};   工号：${used_users_count}/${total_users_count}`
-          });
+          };
         });
       },
       fetchNotificationCount () {
@@ -93,7 +93,7 @@
           } = res;
           
           
-          this.$set(this, "newMessageCount", String(total_count));
+          this.newMessageCount = String(total_count);
         });
       }
     }

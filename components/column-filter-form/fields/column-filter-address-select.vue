@@ -132,7 +132,7 @@
           });
         });
         
-        this.$set(this, "list", list);
+        this.list = list;
       }
     },
     computed: {

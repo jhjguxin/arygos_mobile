@@ -71,7 +71,7 @@
       let { klassName, storeKey } = this;
 
       CustomField.instance().fetchData(klassName).then((customFields)=> {
-        this.$set(this, "customFields", customFields);
+        this.customFields = customFields;
       });
     },
     methods: {

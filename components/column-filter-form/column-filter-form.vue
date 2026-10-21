@@ -96,10 +96,10 @@
 
       if (customFields.length == 0) {
         customFields = await CustomField.instance().fetchData(klassName);
-        this.$set(this, "customFields", customFields);
+        this.customFields = customFields;
       }
 
-      this.$set(this, "formReady", true);
+      this.formReady = true;
     },
     methods: {
       handleFieldChange ({name, value}) {

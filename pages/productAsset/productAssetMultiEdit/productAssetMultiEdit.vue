@@ -234,10 +234,10 @@
           product
         }
 
-        this.$set(this, "form", {
+        this.form = {
           ...this.form,
           model
-        });
+        };
       },
       handleCancel() {
         uni.navigateBack({

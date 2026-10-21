@@ -85,8 +85,8 @@
               }
             });
 
-            this.$set(this, "defaultFilterColumns", defaultFilterColumns);
-            this.$set(this, "sortOptions", sortOptions);
+            this.defaultFilterColumns = defaultFilterColumns;
+            this.sortOptions = sortOptions;
           } else {
             uni.showToast({
               icon: 'none',

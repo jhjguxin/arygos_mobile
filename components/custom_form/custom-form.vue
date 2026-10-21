@@ -88,8 +88,8 @@
           model[`${customField.name}`] = value;
         });
 
-        this.$set(this, "formFields", formFields);
-        this.$set(this, "model", model);
+        this.formFields = formFields;
+        this.model = model;
       },
       handleCollapseCustomFieldChange (value) {
         let { customFields } = this;
@@ -120,8 +120,8 @@
           [`${name}`]: value
         };
 
-        this.$set(this, "model", model);
-        this.$set(this, "formFields", formFields);
+        this.model = model;
+        this.formFields = formFields;
       },
       handleSubmit() {
         console.debug("fields", this.$refs.uForm.fields, "model", this.model);

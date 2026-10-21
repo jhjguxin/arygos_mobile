@@ -48,18 +48,18 @@
           if (Number(code) === 0) {
             callback();
           } else {
-            this.$set(this, "title", remark);
-            this.$set(this, "duplicated", true);
-            this.$set(this, "modalOpen", true);
-            this.$set(this, "fields", data);
+            this.title = remark;
+            this.duplicated = true;
+            this.modalOpen = true;
+            this.fields = data;
           }
         });
       },
       handleConfirm: function () {
         let { duplicated, fields } = this;
 
-        this.$set(this, "duplicated", false);
-        this.$set(this, "modalOpen", false);
+        this.duplicated = false;
+        this.modalOpen = false;
 
         this.$emit("confirm", {duplicated, fields});
       }

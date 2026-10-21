@@ -102,9 +102,9 @@
           });
       
           if (page > 1) {
-            this.$set(this, "list", _.concat(this.list, list));
+            this.list = _.concat(this.list, list);
           } else {
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },

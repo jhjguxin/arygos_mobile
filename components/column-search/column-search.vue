@@ -61,7 +61,7 @@
             this.query = null;
             this.searchColumnName = list[0]?.value;
             this.search.placeholder = `搜索${list[0]?.label}`;
-            this.$set(this, "list", list);
+            this.list = list;
           } else {
             uni.showToast({
               icon: 'none',

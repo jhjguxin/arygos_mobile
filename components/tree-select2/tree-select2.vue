@@ -67,7 +67,7 @@
 
         value = (mode == "selector") ? value[0] : value;
 
-        this.$set(this, "value", value);
+        this.value = value;
         this.$emit("select", {value});
       },
       fetchData: function () {
@@ -95,7 +95,7 @@
           )
           models = formater(models);
 
-          this.$set(this, "list", models);
+          this.list = models;
         })
       },
       requestApi: function ({ klassName, params = {} }) {

@@ -47,9 +47,9 @@
         }
       };
 
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "record", model);
-      if (model) this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.record = model;
+      if (model) this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `编辑${featureLabels[_.snakeCase(klassName)]}`

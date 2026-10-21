@@ -41,8 +41,8 @@
       let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
 
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `新增${featureLabels[_.snakeCase(klassName)]}`

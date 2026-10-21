@@ -37,9 +37,9 @@
       let model = await this.doBuildCustomer({ id: leadId });
 
       this.leadId = leadId;
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "record", model);
-      if (model) this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.record = model;
+      if (model) this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `转${featureLabels.customer}`

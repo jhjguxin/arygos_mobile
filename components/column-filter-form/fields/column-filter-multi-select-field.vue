@@ -56,8 +56,8 @@
           return val;
         });
 
-        this.$set(this, "list", list);
-        this.$set(this, "allChecked", allChecked);
+        this.list = list;
+        this.allChecked = allChecked;
 
         this.handleChange(_.map(_.filter(list, "checked"), "value"));
       },

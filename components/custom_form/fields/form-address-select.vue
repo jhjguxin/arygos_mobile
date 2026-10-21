@@ -115,7 +115,7 @@
           });
         });
 
-        this.$set(this, "list", list);
+        this.list = list;
       },
       setDefaultValue () {
         let{ value = [] } = this;
@@ -129,7 +129,7 @@
         ];
 
         if (! _.isNil(defaultValue[0])) {
-          this.$set(this, 'defaultValue', defaultValue);
+          this.defaultValue = defaultValue;
         }
       }
     },

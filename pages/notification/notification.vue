@@ -118,7 +118,7 @@
             _.each(list, (model)=> {
               if (model.id == Number(id)) model.status = 'read';
             })
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },
@@ -135,7 +135,7 @@
             _.each(list, (model)=> {
               model.status = 'read';
             })
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },
@@ -148,7 +148,7 @@
           } = res;
           
           if (code == 0) {
-            this.$set(this, "list", []);
+            this.list = [];
           }
         })
       },
