@@ -52,18 +52,6 @@
       let customFieldGroups = await CustomFieldGroup.instance().fetchData(klassName);
 
       this.customFieldGroups = customFieldGroups;
-    },
-    computed: {
-      model: {
-        get() {
-          /* moved to props */
-
-          return model;
-        },
-        set (value) {
-          return value
-        }
-      }
     }
   }
 </script>

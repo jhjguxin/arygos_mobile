@@ -1,7 +1,7 @@
 <template>
   <u-upload
     ref="uUpload"
-    :action="action" :file-list="fileList"
+    :action="action" :file-list="localFileList"
     :max-count="maxCount"
     :upload-text="uploadText"
     :form-data="formData"
@@ -33,15 +33,13 @@
       formData: { type: Object, default: () => ({}) },
       autoUpload: { type: Boolean, default: true },
       deletable: { type: Boolean, default: false },
-      width: {}, height: {}, header: {}
+      width: {}, height: {}
     },
     data() {
-       const fileList = this['file-list'] || [];
-
       return {
         action: "",
-        fileList,
-        qiniu: {},
+        localFileList: this['file-list'] || [],
+        header: {},
         uploadReady: false,
       };
     },
@@ -173,7 +171,7 @@
         let { key } = data;
         let upload = this.$refs.uUpload;
         if (key) {
-          let { fileList } = this;
+          let { localFileList: fileList } = this;
           let item = upload.lists[up_index];
           item = {
             ...item,
@@ -193,10 +191,10 @@
         }
       },
       handleRemove(index) {
-        let { fileList } = this;
+        let { localFileList: fileList } = this;
         // REVIEW upload.lists 会丢弃 response 属性
         fileList.splice(index, 1);
-        this.fileList = fileList;
+        
 
         this.$emit("upload", fileList);
       }

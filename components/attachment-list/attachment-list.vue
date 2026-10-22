@@ -79,8 +79,8 @@
           models = [];
         }
         
-        params = {
-          ...params,
+        let params = {
+          ...this.params,
           per_page,
           page
         };

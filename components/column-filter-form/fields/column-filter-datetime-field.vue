@@ -6,7 +6,7 @@
         <u-input
           :border="border" v-model="start"
           placeholder="开始" @click="selectStartShow = true"></u-input>
-        <u-picker v-model="selectStartShow" mode="time" :default-time="start" :params="params" @confirm="handleConfirm($event, 'start')"></u-picker>
+        <u-picker v-model:show="selectStartShow" mode="time" :default-time="start" :params="params" @confirm="handleConfirm($event, 'start')"></u-picker>
       </u-form-item>
     </u-col>
     -
@@ -15,7 +15,7 @@
         <u-input
           :border="border" v-model="end"
           placeholder="结束" @click="selectEndShow = true"></u-input>
-        <u-picker v-model="selectEndShow" mode="time" :default-time="end" :params="params" @confirm="handleConfirm($event, 'end')"></u-picker>
+        <u-picker v-model:show="selectEndShow" mode="time" :default-time="end" :params="params" @confirm="handleConfirm($event, 'end')"></u-picker>
       </u-form-item>
     </u-col>
   </u-row>

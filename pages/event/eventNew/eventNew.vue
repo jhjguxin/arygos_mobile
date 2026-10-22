@@ -13,7 +13,7 @@
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-picker v-model:show="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
         </u-form-item>
         <u-form-item :label="form.item.repeat.label" prop="repeat">
           <u-select
@@ -100,7 +100,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           repeat: {
             label: "重复",
@@ -128,7 +128,7 @@
               }
             ],
             show: false,
-            border: false
+            border: 'none'
            },
           remind_type: {
             label: "提醒时间",
@@ -172,7 +172,7 @@
               }
             ],
             show: false,
-            border: false
+            border: 'none'
           },
           user_ids: {
             label: "参与人",

@@ -3,7 +3,7 @@
     <u-input
       :border="border" type="select" :select-open="selectShow" :value="value"
       :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
-    <u-picker v-model="selectShow" mode="time" :default-time="value" :params="params" @confirm="handleConfirm"></u-picker>
+    <u-picker v-model:show="selectShow" mode="time" :default-time="value" :params="params" @confirm="handleConfirm"></u-picker>
   </u-form-item>
 </template>
 

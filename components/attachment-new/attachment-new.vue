@@ -2,7 +2,7 @@
   <view>
     <u-modal
       ref="uModal"
-      v-model="show" :title="title" :z-index="zIndex" :mask="mask"
+      v-model:show="show" :title="title" :z-index="zIndex" :mask="mask"
       :async-close="true"
       :mask-close-able="maskCloseAble"
       :show-cancel-button="showCancelButton"
@@ -12,7 +12,7 @@
           <u-form :model="form.model" ref="uForm">
               <u-form-item :label="form.item.attachment_id.label" prop="attachment_id">
                 <attachment-upload
-                  maxCount="1"
+                  :maxCount="1"
                   @upload="handleUpload"
                 />
               </u-form-item>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import { attachmentApi } from '@/services/http';
 
   export default {
@@ -107,10 +108,10 @@
       showModal() {
         this.show = true;
 
-        // REVIEW 延时校验表单等待 uForm 初始化完成
-        _.delay(()=> {
-          this.$refs.uForm.setRules(this.form.rules);
-        }, 100);
+        // REVIEW 显示后等待 DOM 初始化完成再设置校验规则
+        this.$nextTick(() => {
+          this.$refs.uForm?.setRules(this.form.rules);
+        });
       },
       handleUpload(lists) {
         if (lists.length == 1) {

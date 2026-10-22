@@ -27,7 +27,7 @@
           <u-input
             :border="form.item.revisit_at.border" type="select" :select-open="form.item.revisit_at.show" v-model="form.model.revisit_at"
             :placeholder="form.item.revisit_at.placeholder" @click="form.item.revisit_at.show = true"></u-input>
-          <u-picker v-model="form.item.revisit_at.show" mode="time" :default-time="form.model.revisit_at" :params="form.item.revisit_at.params" @confirm="handleSelectRevisitAtConfirm"></u-picker>
+          <u-picker v-model:show="form.item.revisit_at.show" mode="time" :default-time="form.model.revisit_at" :params="form.item.revisit_at.params" @confirm="handleSelectRevisitAtConfirm"></u-picker>
         </u-form-item>
 
         <!-- 跟进对象 -->
@@ -67,7 +67,7 @@
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-picker v-model:show="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
         </u-form-item>
         <u-form-item prop="image_attachment_ids" :label="form.item.image_attachment_ids.label">
           <attachment-upload
@@ -147,7 +147,7 @@
             placeholder: "请选择跟进类型",
             list: [],
             show: false,
-            border: false
+            border: 'none'
           },
           revisit_at: {
             label: "跟进时间",
@@ -161,7 +161,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           loggable: {
             label: "跟进对象"
@@ -171,7 +171,7 @@
             placeholder: "",
             list: [],
             show: false,
-            border: false
+            border: 'none'
           },
           contacts: {
             label: "联系人",
@@ -193,7 +193,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           image_attachment_ids: {
             label: "图片",
