@@ -17,7 +17,7 @@
   import {
     receivedPaymentApi,
     contractApi
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

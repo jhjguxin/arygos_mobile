@@ -13,7 +13,7 @@
         <u-row gutter="16">
           <u-col span="12">
             <u-search
-              :placeholder="searchPlaceholder" v-model="query" :show-action="showAction"
+              :placeholder="searchPlaceholder" v-model="searchQuery" :show-action="showAction"
               @search="handleSearch"
             ></u-search>
           </u-col>
@@ -51,7 +51,7 @@
     productApi,
     productCategoryApi,
     customerCommonSettingApi
-  } from "services/http";
+  } from "@/services/http";
 
 
   export default {
@@ -70,20 +70,12 @@
     },
     data() {
       return {
-        klassName: this.klassName,
         selectedValue: this.value,
-        required: this.required,
-        title: this.title,
-        width: this.width,
-        placeholder: this.placeholder,
-        searchPlaceholder: this.searchPlaceholder,
-        mode: this.mode,
-        query: this.query,
+        searchQuery: this.query,
         className: "select2-container",
         status: "nomore",
         showCancelButton: true,
         page: 1,
-        perPage: this.perPage,
         border: false,
         showAction: false,
         list: [],

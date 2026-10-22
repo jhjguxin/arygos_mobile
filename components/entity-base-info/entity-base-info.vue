@@ -5,7 +5,7 @@
       v-for="customFieldGroup in customFieldGroups"
       :key="customFieldGroup.id"
     >
-      <u-cell-item
+      <u-cell
         :title="customField.label"
         :arrow="cellItem.arrow"
         :use-label-slot="cellItem.useLabelSlot"
@@ -18,7 +18,7 @@
             :customField="customField" :record="model"
           />
         </view></template>
-      </u-cell-item>
+      </u-cell>
     </u-cell-group>
     <u-loading mode="flower" v-if="customFieldGroups.length == 0"></u-loading>
   </view>
@@ -30,8 +30,8 @@
 
   export default {
   props: {
-      klassName: { }
-      style: { type: String, default: "height: 55vh;" }
+      klassName: { },
+      style: { type: String, default: "height: 55vh;" },
       model: { }
   },
 
@@ -39,8 +39,6 @@
       /* moved to props */
 
       return {
-        klassName,
-        style,
         customFieldGroups: [],
         cellItem: {
           arrow: false,

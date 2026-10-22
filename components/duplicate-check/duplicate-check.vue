@@ -21,7 +21,7 @@
   import _ from "lodash";
   import {
     duplicateApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

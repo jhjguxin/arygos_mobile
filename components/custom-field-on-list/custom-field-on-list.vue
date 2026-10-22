@@ -43,14 +43,14 @@
 
   export default {
   props: {
-      customField: { default: () => ({}) }
+      customField: { default: () => ({}) },
+      record: { default: () => ({}) }
   },
 
     data() {
       let { field_type: fieldType } = this.customField;
 
       return {
-        customField,
         fieldType,
         href: null,
       }
@@ -80,37 +80,37 @@
           switch (fieldType) {
             case "text_field": case "email_field":
             case "integer_field": case "float_field": case "currency_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "url_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               this.href = value;
               break;
             case "mobile_field": case "tel_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               this.href = `tel:${value}`;
               break;
             case "text_area":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = _.truncate(value, {length: 100});
               break;
             case "date_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = value ? dayjs(value).format("YYYY-MM-DD") : value;
               break;
             case "datetime_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = value ? dayjs(value).format("YYYY-MM-DD HH:ss") : value;
               break;
             case "select_field": case "field_map_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "multi_select":
-              value = _.split(_.at(record, customColumnName)[0], "，");
+              value = _.split(_.at(this.record, customColumnName)[0], "，");
               break;
             case "select2_field":
-              value = _.at(record, customColumnName)[0];
-              let id = _.at(record, `${name}_id`)[0];
+              value = _.at(this.record, customColumnName)[0];
+              let id = _.at(this.record, `${name}_id`)[0];
               const urlMap = {
                 Lead: `/pages/lead/leadShow/leadShow?id=${id}`,
                 Customer: `/pages/customer/customerShow/customerShow?id=${id}`,
@@ -121,10 +121,10 @@
               this.href = urlMap[selectKlassName];
               break;
             case "address_select":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "geo_address_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
           }
           

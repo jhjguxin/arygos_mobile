@@ -31,7 +31,7 @@
     customerApi,
     opportunityApi,
     contractApi
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
   props: {

@@ -37,7 +37,7 @@
         <u-col span="12" class="u-font-lg u-p-t-20">抄送人：<text class="u-font-sm">{{model.ccUsers}}</text></u-col>
       </u-row></template>
     </u-card>
-    <u-cell-item icon="chat" :title="markingListCellItem.title" :arrow="false"></u-cell-item>
+    <u-cell icon="chat" :title="markingListCellItem.title" :arrow="false"></u-cell>
     <uni-list
       :border="true"
       class="marking-list"

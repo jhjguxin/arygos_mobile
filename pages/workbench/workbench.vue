@@ -4,7 +4,7 @@
     <uni-section title="营销管理" type="line"></uni-section>
     <u-grid :col="4" :border="true">
       <u-grid-item>
-        <u-icon name="zhuanfa" :size="46"></u-icon>
+        <u-icon name="chat-fill" :size="46"></u-icon>
         <view class="grid-text">社交推广</view>
       </u-grid-item>
     </u-grid>

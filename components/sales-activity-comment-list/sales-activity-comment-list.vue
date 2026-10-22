@@ -56,10 +56,10 @@
 
   export default {
   props: {
-      sales_activity_id: { }
-      width: { type: String, default: "85%" }
-      sales_activity_id: id: { }
-      sales_activity_id: id: { }
+      sales_activity_id: { },
+      width: { type: String, default: "85%" },
+      sales_activity_id: id: { },
+      sales_activity_id: id: { },
       sales_activity_id: id: { }
   },
 
@@ -67,12 +67,10 @@
       /* moved to props */
 
       return {
-        sales_activity_id,
         models: [],
         popup: {
           show: false,
           mode: "right",
-          width
         },
         card: {
           margin: "0 0",

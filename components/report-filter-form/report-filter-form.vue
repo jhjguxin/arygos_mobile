@@ -79,8 +79,8 @@
 <script>
   export default {
   props: {
-      filters: { }
-      filterColumns: { }
+      filters: { },
+      filterColumns: { },
       filterColumns: { }
   },
 
@@ -88,8 +88,6 @@
       /* moved to props */
 
       return {
-        filters,
-        filterColumns
       };
     },
     methods: {
@@ -106,7 +104,7 @@
         /* moved to props */
         let { filters } = this;
 
-        // let filters = parseFilter({ filters, filterColumns });
+        // let filters = parseFilter({ filters: this.filters, filterColumns });
 
         this.$emit("filterConfirm", filters);
       },

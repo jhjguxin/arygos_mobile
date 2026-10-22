@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      v-model="value"
+      :value="value"
       :placeholder="customField.input_html_options.placeholder"
       type="textarea"
       :auto-height="autoHeight"
@@ -15,12 +15,12 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
-      record: { }
-      klassName: { }
-      value: { }
+      name: { },
+      fieldType: { },
+      customField: { },
+      record: { },
+      klassName: { },
+      value: { },
       autoHeight: { type: Boolean, default: true }
   },
 
@@ -31,8 +31,6 @@
       return {
         name,  fieldType, customField,
         record, klassName,
-        value,
-        autoHeight
       }
     },
     methods: {

@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      v-model="value"
+      :value="value"
       :placeholder="customField.input_html_options.placeholder"
       @input="handleChange"
     />
@@ -13,9 +13,9 @@
 
   export default {
   props: {
-      customField: { }
-      record: { }
-      klassName: { }
+      customField: { },
+      record: { },
+      klassName: { },
       value: { }
   },
 
@@ -24,9 +24,7 @@
       /* moved to props */
 
       return {
-        customField,
         record, klassName,
-        value
       }
     },
     mounted () {

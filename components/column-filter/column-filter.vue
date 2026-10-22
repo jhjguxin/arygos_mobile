@@ -49,7 +49,6 @@
       const storeKey = this.storeKey || this.klassName;
 
       return {
-        klassName: this.klassName,
         storeKey,
         sortValue: "",
         order: "asc",

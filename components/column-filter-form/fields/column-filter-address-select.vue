@@ -18,11 +18,11 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
-      record: { }
-      klassName: { }
+      name: { },
+      fieldType: { },
+      customField: { },
+      record: { },
+      klassName: { },
       value: { }
   },
 
@@ -34,7 +34,6 @@
         name,  fieldType, customField,
         record, klassName,
         list: [],
-        value,
         placeholder: `请选择${customField.label}`,
         border: false,
         selectShow: false

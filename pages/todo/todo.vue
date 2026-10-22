@@ -21,7 +21,7 @@
        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
        :options="item.swipeAction.options"
      >
-       <u-cell-item
+       <u-cell
          :title="item.body"
          :title-style="item.uCellItem.titleStyle"
          :value="item.title"
@@ -30,7 +30,7 @@
          :label-style="item.uCellItem.labelStyle"
          :arrow="item.uCellItem.arrow"
          @click="handleItemClick($event, item)"
-       ></u-cell-item>
+       ></u-cell>
      </u-swipe-action>
      <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="reminders.length == 0"></u-empty>
      <uni-load-more

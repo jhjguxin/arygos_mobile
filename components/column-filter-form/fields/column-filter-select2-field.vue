@@ -27,10 +27,10 @@
 
   export default {
   props: {
-      customField: { }
-      record: { }
-      klassName: { }
-      value: { }
+      customField: { },
+      record: { },
+      klassName: { },
+      value: { },
       mode: { type: String, default: "selector" }
   },
 
@@ -39,7 +39,6 @@
       /* moved to props */
 
       return {
-        customField,
         record, klassName,
         value, mode,
         placeholder: `请选择${customField.label}`,

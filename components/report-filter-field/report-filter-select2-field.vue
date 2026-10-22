@@ -17,7 +17,7 @@
 
   export default {
   props: {
-      customField: { }
+      customField: { },
       klassName: { }
   },
 
@@ -26,8 +26,6 @@
       /* moved to props */
 
       return {
-        customField,
-        klassName,
         placeholder: `请选择${customField.label}`,
         list: [],
       }

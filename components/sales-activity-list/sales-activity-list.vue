@@ -76,7 +76,6 @@
         category: "all",
         status: 'more', // 加载状态
         perPage: 5, // 分页数
-        style,
         timeLine: {
           card: {
             border: true,

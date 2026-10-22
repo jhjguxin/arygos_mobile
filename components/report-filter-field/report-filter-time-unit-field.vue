@@ -12,9 +12,9 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
+      name: { },
+      fieldType: { },
+      customField: { },
       value: { }
   },
 
@@ -31,7 +31,6 @@
       return {
         name,  fieldType, customField,
         list,
-        value,
         placeholder: `请选择${customField.label}`,
         border: false,
         selectShow: false

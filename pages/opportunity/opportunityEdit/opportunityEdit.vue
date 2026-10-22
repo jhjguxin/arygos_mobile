@@ -16,7 +16,7 @@
   import Auth from '@/services/auth';
   import {
     opportunityApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

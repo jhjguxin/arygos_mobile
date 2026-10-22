@@ -9,12 +9,12 @@
         @click="handleSwipActionClick" @open="handleSwipeActionOpen"
         :options="swipeAction.options"
       >
-        <u-cell-item
+        <u-cell
           icon="file-text-fill"
           :title="item.file_file_name"
           :value="item.fileSize"
           @click="handleItemClick($event, item)"
-        ></u-cell-item>
+        ></u-cell>
       </u-swipe-action>
     </u-cell-group>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -34,7 +34,7 @@
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" }
+      style: { type: String, default: "height: 55vh;" },
       params: { }
   },
 
@@ -42,7 +42,6 @@
       /* moved to props */
 
       return {
-        style,
         models: [],
         status: 'more', // 加载状态
         page: 1,

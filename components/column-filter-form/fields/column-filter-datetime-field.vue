@@ -28,11 +28,11 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
-      record: { }
-      klassName: { }
+      name: { },
+      fieldType: { },
+      customField: { },
+      record: { },
+      klassName: { },
       value: { }
   },
 
@@ -44,7 +44,6 @@
       return {
         name,  fieldType, customField,
         record, klassName,
-        value,
         startName: `${customField.name}-start`,
         endName: `${customField.name}-end`,
         start: "",

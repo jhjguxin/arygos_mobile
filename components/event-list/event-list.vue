@@ -61,7 +61,7 @@
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" }
+      style: { type: String, default: "height: 55vh;" },
       params: { }
   },
 
@@ -69,7 +69,6 @@
       /* moved to props */
 
       return {
-        style,
         models: [],
         status: 'more', // 加载状态
         page: 1,

@@ -36,7 +36,6 @@
     },
     data() {
       return {
-        filters: this.filters,
         formReady: false
       };
     },

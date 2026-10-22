@@ -21,8 +21,6 @@
     },
     data() {
       return {
-        filterColumns: this.filterColumns,
-        filters: this.filters
       };
     },
     methods: {

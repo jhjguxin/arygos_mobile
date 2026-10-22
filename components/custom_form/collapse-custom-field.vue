@@ -1,9 +1,9 @@
 <template>
   <u-cell-group>
-    <u-cell-item title="是否显示非常用字段" :arrow="arrow" center hover-class="none">
+    <u-cell title="是否显示非常用字段" :arrow="arrow" center hover-class="none">
       <template #icon><u-icon size="32" name="setting"></u-icon></template>
       <template #right-icon><u-switch v-model="collapsed" @change="handleSwitchClick"></u-switch></template>
-    </u-cell-item>
+    </u-cell>
   </u-cell-group>
 </template>
 

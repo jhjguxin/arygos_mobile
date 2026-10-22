@@ -40,15 +40,7 @@
 
       return {
         action: "",
-        width: this.width,
-        height: this.height,
         fileList,
-        maxCount: this.maxCount,
-        uploadText: this.uploadText,
-        header: this.header,
-        formData: this.formData,
-        autoUpload: this.autoUpload,
-        deletable: this.deletable,
         qiniu: {},
         uploadReady: false,
       };

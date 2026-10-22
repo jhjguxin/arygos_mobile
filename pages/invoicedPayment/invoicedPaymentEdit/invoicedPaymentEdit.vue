@@ -16,7 +16,7 @@
   import Auth from '@/services/auth';
   import {
     invoicedPaymentApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

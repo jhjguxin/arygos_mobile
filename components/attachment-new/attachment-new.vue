@@ -37,8 +37,6 @@
       /* moved to props */
 
       return {
-        title,
-        buttonText,
         show: false,
         zIndex: 1075 - 200,
         mask: false,

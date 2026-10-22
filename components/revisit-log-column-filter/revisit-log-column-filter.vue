@@ -35,7 +35,6 @@
 
       return {
         klassName: "RevisitLog",
-        storeKey,
         sortValue: "",
         order: "asc",
         sortOptions: [

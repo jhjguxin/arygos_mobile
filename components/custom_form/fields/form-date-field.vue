@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      :border="border" type="select" :select-open="selectShow" v-model="value"
+      :border="border" type="select" :select-open="selectShow" :value="value"
       :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
     <u-picker v-model="selectShow" mode="time" :default-time="value" :params="params" @confirm="handleConfirm"></u-picker>
   </u-form-item>
@@ -12,11 +12,11 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
-      record: { }
-      klassName: { }
+      name: { },
+      fieldType: { },
+      customField: { },
+      record: { },
+      klassName: { },
       value: { }
   },
 
@@ -28,7 +28,6 @@
       return {
         name,  fieldType, customField,
         record, klassName,
-        value,
         params: {
           year: true,
           month: true,

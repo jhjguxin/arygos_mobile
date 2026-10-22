@@ -84,11 +84,8 @@
     },
     data() {
       return {
-        klassName,
         formReady: false,
         filters: [],
-        customFields,
-        model
       };
     },
     async created() {

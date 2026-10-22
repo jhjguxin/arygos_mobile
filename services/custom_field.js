@@ -43,6 +43,9 @@ export default class CustomField {
             } else {
               reject(data);
             }
+          })
+          .catch((err) => {
+            reject(err);
           });
       }
     })

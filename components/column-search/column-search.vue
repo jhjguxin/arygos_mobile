@@ -25,7 +25,7 @@
 
   export default {
   props: {
-      klassName: klass_name: { }
+      klassName: { }
   },
 
     data() {
@@ -51,7 +51,7 @@
     methods: {
       fetchData () {
         /* moved to props */
-        userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
+        userSettingApi.default_entity_list_table({ klass_name: this.klassName }).then((res) => {
           let { data: {code, remark, data}} = res;
 
           if (code == 0) {

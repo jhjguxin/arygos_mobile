@@ -83,7 +83,7 @@
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" }
+      style: { type: String, default: "height: 55vh;" },
       approvalDetail: { }
   },
 
@@ -99,10 +99,8 @@
       };
 
       return {
-        approvalDetail,
         approve_status: approvalDetail?.approve_status,
         isApproveFinished: _.includes(["approved", "rejected"], approvalDetail?.approve_status),
-        style,
         node: {
           applying: {
             style: "background: green"
@@ -196,7 +194,7 @@
 
           return {
             node: {
-              style,
+              style: this.style,
               icon
             },
             level: stepConfig.level,

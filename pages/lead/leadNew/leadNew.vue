@@ -17,7 +17,7 @@
   import Auth from '@/services/auth';
   import {
     leadApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

@@ -15,7 +15,7 @@
   import CustomFieldForm from '@/services/custom_field_form';
   import {
     opportunityApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {

@@ -19,11 +19,11 @@
 
   export default {
   props: {
-      name: { }
-      fieldType: { }
-      customField: { }
-      record: { }
-      klassName: { }
+      name: { },
+      fieldType: { },
+      customField: { },
+      record: { },
+      klassName: { },
       value: { }
   },
 
@@ -36,7 +36,6 @@
         record, klassName,
         list: [],
         defaultValue: [],
-        value,
         border: false,
         selectShow: false
       }
