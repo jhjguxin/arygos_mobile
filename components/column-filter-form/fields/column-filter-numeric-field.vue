@@ -37,7 +37,7 @@
         endName: `${customField.name}-end`,
         start: start != null ? start : "",
         end: end != null ? end : "",
-        border: false,
+        border: "none",
       }
     },
     methods: {

@@ -35,7 +35,7 @@
         record, klassName,
         list: [],
         placeholder: `请选择${customField.label}`,
-        border: false,
+        border: "none",
         selectShow: false
       }
     },

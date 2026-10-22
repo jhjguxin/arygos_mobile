@@ -34,7 +34,7 @@
         selectShow: false,
         columnSelect: {
           placeholder: "选择搜索字段",
-          border: true
+          border: "surround"
         },
         search: {
           placeholder: "输入搜索内容",

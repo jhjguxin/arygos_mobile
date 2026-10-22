@@ -54,7 +54,7 @@
         title,
         params,
         placeholder,
-        border: false,
+        border: "none",
         showAction: false,
         list: null,
         modalOpen: false,

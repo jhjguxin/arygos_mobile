@@ -76,7 +76,7 @@
         status: "nomore",
         showCancelButton: true,
         page: 1,
-        border: false,
+        border: "none",
         showAction: false,
         list: [],
         modalOpen: false

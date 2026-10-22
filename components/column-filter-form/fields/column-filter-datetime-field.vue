@@ -56,7 +56,7 @@
           minute: true,
           second: false
         },
-        border: false,
+        border: "none",
         selectStartShow: false,
         selectEndShow: false
       }

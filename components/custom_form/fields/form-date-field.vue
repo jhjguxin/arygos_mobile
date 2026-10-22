@@ -36,7 +36,7 @@
           minute: false,
           second: false
         },
-        border: false,
+        border: "none",
         selectShow: false
       }
     },

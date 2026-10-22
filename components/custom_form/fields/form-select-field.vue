@@ -34,7 +34,7 @@
         name,  fieldType, customField,
         record, klassName,
         list,
-        border: false,
+        border: "none",
         selectShow: false
       }
     },

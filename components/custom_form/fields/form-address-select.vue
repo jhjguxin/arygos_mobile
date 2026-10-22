@@ -36,7 +36,7 @@
         record, klassName,
         list: [],
         defaultValue: [],
-        border: false,
+        border: "none",
         selectShow: false
       }
     },
