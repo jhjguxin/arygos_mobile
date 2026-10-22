@@ -46,10 +46,8 @@
       storeKey: { type: String, default: '' }
     },
     data() {
-      const storeKey = this.storeKey || this.klassName;
-
       return {
-        storeKey,
+        resolvedStoreKey: this.storeKey || this.klassName,
         sortValue: "",
         order: "asc",
         sortOptions: [],
@@ -61,7 +59,7 @@
       };
     },
     mounted() {
-      let { storeKey } = this;
+      let { resolvedStoreKey: storeKey } = this;
       this.filterColumns = useStore().getFilterColumns(storeKey) || [];
 
       this.fetchData();
@@ -127,7 +125,7 @@
       handleFilterColumnSwitchChange (e, value) {
         let klassName = this.klassName;
         let { value: checked } = e;
-        let { defaultFilterColumns, maxFilterColumn, storeKey } = this;
+        let { defaultFilterColumns, maxFilterColumn, resolvedStoreKey: storeKey } = this;
         
         defaultFilterColumns = _.map(defaultFilterColumns, (column) => {
           if (String(column.name) == String(value)) {

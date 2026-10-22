@@ -6,7 +6,7 @@
     class="column-filter-form"
   >
     <view class="column-filter-fields">
-      <view  v-for="column in filterColumns" :key="column.name">
+      <view  v-for="column in resolvedFilterColumns" :key="column.name">
         <column-filter-field-map-field
           :customField="column.customField"
           :value="column.value"
@@ -155,7 +155,7 @@
       }
     },
     computed: {
-      filterColumns: {
+      resolvedFilterColumns: {
         get () {
           let { filterColumns } = this;
           let { customFields, model } = this;
