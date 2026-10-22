@@ -12,10 +12,15 @@
       <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.common_id.label" prop="common_id">
-            <u-input
-              :border="form.item.common_id.border" type="select" :select-open="form.item.common_id.show" v-model="commonDisplay"
-              :placeholder="form.item.common_id.placeholder" @click="form.item.common_id.show = true"></u-input>
-            <u-select mode="single-column" :list="form.item.common_id.list" v-model="form.item.common_id.show" @confirm="handleSelectCommonConfirm"></u-select>
+            <u-select
+              :options="form.item.common_id.list"
+              v-model:current="form.model.common_id"
+              label-name="label"
+              key-name="value"
+              :label="form.item.common_id.placeholder"
+              :show-options-label="true"
+              @select="handleSelectCommonConfirm"
+            />
           </u-form-item>
         </u-form>
       </view></template>
@@ -161,9 +166,8 @@
         let value = e.value;
         this.form.model.common_id = value;
       },
-      handleSelectCommonConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.common_id = value;
+      handleSelectCommonConfirm: function (item) {
+        this.form.model.common_id = item?.value;
       },
       handleSubmit() {
         this.$refs.uForm.validate().then(valid => {

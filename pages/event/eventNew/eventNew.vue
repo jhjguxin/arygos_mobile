@@ -16,16 +16,26 @@
           <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
         </u-form-item>
         <u-form-item :label="form.item.repeat.label" prop="repeat">
-          <u-input
-            :border="form.item.repeat.border" type="select" :select-open="form.item.repeat.show" v-model="repeatDisplay"
-            :placeholder="form.item.repeat.placeholder" @click="form.item.repeat.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.repeat.list" v-model="form.item.repeat.show" @confirm="handleSelectRepeatConfirm"></u-select>
+          <u-select
+            :options="form.item.repeat.list"
+            v-model:current="form.model.repeat"
+            label-name="label"
+            key-name="value"
+            :label="form.item.repeat.placeholder"
+            :show-options-label="true"
+            @select="handleSelectRepeatConfirm"
+          />
         </u-form-item>
         <u-form-item :label="form.item.remind_type.label" prop="remind_type">
-          <u-input
-            :border="form.item.remind_type.border" type="select" :select-open="form.item.remind_type.show" v-model="remindTypeDisplay"
-            :placeholder="form.item.remind_type.placeholder" @click="form.item.remind_type.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.remind_type.list" v-model="form.item.remind_type.show" @confirm="handleSelectRemindTypeConfirm"></u-select>
+          <u-select
+            :options="form.item.remind_type.list"
+            v-model:current="form.model.remind_type"
+            label-name="label"
+            key-name="value"
+            :label="form.item.remind_type.placeholder"
+            :show-options-label="true"
+            @select="handleSelectRemindTypeConfirm"
+          />
         </u-form-item>
         <u-form-item :label="form.item.user_ids.label" prop="user_ids">
           <select2
@@ -259,13 +269,11 @@
 
         this.form.model.remind_at = value;
       },
-      handleSelectRepeatConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.repeat = value;
+      handleSelectRepeatConfirm: function (item) {
+        this.form.model.repeat = item?.value;
       },
-      handleSelectRemindTypeConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.remind_type = value;
+      handleSelectRemindTypeConfirm: function (item) {
+        this.form.model.remind_type = item?.value;
       },
       handleUserIdsSelect: function (e) {
         let value = e.value;

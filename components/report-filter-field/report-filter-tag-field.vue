@@ -1,9 +1,14 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label">
-    <u-input
-      :border="border" type="select" :select-open="selectShow" v-model="valueDisplay"
-      :placeholder="placeholder" @click="selectShow = true"></u-input>
-    <u-select mode="single-column" :list="list" v-model="selectShow" @confirm="handleConfirm"></u-select>
+    <u-select
+      :options="list"
+      v-model:current="selectValue"
+      label-name="label"
+      key-name="value"
+      :label="placeholder"
+      :show-options-label="true"
+      @select="handleSelect"
+    />
   </u-form-item>
 </template>
 
@@ -21,43 +26,29 @@
   },
 
     data() {
-      // props 获取数据
-      /* moved to props */
-      let list = _.map(customField.collection_options, (opt) => (
-        {
-          label: opt[0],
-          value: opt[1]
-        }
-      ));
-
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        list,
-        placeholder: `请选择${customField.label}`,
-        border: "none",
-        selectShow: false
+        list: _.map(this.customField.collection_options, (opt) => (
+          {
+            label: opt[0],
+            value: opt[1]
+          }
+        )),
+        placeholder: `请选择${this.customField.label}`,
+        selectValue: this.value == null ? '' : this.value
+      }
+    },
+    watch: {
+      value(val) {
+        this.selectValue = val == null ? '' : val;
       }
     },
     methods: {
-      handleConfirm: function (e) {
+      handleSelect: function (item) {
         let { customField: { name }} = this;
 
-        let value = e[0]?.value
+        let value = item?.value
 
-        this.value = value;
         this.$emit("fieldChange", {[`${name}`]: value});
-      }
-    },
-    computed: {
-      valueDisplay: {
-        get: function () {
-          let { list, value } = this;
-
-          return _.find(list, (opt)=> opt.value == value)?.label;
-        },
-        set: function (value) {
-        }
       }
     }
   };

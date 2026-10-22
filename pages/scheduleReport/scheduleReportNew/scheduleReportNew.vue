@@ -25,10 +25,15 @@
 
         <!-- 日期 -->
       <u-form-item :label="form.item.due_at.label" prop="due_at" required>
-        <u-input
-          :border="form.item.due_at.border" type="select" :select-open="form.item.due_at.show" v-model="dueAtDisplay"
-          :placeholder="form.item.due_at.placeholder" @click="form.item.due_at.show = true"></u-input>
-        <u-select mode="single-column" :list="form.item.due_at.list" v-model="form.item.due_at.show" @confirm="handleSelectDueAtConfirm"></u-select>
+        <u-select
+          :options="form.item.due_at.list"
+          v-model:current="form.model.due_at"
+          label-name="label"
+          key-name="value"
+          :label="form.item.due_at.placeholder"
+          :show-options-label="true"
+          @select="handleSelectDueAtConfirm"
+        />
       </u-form-item>
 
       <!-- 批阅人 -->
@@ -253,9 +258,8 @@
 
         this.fetchDueAt();
       },
-      handleSelectDueAtConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.due_at = value;
+      handleSelectDueAtConfirm: function (item) {
+        this.form.model.due_at = item?.value;
       },
       handleMarkingUserSelect: function (e) {
         let value = e.value;

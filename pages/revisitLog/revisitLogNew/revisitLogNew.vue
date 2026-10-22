@@ -11,10 +11,15 @@
         </u-form-item>
 
         <u-form-item :label="form.item.category.label" prop="category">
-          <u-input
-            :border="form.item.category.border" type="select" :select-open="form.item.category.show" v-model="categoryDisplay"
-            :placeholder="form.item.category.placeholder" @click="form.item.category.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.category.list" v-model="form.item.category.show" @confirm="handleSelectCategoryConfirm"></u-select>
+          <u-select
+            :options="form.item.category.list"
+            v-model:current="form.model.category"
+            label-name="label"
+            key-name="value"
+            :label="form.item.category.placeholder"
+            :show-options-label="true"
+            @select="handleSelectCategoryConfirm"
+          />
         </u-form-item>
 
         <!-- 跟进时间 -->
@@ -33,10 +38,15 @@
         </u-form-item>
         <!-- 跟进对象状态 -->
         <u-form-item :label="form.item.loggableStatus.label" prop="loggable">
-          <u-input
-            :border="form.item.loggableStatus.border" type="select" :select-open="form.item.loggableStatus.show" v-model="loggableStatusDisplay"
-            :placeholder="form.item.loggableStatus.placeholder" @click="form.item.loggableStatus.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.loggableStatus.list" v-model="form.item.loggableStatus.show" @confirm="handleSelectLoggableStatusConfirm"></u-select>
+          <u-select
+            :options="form.item.loggableStatus.list"
+            v-model:current="form.model.loggableStatus"
+            label-name="label"
+            key-name="value"
+            :label="form.item.loggableStatus.placeholder"
+            :show-options-label="true"
+            @select="handleSelectLoggableStatusConfirm"
+          />
         </u-form-item>
 
         <!-- 关联联系人 -->
@@ -380,13 +390,11 @@
 
         this.form.model.revisit_at = value;
       },
-      handleSelectCategoryConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.category = value;
+      handleSelectCategoryConfirm: function (item) {
+        this.form.model.category = item?.value;
       },
-      handleSelectLoggableStatusConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.loggableStatus = value;
+      handleSelectLoggableStatusConfirm: function (item) {
+        this.form.model.loggableStatus = item?.value;
       },
       handleContactsSelect: function (e) {
         let value = e.value;
