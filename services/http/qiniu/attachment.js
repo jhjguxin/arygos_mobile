@@ -17,7 +17,7 @@ const create = (data = {}) => {
   });
 };
 
-export {
+export default {
   callback,
   create
 };

@@ -1,5 +1,5 @@
 <template>
-  <view :style="style">
+  <view :style="wrapperStyle">
     <u-link v-if="fieldType === 'mobile_field'"  :href="href">
       {{displayValue}}
     </u-link>
@@ -58,15 +58,9 @@
 
     data() {
       let { field_type: fieldType } = this.customField;
-      let localStyle = this.style;
-      if (this.inline) localStyle = {
-        ...style,
-        display: "inline-block"
-      };
 
       return {
         fieldType,
-        style: localStyle,
         href: null,
       }
     },
@@ -81,6 +75,13 @@
       }
     },
     computed: {
+      wrapperStyle() {
+        let style = this.style;
+        if (this.inline) {
+          return { ...style, display: "inline-block" };
+        }
+        return style;
+      },
       displayValue: {
         get () {
           /* moved to props */

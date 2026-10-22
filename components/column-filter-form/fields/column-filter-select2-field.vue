@@ -29,8 +29,8 @@
   props: {
       customField: { },
       record: { },
-      klassName: { },
-      value: { },
+      klassName: "",
+      value: "",
       mode: { type: String, default: "selector" }
   },
 

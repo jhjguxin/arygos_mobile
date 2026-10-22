@@ -63,7 +63,7 @@
           login: "",
           password: "",
         },
-         errorType: ['toast'],
+         errorType: 'toast',
         rules: {
           login: [
             {

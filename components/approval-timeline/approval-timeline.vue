@@ -1,17 +1,15 @@
 <template>
   <view class="approval-timeline" :style="style">
-    <u-time-line class="timeLine" v-if="approve_status != 'await_sumbit'">
+    <u-steps direction="column" class="timeLine" v-if="approve_status != 'await_sumbit'">
       <!-- 申请节点 -->
-      <u-time-line-item
-        nodeTop="2"
-      >
-        <template v-slot:node>
+      <u-steps-item>
+        <template #icon>
           <view class="u-node" :style="node.applying.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="info-circle-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
                 {{approvalDetail.applier.name}}<text class="u-m-l-10 u-type-primary">发起人</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.submitApplyingAt}}</text>
@@ -21,21 +19,20 @@
               </view>
             </view>
         </template>
-      </u-time-line-item>
+      </u-steps-item>
       
       <!-- 审批步骤 -->
-      <u-time-line-item
-        nodeTop="2"
-          v-for="(step, index) in node.steps" :key="step.level"
+      <u-steps-item
+        v-for="(step, index) in node.steps" :key="step.level"
         v-if="node.steps.length > 0"
       >
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="step.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon :name="step.node.icon" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
                 <text class="u-type-primary">{{step.level}}级审批 </text>  <text class="u-m-l-10 u-type-primary">{{step.type_display}}</text>  <text class="u-m-l-10 u-type-info">{{step.approvers.join(", ")}}</text>
@@ -48,19 +45,18 @@
               </view>
             </view>
         </template>
-      </u-time-line-item>
+      </u-steps-item>
       <!-- 审批结果 -->
-      <u-time-line-item
-        nodeTop="2"
+      <u-steps-item
         v-if="isApproveFinished"
       >
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="node.result.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon :name="node.result.icon" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
                 <text class="u-type-primary">结束</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.finishApproveAt}}</text>
@@ -71,8 +67,8 @@
               </view>
             </view>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
     <u-empty v-else text="待提交审批" mode="history"></u-empty>
   </view>
 </template>

@@ -17,10 +17,10 @@
 
   export default {
   props: {
-      name: { },
-      fieldType: { },
+      name: "",
+      fieldType: "",
       customField: { },
-      value: { }
+      value: ""
   },
 
     data() {

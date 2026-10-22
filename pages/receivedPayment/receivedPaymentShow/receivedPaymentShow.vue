@@ -39,10 +39,9 @@
           </u-row>
         </view></template>
       </u-card>
-      <u-tabs-swiper
-        ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
-        @change="handleTabsSwiperChange"
-      ></u-tabs-swiper>
+      <u-tabs
+        ref="tabs" :list="tabs.list" v-model:current="tabs.current" :scrollable="false"
+      />
       <view v-if="tabs.current == 0" class="u-padding-bottom-80">
         <entity-base-info
           :model="model" :klassName="klassName"
@@ -215,9 +214,6 @@
             })
           }
         })
-      },
-      handleTabsSwiperChange (value) {
-        this.tabs.current = value;
       },
       handleItemClick (event, url) {
         uni.navigateTo({

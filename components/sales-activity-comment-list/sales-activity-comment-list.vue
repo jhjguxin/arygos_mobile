@@ -1,6 +1,7 @@
 <template>
     <u-popup
-      v-model="popup.show" :mode="popup.mode" :width="popup.width"
+      v-model:show="popup.show" :mode="popup.mode"
+      :custom-style="{width: width}"
       @close="handlePopupClose"
     >
       <u-card
@@ -32,7 +33,7 @@
                 </view></template>
               </uni-list-item>
             </u-swipe-action>
-            <u-loading mode="circle" v-if="isLoading"></u-loading>
+            <u-loading-icon mode="circle" v-if="isLoading" />
           </uni-list>
           <u-form :model="form.model" ref="uForm" :error-type="form.errorType" class="u-padding-16">
             <u-form-item prop="content">
@@ -55,12 +56,10 @@
   import { salesActivityApi } from '@/services/http';
 
   export default {
+  emits: ['close'],
   props: {
-      sales_activity_id: { },
-      width: { type: String, default: "85%" },
-      sales_activity_id: id: { },
-      sales_activity_id: id: { },
-      sales_activity_id: id: { }
+      sales_activity_id: undefined,
+      width: { type: String, default: "95%" }
   },
 
     data() {
@@ -88,7 +87,7 @@
           ]
         },
         form: {
-          errorType: ['toast', 'border'],
+          errorType: 'toast',
           rules: {
             content: [
               {
@@ -103,7 +102,7 @@
               }
             ]
           },
-          model: {}
+          model: { content: "" }
         },
         isLoading: false,
       };
@@ -115,7 +114,7 @@
         /* moved to props */
 
         this.isLoading = true;
-        salesActivityApi.comments({ id }).then((res)=> {
+        salesActivityApi.comments({ id: this.sales_activity_id }).then((res)=> {
           let {
             data: {
               data: {
@@ -142,7 +141,7 @@
         let { form: {model: { content }} } = this;
 
         let params = {
-          sales_activity: {id},
+          sales_activity: { id: this.sales_activity_id },
           sales_activity_comment: { content }
         };
         salesActivityApi.comment(params).then((res)=> {
@@ -175,11 +174,11 @@
         /* moved to props */
 
         let params = {
-          sales_activity: {id},
+          sales_activity: { id: this.sales_activity_id },
           comment_id
         };
 
-        if (_.isNumber(id)) {
+        if (_.isNumber(this.sales_activity_id)) {
           salesActivityApi.destroy_comment(params).then((res) => {
             let { data: {code, remark}} = res;
             if (code == 0) {
@@ -201,9 +200,9 @@
         this.fetchListData();
 
         // REVIEW 显示的时候才会渲染 form
-        _.delay(()=> {
-          this.$refs.uForm.setRules(this.form.rules);
-        }, 100)
+        this.$nextTick(() => {
+          this.$refs.uForm?.setRules(this.form.rules);
+        });
       },
       handleSubmitClick () {
         this.$refs.uForm.validate().then(valid => {
@@ -229,8 +228,8 @@
         }
       },
       handlePopupClose () {
-        let { models = [] } = this;
-        this.$emit("close", models.length)
+        const count = Array.isArray(this.models) ? this.models.length : 0;
+        this.$emit("close", count)
       }
     }
   }

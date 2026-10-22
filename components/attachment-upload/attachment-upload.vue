@@ -15,7 +15,7 @@
     @on-remove="handleRemove"
     v-if="uploadReady"
   ></u-upload>
-  <u-loading mode="flower" v-else></u-loading>
+  <u-loading-icon mode="spinner" v-else />
 </template>
 
 <script>

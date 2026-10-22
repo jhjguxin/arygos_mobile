@@ -20,7 +20,7 @@
         </view></template>
       </u-cell>
     </u-cell-group>
-    <u-loading mode="flower" v-if="customFieldGroups.length == 0"></u-loading>
+    <u-loading-icon mode="spinner" v-if="customFieldGroups.length == 0" />
   </view>
 </template>
 
@@ -30,7 +30,7 @@
 
   export default {
   props: {
-      klassName: { },
+      klassName: "",
       style: { type: String, default: "height: 55vh;" },
       model: { }
   },

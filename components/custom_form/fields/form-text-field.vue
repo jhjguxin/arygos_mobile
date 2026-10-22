@@ -15,8 +15,8 @@
   props: {
       customField: { },
       record: { },
-      klassName: { },
-      value: { }
+      klassName: "",
+      value: ""
   },
 
     data() {

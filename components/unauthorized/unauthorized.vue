@@ -1,6 +1,6 @@
 <template>
   <view>
-    <u-alert-tips :type="type" :title="title" :description="description"></u-alert-tips>
+    <u-alert :type="type" :title="title" :description="description" />
   </view>
 </template>
 

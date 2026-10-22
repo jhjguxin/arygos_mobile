@@ -1,15 +1,15 @@
 <template>
   <view class="sales-activity-list" :style="style">
-    <u-time-line class="timeLine">
-      <u-time-line-item nodeTop="2" v-for="item in models" :key="item.id">
+    <u-steps direction="column" class="timeLine">
+      <u-steps-item v-for="item in models" :key="item.id">
         <!-- 此处自定义了左边内容，用一个图标替代 -->
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="item.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
           <u-card
             full
             :title="item.user.name"
@@ -48,8 +48,8 @@
             </u-row></template>
           </u-card>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
     <uni-load-more
       :status="status" :contentText="loadText"
       @clickLoadMore="handleLoadMore"
@@ -64,7 +64,7 @@
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" },
+      style: { type: [String, Object], default: "height: 55vh;" },
       params: { type: Object, default: () => ({}) }
   },
 

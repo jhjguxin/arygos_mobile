@@ -182,12 +182,12 @@
 
   export default {
   props: {
-      name: { },
-      fieldType: { },
+      name: "",
+      fieldType: "",
       customField: { },
       record: { },
-      klassName: { },
-      value: { }
+      klassName: "",
+      value: undefined
   },
 
     data() {

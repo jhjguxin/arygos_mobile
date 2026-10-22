@@ -109,7 +109,7 @@
           ]
         },
         form: {
-          errorType: ['toast', 'border'],
+          errorType: 'toast',
           rules: {
             content: [
               {

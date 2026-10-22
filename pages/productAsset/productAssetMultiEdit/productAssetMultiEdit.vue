@@ -117,7 +117,7 @@
           placeholder: `请选择${featureLabels.product}`
         },
         form: {
-          errorType: ['toast'],
+          errorType: 'toast',
           model: {
             product: null
           },

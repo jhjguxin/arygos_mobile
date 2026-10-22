@@ -1,19 +1,18 @@
 <template>
   <view class="event-list"  :style="style">
-    <u-time-line class="timeLine">
-      <u-time-line-item
+    <u-steps direction="column" class="timeLine">
+      <u-steps-item
         v-for="(item, index) in models"
         v-bind:key="item.id"
-        nodeTop="2"
       >
         <!-- 此处自定义了左边内容，用一个图标替代 -->
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="item.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
           <u-swipe-action
             :show="item.swipeAction.show" :index="index"
             @click="(index, option_index) => handleSwipActionClick(item, index, option_index)" @open="handleSwipeActionOpen"
@@ -41,8 +40,8 @@
           </u-card>
           </u-swipe-action>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
       :status="status" :contentText="loadText"

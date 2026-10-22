@@ -79,7 +79,7 @@
 <script>
   export default {
   props: {
-      filters: { },
+      filters: [],
       filterColumns: { },
       filterColumns: { }
   },

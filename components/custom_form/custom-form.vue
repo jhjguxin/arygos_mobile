@@ -33,10 +33,10 @@
       klassName: { type: String, default: '' },
       record: { type: Object, default: undefined },
       customFields: { type: Array, default: () => [] },
-      errorType: { type: Array, default: () => ['message', 'border-bottom', 'toast'] }
+      errorType: { type: String, default: 'toast' }
     },
     data() {
-      const { klassName, record, customFields, errorType } = this;
+      const { klassName, record, customFields } = this;
 
       let rules = {};
 
@@ -57,7 +57,7 @@
         klassName,
         record,
         customFields: [...customFields],
-        rules, errorType,
+        rules,
         formFields: [],
         model: {}
       }
