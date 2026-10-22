@@ -1,6 +1,6 @@
 <template>
   <u-form
-    :model="model" ref="uForm"
+    :model="formModel" ref="uForm"
     label-width="160"
     v-if="formReady"
     class="column-filter-form"
@@ -86,31 +86,35 @@
       return {
         formReady: false,
         filters: [],
+        resolvedCustomFields: [],
+        formModel: {},
       };
     },
     async created() {
-      let { klassName, customFields } = this;
+      let { klassName } = this;
+      let resolvedCustomFields = this.customFields;
 
-      if (customFields.length == 0) {
-        customFields = await CustomField.instance().fetchData(klassName);
-        this.customFields = customFields;
+      if (resolvedCustomFields.length == 0) {
+        resolvedCustomFields = await CustomField.instance().fetchData(klassName);
       }
 
+      this.resolvedCustomFields = resolvedCustomFields;
+      this.formModel = this.model;
       this.formReady = true;
     },
     methods: {
       handleFieldChange ({name, value}) {
-        let { model } = this;
+        let model = this.formModel;
         model = {
           ...model,
           [`${name}`]: value
         }
 
-        this.model = model;
+        this.formModel = model;
       },
       handleSubmit () {
         let { filterColumns } = this;
-        let { model } = this;
+        let { formModel: model } = this;
 
         // REVIEW 数字范围交叉校验：最小值不能大于最大值，阻止提交
         let invalidNumeric = _.find(filterColumns, (column) => {
@@ -141,15 +145,15 @@
         this.$emit("filterConfirm", filters, model)
       },
       handleReset () {
-        let { customFields } = this;
+        let { resolvedCustomFields: customFields } = this;
         let { uForm } = this.$refs;
 
-        this.customFields = [];
+        this.resolvedCustomFields = [];
 
         _.delay(()=> {
-          this.customFields = customFields;
+          this.resolvedCustomFields = customFields;
           this.filters = [];
-          this.model = {};
+          this.formModel = {};
           uForm.resetFields();
         }, 100);
       }
@@ -158,7 +162,7 @@
       resolvedFilterColumns: {
         get () {
           let { filterColumns } = this;
-          let { customFields, model } = this;
+          let { resolvedCustomFields: customFields, formModel: model } = this;
 
           if (_.isEmpty(customFields)) return null;
 
