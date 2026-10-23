@@ -37,7 +37,6 @@
         customField: toRef(props, 'customField'),
       };
     },
-,
   };
 </script>
 
