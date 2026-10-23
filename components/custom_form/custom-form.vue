@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import parseInitialValue from "@/components/custom_form/parseInitialValue";
   import parseRule from "@/components/custom_form/parseRule";
   import parseCustomField from "@/components/custom_form/parseCustomField";

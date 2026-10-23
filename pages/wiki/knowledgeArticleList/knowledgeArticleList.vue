@@ -66,8 +66,8 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import dayjs from 'dayjs';
-  import _ from "lodash";
   import { knowledgeArticleApi } from '@/services/http';
 
   export default {

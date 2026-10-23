@@ -90,7 +90,7 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
   import CustomFieldForm from '@/services/custom_field_form';
   import { useStore } from '@/store';

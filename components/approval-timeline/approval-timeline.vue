@@ -74,6 +74,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import ApprovalSetting from '@/services/approval_setting';
   import dayjs from 'dayjs';
 

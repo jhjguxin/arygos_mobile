@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import { userSettingApi } from '@/services/http';
 
 

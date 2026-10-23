@@ -12,6 +12,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import CustomFieldForm from '@/services/custom_field_form';
   import Auth from '@/services/auth';
   import {

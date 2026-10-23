@@ -55,7 +55,7 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
   import { eventApi } from '@/services/http';
   import { useStore } from '@/store';

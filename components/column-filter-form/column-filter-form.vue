@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import CustomField from '@/services/custom_field';
   import parseFilter from '@/components/column-filter-form/parseFilter';
 

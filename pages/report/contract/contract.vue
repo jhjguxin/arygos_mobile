@@ -26,7 +26,7 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
   import uCharts from '@/js_sdk/u-charts/u-charts/u-charts.js';
 

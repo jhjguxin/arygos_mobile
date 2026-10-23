@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import { approvalApi } from '@/services/http';
   import ApprovalSetting from '@/services/approval_setting';
 

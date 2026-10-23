@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
   import { contractApi, opportunityApi } from '@/services/http';
   import CustomField from '@/services/custom_field';

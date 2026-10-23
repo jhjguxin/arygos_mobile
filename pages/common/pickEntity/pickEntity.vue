@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   import qs from 'qs';
 
   export default {

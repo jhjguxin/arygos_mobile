@@ -10,7 +10,7 @@
 
 <script>
   import _ from "lodash";
-    import { Geo } from '@/services/geo';
+    import Geo from '@/services/geo';
   export default {
   props: {
       name: "",

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import CustomField from '@/services/custom_field';
   import { userSettingApi } from '@/services/http';
 

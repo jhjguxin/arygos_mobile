@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import Geo from '@/services/geo';
 
   export default {
