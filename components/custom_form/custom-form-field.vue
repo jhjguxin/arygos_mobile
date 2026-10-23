@@ -181,35 +181,27 @@
   import getFormField from "@/components/custom_form/getFormField";
 
   export default {
-  props: {
+    props: {
       name: "",
       fieldType: "",
       customField: { },
       record: { },
       klassName: "",
       value: undefined
-  },
-
-    data() {
-      // props 获取数据
-      /* moved to props */
-
-      let componentName =  getFormField({
-        customField
+    },
+    setup(props, { emit }) {
+      const componentName = getFormField({
+        customField: props.customField
       });
 
+      const handleFieldChange = ({ name, value }) => {
+        emit("fieldChange", { name, value });
+      };
+
       return {
-        name, fieldType, customField,
-        record, value,
-        componentName
-      }
-    },
-    mounted () {
-    },
-    methods: {
-      handleFieldChange: function ({name, value}) {
-        this.$emit("fieldChange", {name, value});
-      }
+        componentName,
+        handleFieldChange
+      };
     }
   };
 </script>
