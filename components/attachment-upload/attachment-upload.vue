@@ -99,13 +99,13 @@
       },
       // 文件系统模式：拦截自动上传的响应
       handleAfterAutoUpload (event) {
-        let { data, callback } = event;
+        // u-upload emit: Object.assign(responseString, { callback })
+        // event 本身就是响应字符串（String 对象，带 callback 属性），没有 .data
+        let callback = event?.callback;
         try {
-          // u-upload 的 data 参数格式为 Object.assign(res0, { callback })
-          // res0 是 uni.uploadFile 返回的响应数据字符串
-          let response = typeof data === 'string' ? JSON.parse(data) : data;
+          let response = JSON.parse(event);
 
-          if (response?.code === 0 && response?.payload?.id) {
+          if (response?.key && response?.payload?.id) {
             // 上传成功：通过 callback 告知 u-upload 标记成功
             if (callback) {
               callback({ url: response.payload.file_url || '' });
