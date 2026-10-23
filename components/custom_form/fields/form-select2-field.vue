@@ -49,6 +49,7 @@
       return {
         localValue,
         handleSelect,
+        customField: toRef(props, 'customField'),
       };
     },
     computed: {

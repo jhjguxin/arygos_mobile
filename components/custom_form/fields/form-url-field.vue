@@ -1,15 +1,15 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      :value="value"
+      v-model="inputValue"
       :placeholder="customField.input_html_options.placeholder"
-      @input="handleChange"
     />
   </u-form-item>
 </template>
 
 <script>
   import _ from "lodash";
+  import { ref, watch, toRef } from 'vue';
 
   export default {
   props: {
@@ -20,14 +20,23 @@
       klassName: "",
       value: ""
   },
-    methods: {
-      handleChange: function (value) {
-        let { customField: { name }} = this;
+    setup(props, { emit }) {
+      const inputValue = ref(props.value);
 
-        // this.value = value;
-        this.$emit("fieldChange", {name, value});
-      }
-    }
+      watch(() => props.value, (v) => {
+        inputValue.value = v;
+      });
+
+      watch(inputValue, (v) => {
+        emit("fieldChange", { name: props.customField.name, value: v });
+      });
+
+      return {
+        inputValue,
+        customField: toRef(props, 'customField'),
+      };
+    },
+
   };
 </script>
 

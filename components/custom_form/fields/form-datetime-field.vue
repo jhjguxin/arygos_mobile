@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      :border="border" type="select" :select-open="selectShow" :value="localValue"
+      :border="border" type="select" :select-open="selectShow" v-model="localValue"
       :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
     <u-datetime-picker style="flex:none" :show="selectShow" mode="datetime" :modelValue="localValue" @confirm="handleConfirm" @close="selectShow = false" @cancel="selectShow = false"></u-datetime-picker>
   </u-form-item>
@@ -39,6 +39,7 @@
         localValue,
         selectShow,
         handleConfirm,
+        customField: toRef(props, 'customField'),
         border: "none",
       };
     },

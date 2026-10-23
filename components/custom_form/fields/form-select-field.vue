@@ -39,6 +39,7 @@
         list,
         placeholder,
         selectValue,
+        customField: toRef(props, 'customField'),
       };
     },
     watch: {
