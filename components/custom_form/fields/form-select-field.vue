@@ -14,6 +14,7 @@
 
 <script>
   import _ from 'lodash';
+  import { ref } from 'vue';
 
   export default {
   props: {
@@ -25,17 +26,20 @@
       value: ""
   },
 
-    data() {
+    setup(props) {
+      const list = ref(_.map(props.customField.collection_options, (opt) => (
+        {
+          label: opt[0],
+          value: opt[1]
+        }
+      )));
+      const placeholder = props.customField.input_html_options?.placeholder;
+      const selectValue = ref(props.value == null ? '' : props.value);
       return {
-        list: _.map(this.customField.collection_options, (opt) => (
-          {
-            label: opt[0],
-            value: opt[1]
-          }
-        )),
-        placeholder: this.customField.input_html_options?.placeholder,
-        selectValue: this.value == null ? '' : this.value
-      }
+        list,
+        placeholder,
+        selectValue,
+      };
     },
     watch: {
       value(val) {

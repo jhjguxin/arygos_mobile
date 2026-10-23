@@ -40,6 +40,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
+  import { ref } from 'vue';
 
   export default {
   props: {
@@ -47,13 +48,12 @@
       record: { default: () => ({}) }
   },
 
-    data() {
-      let { field_type: fieldType } = this.customField;
-
+    setup(props) {
+      const fieldType = props.customField.field_type;
       return {
         fieldType,
-        href: null,
-      }
+        href: ref(null),
+      };
     },
     methods: {
       handleSelect2Click (e) {

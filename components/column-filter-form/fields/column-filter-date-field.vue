@@ -24,6 +24,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
+  import { ref } from 'vue';
 
   export default {
     props: {
@@ -31,29 +32,20 @@
       record: {}, klassName: {},
       value: { default: () => ({}) }
     },
-    data() {
-      let { start, end} = this.value;
-
+    setup(props) {
+      const start = ref("");
+      const end = ref("");
+      const selectStartShow = ref(false);
+      const selectEndShow = ref(false);
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value,
-        startName: `${customField.name}-start`,
-        endName: `${customField.name}-end`,
-        start: "",
-        end: "",
-        params: {
-          year: true,
-          month: true,
-          day: true,
-          hour: false,
-          minute: false,
-          second: false
-        },
+        startName: `${props.customField.name}-start`,
+        endName: `${props.customField.name}-end`,
+        start,
+        end,
         border: "none",
-        selectStartShow: false,
-        selectEndShow: false
-      }
+        selectStartShow,
+        selectEndShow
+      };
     },
     methods: {
       handleConfirm: function (e, key) {

@@ -22,14 +22,10 @@
       value: []
   },
 
-    data() {
-      /* moved to props */
-
+    setup() {
       return {
-        name,  fieldType, customField,
-        record, klassName,
         deletable: true,
-      }
+      };
     },
     methods: {
       handleUpload(lists) {

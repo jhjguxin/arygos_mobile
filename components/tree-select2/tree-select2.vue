@@ -24,6 +24,7 @@
     departmentApi,
     productCategoryApi
   } from "@/services/http";
+  import { ref } from 'vue';
 
   export default {
     props: {
@@ -35,34 +36,18 @@
       placeholder: { type: String, default: "" },
       mode: { type: String, default: "selector" }
     },
-    data() {
-      let {
-        klassName,
-        value = {},
-        required,
-        title = "",
-        params = {},
-        placeholder,
-        mode = "selector"
-      } = this;
-
+    setup(props) {
       return {
-        klassName,
-        selectedValue: value,
-        mode,
-        required,
-        title,
-        params,
-        placeholder,
+        selectedValue: ref(props.value),
         border: "none",
         showAction: false,
-        list: null,
-        modalOpen: false,
+        list: ref(null),
+        modalOpen: ref(false),
         rangeKey: "label",
         idKey: "value",
-        multiple: (mode == "multi"),
+        multiple: (props.mode == "multi"),
         selectParent: true
-      }
+      };
     },
     watch: {
       value(val) {

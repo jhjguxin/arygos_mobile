@@ -23,6 +23,7 @@
 <script>
   import _ from 'lodash';
   import Geo from '@/services/geo';
+  import { ref } from 'vue';
 
   export default {
   props: {
@@ -34,15 +35,15 @@
       value: { }
   },
 
-    data() {
+    setup(props) {
       return {
-        list: [],
-        columns: [[], [], []],
-        defaultIndex: [0, 0, 0],
-        listReady: false,
-        placeholder: this.customField.input_html_options?.placeholder,
-        selectShow: false
-      }
+        list: ref([]),
+        columns: ref([[], [], []]),
+        defaultIndex: ref([0, 0, 0]),
+        listReady: ref(false),
+        placeholder: props.customField.input_html_options?.placeholder,
+        selectShow: ref(false)
+      };
     },
     async created() {
       let { customField: { name }} = this;

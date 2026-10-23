@@ -21,14 +21,8 @@
       value: { }
   },
 
-    data() {
-      // props 获取数据
-      /* moved to props */
-
-      return {
-        name,  fieldType, customField,
-        record, klassName,
-      }
+    setup() {
+      return {};
     },
     methods: {
       handleChange: function (value) {

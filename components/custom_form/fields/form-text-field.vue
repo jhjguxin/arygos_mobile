@@ -19,13 +19,8 @@
       value: ""
   },
 
-    data() {
-      // props 获取数据
-      /* moved to props */
-
-      return {
-        record, klassName,
-      }
+    setup() {
+      return {};
     },
     mounted () {
       // REVIEW 获取 form 组件

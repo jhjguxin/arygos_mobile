@@ -13,6 +13,7 @@
 
 <script>
   import _ from 'lodash';
+  import { ref } from 'vue';
 
   export default {
   props: {
@@ -24,26 +25,20 @@
       value: []
   },
 
-    data() {
-      // props 获取数据
-      /* moved to props */
-      let list = _.map(customField.collection_options, (opt) => (
+    setup(props) {
+      const list = _.map(props.customField.collection_options, (opt) => (
         {
           label: opt[0],
           value: opt[1],
-          checked: _.includes(value, opt[1])
+          checked: _.includes(props.value, opt[1])
         }
       ));
-      let allChecked = _.every(list, "checked");
-
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        list,
-        allChecked,
-        checkedAllDisabled: false,
-        show: false
-      }
+        list: ref(list),
+        allChecked: ref(_.every(list, "checked")),
+        checkedAllDisabled: ref(false),
+        show: ref(false)
+      };
     },
     methods: {
       checkedAll() {
