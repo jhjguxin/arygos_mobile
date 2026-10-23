@@ -2,18 +2,20 @@
   <view>
     <view
       v-for="(item, index) in models":key="item.id">
-      <u-swipe-action
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
-        <u-card
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-model:show="item.swipeAction.show"
+          :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
+          <u-card
           :title="item.product.name"
           :border="card.border" :sub-title="item.product.no" :full="card.full"
           :show-head="card.showHead" :show-foot="card.showFoot"
           :margin="card.margin"  :padding="card.padding"
         >
-          <template #body><u-row gutter="10" justify="space-between">
+          <template #body><u-row gutter="10" justify="space-between" class="u-flex-wrap">
             <u-col span="3" text-align="right" class="u-font-xs">
               标准单价
             </u-col>
@@ -44,10 +46,11 @@
               备注
             </u-col>
             <u-col span="9" class="u-padding-left-20">
-              <u-textarea v-model="item.remark" placeholder="请输入备注" /></u-input>
+              <u-textarea v-model="item.remark" placeholder="请输入备注" />
             </u-col>
           </u-row></template>
         </u-card>
+      </u-swipe-action-item>
       </u-swipe-action>
     </view>
 
@@ -62,6 +65,7 @@
               :klassName="select2.klassName"
               :placeholder="select2.placeholder"
               :params="select2.params"
+              :value="form.model.product"
               @select="handleProductSelect($event)"
             />
           </u-form-item>
@@ -283,7 +287,8 @@
                product: null
              }
            };
-           this.$refs.productSelect2.value = {};
+           this.$refs.productSelect2.selectedValue = null;
+           this.$refs.productSelect2.list = [];
         })
       },
       handleAddProductSubmit(e) {
@@ -324,18 +329,9 @@
 
         this.handleSave({ productAssets });
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
-          this.handleDelete(index);
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
+          this.handleDelete(name);
         }
       },
     }
@@ -343,5 +339,7 @@
 </script>
 
 <style>
-
+  .u-swipe-action-item > .u-swipe-action-item__content > .u-card {
+    margin: 0 !important;
+  }
 </style>

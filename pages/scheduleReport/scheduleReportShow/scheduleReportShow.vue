@@ -42,13 +42,14 @@
       :border="true"
       class="marking-list"
      >
-      <u-swipe-action
-        v-for="(item, index) in markings"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in markings"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
         <uni-list-item
           :title="item.user.name" :note="item.content"
         >
@@ -60,6 +61,7 @@
             <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
           </view></template>
         </uni-list-item>
+      </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
 
@@ -296,19 +298,10 @@
           }
         });
       },
-      handleSwipeActionOpen (index) {
-        let { markings } = this;
-        markings = _.each(markings, (item) => {
-          item.swipeAction.show = false;
-        });
-        markings[index].swipeAction.show = true;
-
-        this.markings = markings;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({ name, index }) {
+        if (index === 0) {
           let { markings } = this;
-          let marking_id = markings[index]?.id;
+          let marking_id = markings[name]?.id;
           this.doDestroy({marking_id});
         }
       },

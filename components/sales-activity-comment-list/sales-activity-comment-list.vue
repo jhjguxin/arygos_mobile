@@ -14,24 +14,26 @@
           <uni-list
             class="sales-activity-comment-list"
            >
-            <u-swipe-action
-              v-for="(item, index) in models"
-              v-bind:key="item.id"
-              :show="item.swipeAction.show" :index="index"
-              @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-              :options="swipeAction.options"
-            >
-              <uni-list-item
-                :title="item.user.name" :note="item.content"
+            <u-swipe-action :autoClose="true">
+              <u-swipe-action-item
+                v-for="(item, index) in models"
+                :key="item.id"
+                v-model:show="item.swipeAction.show" :name="index"
+                @click="handleSwipActionClick"
+                :options="swipeAction.options"
               >
-                <template #body><view class="uni-list-item__content">
-                  <u-row>
-                    <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
-                    <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
-                  </u-row>
-                  <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
-                </view></template>
-              </uni-list-item>
+                <uni-list-item
+                  :title="item.user.name" :note="item.content"
+                >
+                  <template #body><view class="uni-list-item__content">
+                    <u-row>
+                      <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
+                      <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
+                    </u-row>
+                    <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
+                  </view></template>
+                </uni-list-item>
+              </u-swipe-action-item>
             </u-swipe-action>
             <u-loading-icon mode="circle" v-if="isLoading" />
           </uni-list>
@@ -207,19 +209,10 @@
           }
         });
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { models } = this;
-          let comment_id = models[index]?.id;
+          let comment_id = models[name]?.id;
           this.doDestroy({comment_id})
         }
       },

@@ -12,39 +12,41 @@
 
     <u-gap></u-gap>
     <uni-list>
-      <u-swipe-action
-        v-for="(item, index) in list"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="item.swipeAction.options"
-      >
-        <uni-list-item>
-          <template #body><u-card
-            class="item-body" :title="item.company_name"
-            :border="card.border" :sub-title="item.name" :full="card.full"
-            :show-head="card.showHead" :show-foot="card.showFoot"
-            :margin="card.margin"  :padding="card.padding"
-            @click="handleItemClick($event, item.id)"
-          >
-            <template #body><view >
-              <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
-                <u-col span="3" text-align="right" class="u-font-xs">
-                  {{customField.label}}
-                </u-col>
-                <u-col span="9">
-                  <custom-field-on-list :customField="customField" :record="item" />
-                </u-col>
-              </u-row>
-            </view></template>
-            <template #foot><view >
-            </view></template>
-          </u-card></template>
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in list"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          @click="handleSwipActionClick"
+          :options="item.swipeAction.options"
+        >
+          <uni-list-item>
+            <template #body><u-card
+              class="item-body" :title="item.company_name"
+              :border="card.border" :sub-title="item.name" :full="card.full"
+              :show-head="card.showHead" :show-foot="card.showFoot"
+              :margin="card.margin"  :padding="card.padding"
+              @click="handleItemClick($event, item.id)"
+            >
+              <template #body><view >
+                <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
+                  <u-col span="3" text-align="right" class="u-font-xs">
+                    {{customField.label}}
+                  </u-col>
+                  <u-col span="9">
+                    <custom-field-on-list :customField="customField" :record="item" />
+                  </u-col>
+                </u-row>
+              </view></template>
+              <template #foot><view >
+              </view></template>
+            </u-card></template>
 
-          <template #footer><u-row class="item-footer" gutter="0" align="center">
-            <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
-          </u-row></template>
-        </uni-list-item>
+            <template #footer><u-row class="item-footer" gutter="0" align="center">
+              <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
+            </u-row></template>
+          </uni-list-item>
+        </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
     <u-action-sheet
@@ -361,19 +363,10 @@
           return
         }
       },
-      handleSwipeActionOpen (index) {
-        let { list } = this;
-        list = _.each(list, (item) => {
-          item.swipeAction.show = false;
-        });
-        list[index].swipeAction.show = true;
-
-        this.list = list;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { list } = this;
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           this.doDestroy({id})
         }
       },

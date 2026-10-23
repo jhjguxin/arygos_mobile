@@ -13,24 +13,25 @@
       @monthSwitch="handleMonthSwitch"
      ></uni-calendar>
      <u-divider half-width="40%">代办列表</u-divider>
-     <u-swipe-action
-       v-for="(item, index) in reminders"
-       :key="item.id"
-       v-bind:key="item.id"
-       :show="item.swipeAction.show" :index="index"
-       @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-       :options="item.swipeAction.options"
-     >
-       <u-cell
-         :title="item.body"
-         :title-style="item.uCellItem.titleStyle"
-         :value="item.title"
-         :value-style="item.uCellItem.valueStyle"
-         :label="item.remindAt"
-         :label-style="item.uCellItem.labelStyle"
-         :arrow="item.uCellItem.arrow"
-         @click="handleItemClick($event, item)"
-       ></u-cell>
+     <u-swipe-action :autoClose="true">
+       <u-swipe-action-item
+         v-for="(item, index) in reminders"
+         :key="item.id"
+         v-model:show="item.swipeAction.show" :name="index"
+         @click="handleSwipActionClick"
+         :options="item.swipeAction.options"
+       >
+         <u-cell
+           :title="item.body"
+           :title-style="item.uCellItem.titleStyle"
+           :value="item.title"
+           :value-style="item.uCellItem.valueStyle"
+           :label="item.remindAt"
+           :label-style="item.uCellItem.labelStyle"
+           :arrow="item.uCellItem.arrow"
+           @click="handleItemClick($event, item)"
+         ></u-cell>
+       </u-swipe-action-item>
      </u-swipe-action>
      <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="reminders.length == 0"></u-empty>
      <uni-load-more
@@ -384,19 +385,10 @@
         page += 1;
         this.fetchListData({page});
       },
-      handleSwipeActionOpen (index) {
-        let { reminders } = this;
-        reminders = _.each(reminders, (item) => {
-          item.swipeAction.show = false;
-        });
-        reminders[index].swipeAction.show = true;
-
-        this.reminders = reminders;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { reminders } = this;
-          let reminder = reminders[index];
+          let reminder = reminders[name];
 
           if (reminder.status == "todo") {
             if (reminder.remindable_type == "Event") {
@@ -413,9 +405,9 @@
 
           this.reminders = reminders;
         }
-        if (option_index === 1) {
+        if (index === 1) {
           let { reminders } = this;
-          let reminder = reminders[index];
+          let reminder = reminders[name];
 
           if (reminder.remindable_type == "Event") {
             this.handleEventDestroy({ reminder });

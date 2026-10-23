@@ -7,13 +7,14 @@
     />
     <u-gap></u-gap>
     <view class="schedule-report-list">
-      <u-swipe-action
-        v-for="(item, index) in models"
-        :key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in models"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
       <u-card
         full
         :title="item.title"
@@ -50,6 +51,7 @@
           </u-col>
         </u-row></template>
       </u-card>
+      </u-swipe-action-item>
       </u-swipe-action>
     </view>
       <u-empty mode="list" v-show="models.length == 0"/>
@@ -276,19 +278,10 @@
           url
         })
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+            handleSwipActionClick ({ name, index }) {
+        if (index === 0) {
           let { models } = this;
-          let id = models[index]?.id;
+          let id = models[name]?.id;
           this.doDestroy({id});
         }
       },

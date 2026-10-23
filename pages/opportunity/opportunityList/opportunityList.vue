@@ -8,39 +8,41 @@
 
     <u-gap></u-gap>
     <uni-list>
-      <u-swipe-action
-        v-for="(item, index) in list"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
-        <uni-list-item>
-          <template #body><u-card
-            class="item-body" :title="item.title"
-            :border="card.border" :sub-title="item.expect_sign_date" :full="card.full"
-            :show-head="card.showHead" :show-foot="card.showFoot"
-            :margin="card.margin"  :padding="card.padding"
-            @click="handleItemClick($event, item.id)"
-          >
-            <template #body><view >
-              <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
-                <u-col span="3" text-align="right" class="u-font-xs">
-                  {{customField.label}}
-                </u-col>
-                <u-col span="9">
-                  <custom-field-on-list :customField="customField" :record="item" />
-                </u-col>
-              </u-row>
-            </view></template>
-            <template #foot><view >
-            </view></template>
-          </u-card></template>
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in list"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
+          <uni-list-item>
+            <template #body><u-card
+              class="item-body" :title="item.title"
+              :border="card.border" :sub-title="item.expect_sign_date" :full="card.full"
+              :show-head="card.showHead" :show-foot="card.showFoot"
+              :margin="card.margin"  :padding="card.padding"
+              @click="handleItemClick($event, item.id)"
+            >
+              <template #body><view >
+                <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
+                  <u-col span="3" text-align="right" class="u-font-xs">
+                    {{customField.label}}
+                  </u-col>
+                  <u-col span="9">
+                    <custom-field-on-list :customField="customField" :record="item" />
+                  </u-col>
+                </u-row>
+              </view></template>
+              <template #foot><view >
+              </view></template>
+            </u-card></template>
 
-          <template #footer><u-row class="item-footer" gutter="0" align="center">
-            <u-tag :text="item.stageDisplay" v-if="item.stageDisplay"/>
-          </u-row></template>
-        </uni-list-item>
+            <template #footer><u-row class="item-footer" gutter="0" align="center">
+              <u-tag :text="item.stageDisplay" v-if="item.stageDisplay"/>
+            </u-row></template>
+          </uni-list-item>
+        </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
     <uni-load-more :status="status" />
@@ -245,34 +247,25 @@
           url
         });
       },
-      handleSwipeActionOpen (index) {
-        let { list } = this;
-        list = _.each(list, (item) => {
-          item.swipeAction.show = false;
-        });
-        list[index].swipeAction.show = true;
-
-        this.list = list;
-      },
-      handleSwipActionClick (index, option_index) {
+      handleSwipActionClick ({name, index}) {
         let { swipeAction: { options } } = this;
         let { list, klassName } = this;
 
-        let option = options[option_index];
+        let option = options[index];
 
         if (option.text === "删除") {
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           this.doDestroy({id})
         }
         if (option.text === "审批流") {
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           let url =  `/pages/approval/approvalDetail/approvalDetail?approvable_id=${id}&approvable_type=${klassName}`;
 
 
           uni.navigateTo({
             url,
             success: () => {
-              list[index].swipeAction.show = false;
+              list[name].swipeAction.show = false;
               this.list = list;
             }
           });

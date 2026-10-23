@@ -1,20 +1,21 @@
 <template>
   <view class="attachment-list"  :style="style">
     <u-cell-group>
-      <u-swipe-action
-        v-for="(item, index) in models"
-        :key="item.id"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
-        <u-cell
-          icon="file-text-fill"
-          :title="item.file_file_name"
-          :value="item.fileSize"
-          @click="handleItemClick($event, item)"
-        ></u-cell>
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in models"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          @click="handleSwipActionClick"
+          :options="swipeAction.options"
+        >
+          <u-cell
+            icon="file-text-fill"
+            :title="item.file_file_name"
+            :value="item.fileSize"
+            @click="handleItemClick($event, item)"
+          ></u-cell>
+        </u-swipe-action-item>
       </u-swipe-action>
     </u-cell-group>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -205,19 +206,10 @@
         });
 
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { models } = this;
-          let id = models[index]?.id;
+          let id = models[name]?.id;
           this.doDestroy({id});
         }
       },

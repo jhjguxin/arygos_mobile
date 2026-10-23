@@ -8,13 +8,14 @@
 
     <u-gap></u-gap>
     <uni-list>
-      <u-swipe-action
-        v-for="(item, index) in list"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in list"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
         <uni-list-item>
           <template #body><u-card
             class="item-body" :title="item.receiveDate"
@@ -41,6 +42,7 @@
             <u-tag :text="item.received_type_display" v-if="item.received_type_display"/>
           </u-row></template>
         </uni-list-item>
+      </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
     <uni-load-more :status="status" />
@@ -247,34 +249,25 @@
           url
         });
       },
-      handleSwipeActionOpen (index) {
-        let { list } = this;
-        list = _.each(list, (item) => {
-          item.swipeAction.show = false;
-        });
-        list[index].swipeAction.show = true;
-
-        this.list = list;
-      },
-      handleSwipActionClick (index, option_index) {
+            handleSwipActionClick ({ name, index }) {
         let { swipeAction: { options } } = this;
         let { list, klassName } = this;
 
-        let option = options[option_index];
+        let option = options[index];
 
         if (option.text === "删除") {
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           this.doDestroy({id})
         }
         if (option.text === "审批流") {
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           let url =  `/pages/approval/approvalDetail/approvalDetail?approvable_id=${id}&approvable_type=${klassName}`;
 
 
           uni.navigateTo({
             url,
             success: () => {
-              list[index].swipeAction.show = false;
+              list[name].swipeAction.show = false;
               this.list = list;
             }
           });

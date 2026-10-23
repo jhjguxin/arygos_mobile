@@ -1,5 +1,6 @@
 <template>
   <view class="event-list"  :style="style">
+    <u-swipe-action :autoClose="true">
     <u-steps direction="column" class="timeLine">
       <u-steps-item
         v-for="(item, index) in models"
@@ -13,9 +14,9 @@
           </view>
         </template>
         <template #content>
-          <u-swipe-action
-            :show="item.swipeAction.show" :index="index"
-            @click="(index, option_index) => handleSwipActionClick(item, index, option_index)" @open="handleSwipeActionOpen"
+          <u-swipe-action-item
+            v-model:show="item.swipeAction.show" :name="index"
+            @click="($event) => handleSwipActionClick(item, $event)"
             :options="item.swipeAction.options"
 
           >
@@ -38,10 +39,11 @@
               <view class="u-order-desc">参与人：{{item.userNames}}</view>
             </view></template>
           </u-card>
-          </u-swipe-action>
+          </u-swipe-action-item>
         </template>
       </u-steps-item>
     </u-steps>
+    </u-swipe-action>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
       :status="status" :contentText="loadText"
@@ -265,18 +267,9 @@
         page += 1;
         this.fetchListData({page});
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (item, index, option_index) {
+      handleSwipActionClick (item, {name, index}) {
         let { swipeAction: {options = []}, id } = item;
-        let opt = options[option_index] || {};
+        let opt = options[index] || {};
 
         if (opt.text == "完成") {
           this.doComplate({id});
