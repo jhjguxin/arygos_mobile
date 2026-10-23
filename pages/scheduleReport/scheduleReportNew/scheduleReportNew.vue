@@ -64,22 +64,12 @@
 
       <!-- 总结 -->
       <u-form-item :label="form.item.summary.label" prop="summary" required>
-        <u-input
-          v-model="form.model.summary"
-          type="textarea"
-          :auto-height="form.item.summary.autoHeight"
-          :maxlength="form.item.summary.maxlength"
-        />
+        <u-textarea v-model="form.model.summary" :autoHeight="form.item.summary.autoHeight" :maxlength="form.item.summary.maxlength" />
       </u-form-item>
 
       <!-- 计划 -->
       <u-form-item :label="form.item.schedule.label" prop="schedule" required>
-        <u-input
-          v-model="form.model.schedule"
-          type="textarea"
-          :auto-height="form.item.schedule.autoHeight"
-          :maxlength="form.item.summary.maxlength"
-        />
+        <u-textarea v-model="form.model.schedule" :autoHeight="form.item.schedule.autoHeight" :maxlength="form.item.summary.maxlength" />
       </u-form-item>
 
       <u-form-item :label="form.item.file_attachments.label" prop="file_attachments">

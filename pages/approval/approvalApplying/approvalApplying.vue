@@ -13,12 +13,7 @@
       <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.note.label" prop="note">
-            <u-input
-              v-model="form.model.note"
-              :placeholder="form.item.note.placeholder"
-              type="textarea"
-              :auto-height="form.item.note.autoHeight"
-            />
+            <u-textarea v-model="form.model.note" :placeholder="form.item.note.placeholder" :autoHeight="form.item.note.autoHeight" />
           </u-form-item>
           <u-form-item :label="form.item.notify_users.label" prop="notify_users">
             <select2

@@ -37,11 +37,7 @@
           </uni-list>
           <u-form :model="form.model" ref="uForm" :error-type="form.errorType" class="u-padding-16">
             <u-form-item prop="content">
-              <u-input
-                v-model="form.model.content" type="textarea"
-                placeholder="内容"
-                border
-              />
+              <u-textarea v-model="form.model.content" placeholder="内容" border />
             </u-form-item>
           </u-form>
           <u-button type="primary" @click="handleSubmitClick">评论</u-button>

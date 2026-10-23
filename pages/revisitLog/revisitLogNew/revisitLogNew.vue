@@ -2,12 +2,7 @@
   <view class="wrap">
     <u-form :model="form.model" ref="uForm"  label-width="160">
         <u-form-item :label="form.item.content.label" prop="content">
-          <u-input
-            v-model="form.model.content"
-            :placeholder="form.item.content.placeholder"
-            type="textarea"
-            :auto-height="form.item.content.autoHeight"
-          />
+          <u-textarea v-model="form.model.content" :placeholder="form.item.content.placeholder" :autoHeight="form.item.content.autoHeight" />
         </u-form-item>
 
         <u-form-item :label="form.item.category.label" prop="category">

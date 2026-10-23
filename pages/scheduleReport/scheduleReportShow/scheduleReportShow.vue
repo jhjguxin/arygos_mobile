@@ -65,11 +65,7 @@
 
     <u-form :model="form.model" ref="uForm" :error-type="form.errorType" class="u-padding-30">
       <u-form-item prop="content">
-        <u-input
-          v-model="form.model.content" type="textarea"
-          border
-          placeholder="内容"
-        />
+        <u-textarea v-model="form.model.content" border placeholder="内容" />
       </u-form-item>
     </u-form>
     <u-button type="primary" @click="handleSubmitClick">点评</u-button>

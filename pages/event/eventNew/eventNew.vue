@@ -2,12 +2,7 @@
   <view class="wrap">
     <u-form :model="form.model" ref="uForm"  label-width="160">
         <u-form-item :label="form.item.note.label" prop="note">
-          <u-input
-            v-model="form.model.note"
-            :placeholder="form.item.note.placeholder"
-            type="textarea"
-            :auto-height="form.item.note.autoHeight"
-          />
+          <u-textarea v-model="form.model.note" :placeholder="form.item.note.placeholder" :autoHeight="form.item.note.autoHeight" />
         </u-form-item>
         <u-form-item :label="form.item.remind_at.label" prop="remind_at">
           <u-input

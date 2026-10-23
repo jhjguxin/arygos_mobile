@@ -1,9 +1,8 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
-    <u-input
+    <u-textarea
       v-model="inputValue"
-      type="textarea"
-      :auto-height="autoHeight"
+      :autoHeight="autoHeight"
       :placeholder="customField.input_html_options.placeholder"
     />
   </u-form-item>

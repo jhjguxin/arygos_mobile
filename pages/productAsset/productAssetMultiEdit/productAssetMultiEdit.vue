@@ -44,8 +44,7 @@
               备注
             </u-col>
             <u-col span="9" class="u-padding-left-20">
-              <u-input type="textarea" v-model="item.remark"
-                placeholder="请输入备注"></u-input>
+              <u-textarea v-model="item.remark" placeholder="请输入备注" /></u-input>
             </u-col>
           </u-row></template>
         </u-card>
