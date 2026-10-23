@@ -1,37 +1,32 @@
 <template>
   <view :class="className">
-    <u-input
-      :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
-      :placeholder="placeholder"
-      @click="handleShowSelect"></u-input>
+    <view @click="handleShowSelect">
+      <u-input
+        :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
+        :placeholder="placeholder"
+      /></view>
     <u-modal
-      :title="title" v-model="modalOpen" @confirm="handleConfirm" @cancel="handleCancel"
+      :title="title" :show="modalOpen" @update:show="modalOpen = $event" @confirm="handleConfirm" @cancel="handleCancel"
       :show-cancel-button="showCancelButton"
       :width="width"
     >
       <view class="wrap">
-        <u-row gutter="16">
-          <u-col span="12">
-            <u-search
-              :placeholder="searchPlaceholder" v-model="searchQuery" :show-action="showAction"
-              @search="handleSearch"
-            ></u-search>
-          </u-col>
-          <u-col span="12">
-            <uni-list
-              v-for="item in list"
-              v-bind:key="item.value"
-             >
-              <uni-list-item
-                :title="item.label"
-                showSwitch
-                :switchChecked="item.checked"
-                @switchChange="handleSwitchChange($event, item.value)"
-              ></uni-list-item>
-            </uni-list>
-            <u-loadmore :status="status" @loadmore="handleLoadmore"/>
-          </u-col>
-        </u-row>
+        <u-search
+          :placeholder="searchPlaceholder" v-model="searchQuery" :show-action="showAction"
+          @search="handleSearch"
+        ></u-search>
+        <uni-list
+          v-for="item in list"
+          :key="item.value"
+        >
+          <uni-list-item
+            :title="item.label"
+            showSwitch
+            :switchChecked="item.checked"
+            @switchChange="handleSwitchChange($event, item.value)"
+          ></uni-list-item>
+        </uni-list>
+        <u-loadmore :status="status" @loadmore="handleLoadmore"/>
       </view>
     </u-modal>
   </view>
@@ -60,7 +55,7 @@
       value: { type: [Object, Array], default: () => ({}) },
       required: { type: Boolean, default: false },
       title: { type: String, default: '' },
-      width: { type: String, default: '80%' },
+      width: { type: String, default: '80vw' },
       placeholder: { type: String, default: '' },
       perPage: { type: Number, default: 10 },
       searchPlaceholder: { type: String, default: '输入要搜索的内容' },

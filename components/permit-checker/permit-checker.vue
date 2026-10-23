@@ -1,8 +1,7 @@
 <template>
   <u-modal
     :title="modal.title"
-    :content="modal.content"
-    v-model="modal.show"
+    :show="modal.show" @update:show="modal.show = $event"
     :show-cancel-button="modal.showCancelButton"
     :confirm-text="modal.confirmText"
     @confirm="handleConfirm"

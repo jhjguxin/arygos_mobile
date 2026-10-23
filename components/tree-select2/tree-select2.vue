@@ -1,9 +1,10 @@
 <template>
   <view>
-    <u-input
-      :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
-      :placeholder="placeholder"
-      @click="handleShowSelect"></u-input>
+    <view @click="handleShowSelect">
+      <u-input
+        :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
+        :placeholder="placeholder"
+      /></view>
 
     <tki-tree
       ref="tkitree"
@@ -13,7 +14,6 @@
       :multiple="multiple"
       confirmColor="#4e8af7"
       @confirm="handleConfirm"
-      v-if="list"
     />
   </view>
 </template>
@@ -41,7 +41,7 @@
         selectedValue: ref(props.value),
         border: "none",
         showAction: false,
-        list: ref(null),
+        list: ref([]),
         modalOpen: ref(false),
         rangeKey: "label",
         idKey: "value",

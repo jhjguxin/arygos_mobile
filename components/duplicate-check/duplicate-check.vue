@@ -1,6 +1,6 @@
 <template>
   <u-modal
-    :title="title" v-model="modalOpen" @confirm="handleConfirm"
+    :title="title" :show="modalOpen" @update:show="modalOpen = $event" @confirm="handleConfirm"
     :width="width"
     v-if="duplicated"
   >
@@ -30,7 +30,7 @@
         modalOpen: false,
         title: "",
         fields: [],
-        width: "80%"
+        width: "80vw"
       };
     },
     methods: {

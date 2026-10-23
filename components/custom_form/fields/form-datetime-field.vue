@@ -1,8 +1,10 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
-    <u-input
-      :border="border" type="select" :select-open="selectShow" v-model="localValue"
-      :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
+    <view @click="selectShow = true">
+      <u-input
+        :border="border" type="select" :select-open="selectShow" v-model="localValue"
+        :placeholder="customField.input_html_options.placeholder"
+      /></view>
     <u-datetime-picker style="flex:none" :show="selectShow" mode="datetime" :modelValue="localValue" @confirm="handleConfirm" @close="selectShow = false" @cancel="selectShow = false"></u-datetime-picker>
   </u-form-item>
 </template>
@@ -10,7 +12,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { ref, watch } from 'vue';
+  import { ref, toRef, watch } from 'vue';
 
   export default {
   props: {
