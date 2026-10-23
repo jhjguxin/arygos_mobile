@@ -13,7 +13,7 @@
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model:show="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.remind_at.show" mode="datetime" :modelValue="form.model.remind_at" @confirm="handleSelectRemindAtConfirm" @close="form.item.remind_at.show = false" @cancel="form.item.remind_at.show = false"></u-datetime-picker>
         </u-form-item>
         <u-form-item :label="form.item.repeat.label" prop="repeat">
           <u-select
@@ -265,9 +265,9 @@
         })
       },
       handleSelectRemindAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.remind_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.remind_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.remind_at.show = false;
       },
       handleSelectRepeatConfirm: function (item) {
         this.form.model.repeat = item?.value;

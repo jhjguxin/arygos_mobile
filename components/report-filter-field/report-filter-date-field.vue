@@ -6,7 +6,7 @@
         <u-input
           :border="border" v-model="start"
           placeholder="开始" @click="selectStartShow = true"></u-input>
-        <u-picker v-model:show="selectStartShow" mode="time" :default-time="start" :params="params" @confirm="handleConfirm($event, 'start')"></u-picker>
+        <u-datetime-picker style="flex:none" :show="selectStartShow" mode="date" :modelValue="start" @confirm="handleConfirm($event, 'start')" @close="selectStartShow = false" @cancel="selectStartShow = false"></u-datetime-picker>
       </u-form-item>
     </u-col>
     -
@@ -15,7 +15,7 @@
         <u-input
           :border="border" v-model="end"
           placeholder="结束" @click="selectEndShow = true"></u-input>
-        <u-picker v-model:show="selectEndShow" mode="time" :default-time="end" :params="params" @confirm="handleConfirm($event, 'end')"></u-picker>
+        <u-datetime-picker style="flex:none" :show="selectEndShow" mode="date" :modelValue="end" @confirm="handleConfirm($event, 'end')" @close="selectEndShow = false" @cancel="selectEndShow = false"></u-datetime-picker>
       </u-form-item>
     </u-col>
   </u-row>
@@ -58,7 +58,8 @@
     methods: {
       handleConfirm: function (e, key) {
         let { startName, endName, start, end} = this;
-        let value = `${e.year}-${e.month}-${e.day}`;
+        let value = dayjs(Number(e.value)).format("YYYY-MM-DD");
+        let showKey = key == "start" ? "selectStartShow" : "selectEndShow";
 
         if (key == "start" && end) {
           if (dayjs(value) > dayjs(end)) {
@@ -67,8 +68,9 @@
               title: "开始时间不能大于结束时间",
               duration: 1000
             });
+            this[showKey] = false;
             _.delay(()=> {
-              this.selectStartShow = true;
+              this[showKey] = true;
             }, 500);
             return;
           }
@@ -80,13 +82,15 @@
               title: "开始时间不能大于结束时间",
               duration: 1000
             });
+            this[showKey] = false;
             _.delay(()=> {
-              this.selectEndShow = true;
+              this[showKey] = true;
             }, 500);
             return;
           }
         }
         this[key] = value;
+        this[showKey] = false;
 
         if (key == "end" && _.isEmpty(start)) {
           this.selectStartShow = true;

@@ -27,7 +27,7 @@
           <u-input
             :border="form.item.revisit_at.border" type="select" :select-open="form.item.revisit_at.show" v-model="form.model.revisit_at"
             :placeholder="form.item.revisit_at.placeholder" @click="form.item.revisit_at.show = true"></u-input>
-          <u-picker v-model:show="form.item.revisit_at.show" mode="time" :default-time="form.model.revisit_at" :params="form.item.revisit_at.params" @confirm="handleSelectRevisitAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.revisit_at.show" mode="datetime" :modelValue="form.model.revisit_at" @confirm="handleSelectRevisitAtConfirm" @close="form.item.revisit_at.show = false" @cancel="form.item.revisit_at.show = false"></u-datetime-picker>
         </u-form-item>
 
         <!-- 跟进对象 -->
@@ -67,7 +67,7 @@
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model:show="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.remind_at.show" mode="datetime" :modelValue="form.model.remind_at" @confirm="handleSelectRemindAtConfirm" @close="form.item.remind_at.show = false" @cancel="form.item.remind_at.show = false"></u-datetime-picker>
         </u-form-item>
         <u-form-item prop="image_attachment_ids" :label="form.item.image_attachment_ids.label">
           <attachment-upload
@@ -386,9 +386,9 @@
         }
       },
       handleSelectRevisitAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.revisit_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.revisit_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.revisit_at.show = false;
       },
       handleSelectCategoryConfirm: function (item) {
         this.form.model.category = item?.value;
@@ -401,9 +401,9 @@
         this.form.model.contacts = value;
       },
       handleSelectRemindAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.remind_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.remind_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.remind_at.show = false;
       },
       handleImageAttachmentUpload(lists) {;
         if (_.isArray(lists)) {

@@ -3,12 +3,13 @@
     <u-input
       :border="border" type="select" :select-open="selectShow" :value="value"
       :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
-    <u-picker v-model:show="selectShow" mode="time" :default-time="value" :params="params" @confirm="handleConfirm"></u-picker>
+    <u-datetime-picker style="flex:none" :show="selectShow" mode="datetime" :modelValue="value" @confirm="handleConfirm" @close="selectShow = false" @cancel="selectShow = false"></u-datetime-picker>
   </u-form-item>
 </template>
 
 <script>
   import _ from "lodash";
+  import dayjs from 'dayjs';
 
   export default {
   props: {
@@ -43,9 +44,10 @@
     methods: {
       handleConfirm: function (e) {
         let { customField: { name }} = this;
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
+        let value = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
 
         this.value = value;
+        this.selectShow = false;
 
         this.$emit("fieldChange", {name, value});
       }
