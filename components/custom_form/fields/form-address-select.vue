@@ -23,7 +23,7 @@
 <script>
   import _ from 'lodash';
   import Geo from '@/services/geo';
-  import { ref } from 'vue';
+  import { ref, toRef } from 'vue';
 
   export default {
   props: {
@@ -42,7 +42,8 @@
         defaultIndex: ref([0, 0, 0]),
         listReady: ref(false),
         placeholder: props.customField.input_html_options?.placeholder,
-        selectShow: ref(false)
+        selectShow: ref(false),
+        value: toRef(props, 'value'),
       };
     },
     async created() {
@@ -163,9 +164,20 @@
 
           if (_.isNil(value)) return;
 
-          let province = _.find(list, (opt)=> opt.value == value[0]);
-          let city = _.find(province?.children, (opt)=> opt.value == value[1]);
-          let district = _.find(city?.children, (opt)=> opt.value == value[2]);
+          // value 可能是数组 ["province_id","city_id","district_id"]
+          // 也可能是对象 {province_id, city_id, district_id} (created 中 emit 后)
+          let provinceId, cityId, districtId;
+          if (_.isArray(value)) {
+            [provinceId, cityId, districtId] = value;
+          } else {
+            provinceId = value.province_id;
+            cityId = value.city_id;
+            districtId = value.district_id;
+          }
+
+          let province = _.find(list, (opt)=> opt.value == provinceId);
+          let city = _.find(province?.children, (opt)=> opt.value == cityId);
+          let district = _.find(city?.children, (opt)=> opt.value == districtId);
 
           return _.compact([province?.label, city?.label, district?.label]).join("/");
         },
