@@ -21,10 +21,6 @@
       klassName: "",
       value: ""
   },
-
-    setup() {
-      return {};
-    },
     methods: {
       handleChange: function (value) {
         let { customField: { name }} = this;

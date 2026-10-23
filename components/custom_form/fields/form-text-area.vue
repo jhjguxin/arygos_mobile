@@ -23,10 +23,6 @@
       value: "",
       autoHeight: { type: Boolean, default: true }
   },
-
-    setup() {
-      return {};
-    },
     methods: {
       handleChange: function (value) {
         let { customField: { name }} = this;

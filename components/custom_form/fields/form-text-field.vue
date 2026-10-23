@@ -19,9 +19,6 @@
       value: ""
   },
 
-    setup() {
-      return {};
-    },
     mounted () {
       // REVIEW 获取 form 组件
       // form = this.$u.$parent.call(this, 'u-form');

@@ -179,6 +179,7 @@
 <script>
   import _ from "lodash";
   import getFormField from "@/components/custom_form/getFormField";
+  import { toRef } from 'vue';
 
   export default {
     props: {
@@ -200,7 +201,13 @@
 
       return {
         componentName,
-        handleFieldChange
+        handleFieldChange,
+        name: toRef(props, 'name'),
+        fieldType: toRef(props, 'fieldType'),
+        customField: toRef(props, 'customField'),
+        record: toRef(props, 'record'),
+        klassName: toRef(props, 'klassName'),
+        value: toRef(props, 'value'),
       };
     }
   };

@@ -27,8 +27,7 @@
   import parseInitialValue from "@/components/custom_form/parseInitialValue";
   import parseRule from "@/components/custom_form/parseRule";
   import parseCustomField from "@/components/custom_form/parseCustomField";
-  import { ref } from 'vue';
-
+  
   export default {
     props: {
       klassName: { type: String, default: '' },
@@ -36,9 +35,11 @@
       customFields: { type: Array, default: () => [] },
       errorType: { type: String, default: 'toast' }
     },
-    setup(props) {
+    data() {
+      const { customFields } = this;
+
       let rules = {};
-      _.map(props.customFields, (customField) => {
+      _.map(customFields, (customField) => {
         let _rules = parseRule({ customField });
         if (_.isArray(_rules)) {
           rules = _.extend(
@@ -49,10 +50,11 @@
           )
         }
       });
+
       return {
         rules,
-        formFields: ref([]),
-        model: ref({})
+        formFields: [],
+        model: {}
       };
     },
     created() {
