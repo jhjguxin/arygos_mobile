@@ -101,7 +101,7 @@
                 duration: 1000
               });
             }, 200);
-            this.$refs.uModal.clearLoading();
+            this.$refs.uModal?.clearLoading?.();
           }
         })
       },
@@ -127,8 +127,11 @@
           if (valid) {
             this.handleUpdate();
           } else {
-            this.$refs.uModal.clearLoading();
+            this.$refs.uModal?.clearLoading?.();
           }
+        }).catch(() => {
+          // u-form errorType: toast 已提示，仅清除 loading
+          this.$refs.uModal?.clearLoading?.();
         })
       }
     }
