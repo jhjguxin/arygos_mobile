@@ -78,4 +78,19 @@ export default {
 <style lang="scss">
   /*每个页面公共css */
   @import "uview-plus/index.scss";
+
+  /* 修复 uview-plus u-td 的 height:100% 在 flex 行中导致单元格不等高的 bug */
+  /* 原因：u-tr 无显式高度时，子元素 height:100% 退化为内容高度，覆盖了 align-self:stretch */
+  .u-tr {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+  }
+
+  .u-td {
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
 </style>

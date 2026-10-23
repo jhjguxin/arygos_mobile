@@ -105,8 +105,8 @@
           models = [];
         }
 
-        params = {
-          ...params,
+        const params = {
+          ...this.params,
           per_page,
           page
         };
