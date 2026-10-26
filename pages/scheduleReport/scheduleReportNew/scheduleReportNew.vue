@@ -74,7 +74,7 @@
 
       <u-form-item :label="form.item.file_attachments.label" prop="file_attachments">
         <attachment-upload
-          maxCount="5"
+          :maxCount="5"
           @upload="handleUpload"
         />
       </u-form-item>

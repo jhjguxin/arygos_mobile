@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <attachment-upload
-      maxCount="10"
+      :maxCount="10"
       :file-list="value"
       :deletable="deletable"
       @upload="handleUpload"
