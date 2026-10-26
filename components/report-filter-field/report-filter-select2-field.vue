@@ -6,7 +6,7 @@
       :placeholder="placeholder"
       :required="customField.required"
       mode="multi"
-      perPage = "5"
+      :perPage="5"
       @select="handleSelect"
     />
   </u-form-item>

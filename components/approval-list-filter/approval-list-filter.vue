@@ -12,7 +12,7 @@
           klassName="User"
           placeholder="请选择用户"
           mode="selector"
-          perPage = "5"
+          :perPage="5"
           :value="filters.user"
           @select="handleUserSelect"
         />

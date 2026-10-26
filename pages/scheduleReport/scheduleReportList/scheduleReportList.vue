@@ -53,8 +53,7 @@
       </u-card>
       </u-swipe-action-item>
       </u-swipe-action>
-    </view>
-      <u-empty mode="list" v-show="models.length == 0"/>
+    <u-empty mode="list" v-show="models.length == 0"/>
       <uni-load-more
         :status="status" :contentText="loadText"
         @clickLoadMore="handleLoadMore"
@@ -255,7 +254,7 @@
            }
          })
       },
-      handleScopeTabClick (index) {
+      handleScopeTabClick (item, index) {
         let { uTabs: { list }} = this;
         this.scope = list[index].key;
         this.uTabs.current = index;

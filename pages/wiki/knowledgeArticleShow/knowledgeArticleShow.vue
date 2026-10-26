@@ -12,40 +12,46 @@
     class="u-m-t-10 u-m-b-10"
   >
     <template #body><u-row class="u-p-l-10 u-p-r-10">
-      <view class="article-content">
-        <rich-text :nodes="model.content"></rich-text>
-      </view>
+      <u-col span="12">
+        <view class="article-content">
+          <rich-text :nodes="model.content"></rich-text>
+        </view>
+      </u-col>
 
-      <u-row class="u-m-t-20 u-font-sm u-border-top u-border-bottom" style="width: 100%">
-        <u-col span="12">
-          附件:
-          <u-link
-            :href="item.file_url"
-            :text="item.file_file_name"
-            v-for="(item, index) in (model.attachments)"
-            class="u-m-r-10 u-m-l-10"
-            :key="index"
-          ></u-link>
-        </u-col>
-        <u-col span="12" class="u-m-t-10">
-          标签:
-          <u-tag
-            :text="tag"
-            v-for="tag in (model.tags)"
-            class="u-m-r-10 u-m-l-10"
-            :key="tag"
-          ></u-tag>
-        </u-col>
-      </u-row>
+      <u-col span="12">
+        <u-row class="u-m-t-20 u-font-sm u-border-top u-border-bottom">
+          <u-col span="12">
+            附件:
+            <u-link
+              :href="item.file_url"
+              :text="item.file_file_name"
+              v-for="(item, index) in (model.attachments)"
+              class="u-m-r-10 u-m-l-10"
+              :key="index"
+            ></u-link>
+          </u-col>
+          <u-col span="12" class="u-m-t-10">
+            标签:
+            <u-tag
+              :text="tag"
+              v-for="tag in (model.tags)"
+              class="u-m-r-10 u-m-l-10"
+              :key="tag"
+            ></u-tag>
+          </u-col>
+        </u-row>
+      </u-col>
 
-      <u-row class="u-m-t-20 u-font-xs "style="width: 100%">
-        <u-col span="6">
-          创建时间：{{model.createdAt}}
-        </u-col>
-        <u-col span="6">
-          更新时间：{{model.updatedAt}}
-        </u-col>
-      </u-row>
+      <u-col span="12">
+        <u-row class="u-m-t-20 u-font-xs">
+          <u-col span="6">
+            创建时间：{{model.createdAt}}
+          </u-col>
+          <u-col span="6">
+            更新时间：{{model.updatedAt}}
+          </u-col>
+        </u-row>
+      </u-col>
     </u-row></template>
     <template #foot><view >
       <u-row gutter="10" class="u-font-sm">

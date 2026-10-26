@@ -6,7 +6,7 @@
       :placeholder="placeholder"
       :value="localValue"
       :required="customField.required"
-      perPage = "5"
+      :perPage="5"
       @select="handleSelect"
       v-if="customField.input_html_options.selectType != 'tree'"
     />
