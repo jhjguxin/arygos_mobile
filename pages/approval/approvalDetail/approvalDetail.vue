@@ -75,7 +75,6 @@
           :params="attachmentList.params"
           style="height: 65vh;"
         />
-        </u-grid>
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>

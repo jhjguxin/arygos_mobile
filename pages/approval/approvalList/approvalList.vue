@@ -248,7 +248,7 @@
         })
 
       },
-      handleTabChange (index) {
+      handleTabChange (item, index) {
         let { approvalTabs } = this;
 
         approvalTabs.current = index;

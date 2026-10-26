@@ -1,5 +1,5 @@
 <template>
-  <view class="attachment-list"  :style="style">
+  <view class="attachment-list"  :style="rootStyle">
     <u-cell-group>
       <u-swipe-action :autoClose="true">
         <u-swipe-action-item
@@ -35,7 +35,7 @@
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" },
+      rootStyle: { type: String, default: "height: 55vh;" },
       params: { }
   },
 

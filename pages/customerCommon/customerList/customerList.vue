@@ -304,7 +304,7 @@
           })
         }
       },
-      handleCustomerCommonChange (index) {
+      handleCustomerCommonChange (item, index) {
         let { customerCommons, featureLabels } = this;
         let item = customerCommons[index];
 

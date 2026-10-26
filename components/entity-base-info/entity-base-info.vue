@@ -1,5 +1,5 @@
 <template>
-  <view class="entity-base-info" :style="style">
+  <view class="entity-base-info" :style="rootStyle">
     <u-cell-group
       :title="customFieldGroup.label"
       v-for="customFieldGroup in customFieldGroups"
@@ -31,7 +31,7 @@
   export default {
   props: {
       klassName: "",
-      style: { type: String, default: "height: 55vh;" },
+      rootStyle: { type: String, default: "height: 55vh;" },
       model: { }
   },
 

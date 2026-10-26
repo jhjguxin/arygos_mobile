@@ -305,7 +305,7 @@
           })
         }
       },
-      handleLeadCommonChange (index) {
+      handleLeadCommonChange (item, index) {
         let { leadCommons, featureLabels } = this;
         let item = leadCommons[index];
 

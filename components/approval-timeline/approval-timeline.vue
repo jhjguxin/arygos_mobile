@@ -1,5 +1,5 @@
 <template>
-  <view class="approval-timeline" :style="style">
+  <view class="approval-timeline" :style="rootStyle">
     <u-steps direction="column" class="timeLine" v-if="approve_status != 'await_sumbit'">
       <!-- 申请节点 -->
       <u-steps-item>
@@ -12,10 +12,10 @@
         <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
-                {{approvalDetail.applier.name}}<text class="u-m-l-10 u-type-primary">发起人</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.submitApplyingAt}}</text>
+                {{approvalDetail.applier.name}}<text class="u-m-l-10 u-type-primary">发起人</text>  <text class="u-m-l-10 u-type-info">{{submitApplyingAt}}</text>
               </view>
               <view class="u-font-sm">
-                <text class="u-type-primary u-m-r-10">发起审批</text> 审批通过后抄送给：<text class="u-m-l-10 u-type-info">{{approvalDetail.notifyUserNames}}</text>
+                <text class="u-type-primary u-m-r-10">发起审批</text> 审批通过后抄送给：<text class="u-m-l-10 u-type-info">{{notifyUserNames}}</text>
               </view>
             </view>
         </template>
@@ -59,7 +59,7 @@
         <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
-                <text class="u-type-primary">结束</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.finishApproveAt}}</text>
+                <text class="u-type-primary">结束</text>  <text class="u-m-l-10 u-type-info">{{finishApproveAt}}</text>
               </view>
               <view class="u-font-sm">
                 <text class="u-type-success" v-if="approve_status == 'approved'">审批通过</text>
@@ -77,23 +77,17 @@
   import _ from 'lodash';
   import ApprovalSetting from '@/services/approval_setting';
   import dayjs from 'dayjs';
+  import { computed } from 'vue';
 
   export default {
   props: {
-      style: { type: String, default: "height: 55vh;" },
+      rootStyle: { type: String, default: "height: 55vh;" },
       approvalDetail: { }
   },
 
     name:"approval-timeline",
     data() {
-      /* moved to props */
-
-      approvalDetail = {
-        ...approvalDetail,
-        submitApplyingAt: approvalDetail.submit_applying_at ? dayjs(approvalDetail.submit_applying_at).format("YYYY-MM-DD HH:mm") : null,
-        finishApproveAt: approvalDetail.finish_approve_at ? dayjs(approvalDetail.finish_approve_at).format("YYYY-MM-DD HH:mm") : null,
-        notifyUserNames: _.map(approvalDetail.notify_users, "name").join(", ")
-      };
+      const { approvalDetail } = this;
 
       return {
         approve_status: approvalDetail?.approve_status,
@@ -107,6 +101,19 @@
             style: "background: green"
           },
         }
+      };
+    },
+    setup(props) {
+      return {
+        submitApplyingAt: computed(() =>
+          props.approvalDetail?.submit_applying_at ? dayjs(props.approvalDetail.submit_applying_at).format("YYYY-MM-DD HH:mm") : null
+        ),
+        finishApproveAt: computed(() =>
+          props.approvalDetail?.finish_approve_at ? dayjs(props.approvalDetail.finish_approve_at).format("YYYY-MM-DD HH:mm") : null
+        ),
+        notifyUserNames: computed(() =>
+          _.map(props.approvalDetail?.notify_users || [], "name").join(", ")
+        )
       };
     },
     async mounted() {
@@ -191,7 +198,7 @@
 
           return {
             node: {
-              style: this.style,
+              style,
               icon
             },
             level: stepConfig.level,
