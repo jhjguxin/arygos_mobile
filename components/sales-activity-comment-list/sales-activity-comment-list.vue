@@ -57,7 +57,7 @@
   emits: ['close'],
   props: {
       sales_activity_id: undefined,
-      width: { type: String, default: "95%" }
+      width: { type: String, default: "90vw" }
   },
 
     data() {

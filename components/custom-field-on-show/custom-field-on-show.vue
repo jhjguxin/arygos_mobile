@@ -25,7 +25,7 @@
     </u-tag>
     <view v-else-if="fieldType === 'file_field' && displayValue">
       <u-row v-for="item in displayValue"
-      :key="item.id" style="width: 45vh;">
+      :key="item.id" style="width: 45vw;">
         <u-col span="10">{{item.name}}</u-col>
         <u-col span="2">
           <u-link :href="item.file_url" text="查看">

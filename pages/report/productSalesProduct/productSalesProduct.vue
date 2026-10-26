@@ -226,10 +226,10 @@
     background-color: #FFFFFF;
   }
   .table-container {
-    width: 60vh;
+    width: 60vw;
     overflow-x: scroll;
   }
   .table-container .table {
-    width: 75vh;
+    width: 75vw;
   }
 </style>

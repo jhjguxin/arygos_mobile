@@ -219,12 +219,13 @@
           } = res;
 
           const tempList = _.map(_models, (item) => {
+            const sa = item.sales_activity || {};
             const urlMap = {
-              Lead: `/pages/lead/leadShow/leadShow?id=${item.sales_activity.refer_id}`,
-              Customer: `/pages/customer/customerShow/customerShow?id=${item.sales_activity.refer_id}`,
-              Contact: `/pages/contact/contactShow/contactShow?id=${item.sales_activity.refer_id}`,
-              Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.sales_activity.refer_id}`,
-              Contract: `/pages/contract/contractShow/contractShow?id=${item.sales_activity.refer_id}`,
+              Lead: `/pages/lead/leadShow/leadShow?id=${sa.refer_id}`,
+              Customer: `/pages/customer/customerShow/customerShow?id=${sa.refer_id}`,
+              Contact: `/pages/contact/contactShow/contactShow?id=${sa.refer_id}`,
+              Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${sa.refer_id}`,
+              Contract: `/pages/contract/contractShow/contractShow?id=${sa.refer_id}`,
             };
 
             return {
@@ -241,10 +242,10 @@
                 })
               }),
               sales_activity: {
-                ...item.sales_activity,
-                refer_url: urlMap[item.sales_activity.refer_type],
-                commentCount: `评论（${item.sales_activity.comments_count}）`,
-                commentListRef: `sales-activity-comment-models-${item.sales_activity.id}`
+                ...sa,
+                refer_url: urlMap[sa.refer_type],
+                commentCount: `评论（${sa.comments_count}）`,
+                commentListRef: `sales-activity-comment-models-${sa.id}`
               },
               node: {
                 style: "background: green"
