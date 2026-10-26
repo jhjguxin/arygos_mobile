@@ -1,13 +1,10 @@
 <template>
   <view :style="wrapperStyle">
-    <u-link v-if="fieldType === 'mobile_field'"  :href="href">
-      {{displayValue}}
+    <u-link v-if="fieldType === 'mobile_field'"  :href="href" :text="displayValue">
     </u-link>
-    <u-link v-else-if="fieldType === 'tel_field'"  :href="href">
-      {{displayValue}}
+    <u-link v-else-if="fieldType === 'tel_field'"  :href="href" :text="displayValue">
     </u-link>
-    <u-link v-else-if="fieldType === 'url_field'"  :href="href">
-      {{displayValue}}
+    <u-link v-else-if="fieldType === 'url_field'"  :href="href" :text="displayValue">
     </u-link>
     <text v-else-if="fieldType === 'select2_field'">
       <text
@@ -31,8 +28,7 @@
       :key="item.id" style="width: 45vh;">
         <u-col span="10">{{item.name}}</u-col>
         <u-col span="2">
-          <u-link :href="item.file_url" >
-            查看
+          <u-link :href="item.file_url" text="查看">
           </u-link>
         </u-col>
       </u-row>

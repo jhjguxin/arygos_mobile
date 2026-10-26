@@ -1,13 +1,11 @@
 <template>
   <view>
     <view v-if="fieldType === 'mobile_field'" >
-      <u-link :href="href" v-if="displayValue">
-        {{displayValue}}
+      <u-link :href="href" v-if="displayValue" :text="displayValue">
       </u-link>
     </view>
     <view v-else-if="fieldType === 'tel_field'" >
-      <u-link :href="href" v-if="displayValue">
-        {{displayValue}}
+      <u-link :href="href" v-if="displayValue" :text="displayValue">
       </u-link>
     </view>
     <text v-else-if="fieldType === 'select2_field'">

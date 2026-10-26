@@ -61,7 +61,6 @@
         @clickLoadMore="handleLoadMore"
         v-if="models.length > 0" />
       <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
-    </view>
   </view>
 </template>
 

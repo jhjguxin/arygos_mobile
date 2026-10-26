@@ -21,10 +21,11 @@
           附件:
           <u-link
             :href="item.file_url"
+            :text="item.file_file_name"
             v-for="(item, index) in (model.attachments)"
             class="u-m-r-10 u-m-l-10"
             :key="index"
-          >{{item.file_file_name}}</u-link>
+          ></u-link>
         </u-col>
         <u-col span="12" class="u-m-t-10">
           标签:
