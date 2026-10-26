@@ -27,7 +27,7 @@
 
       return {
         value: null,
-        placeholder: `请选择${customField.label}`,
+        placeholder: `请选择${this.customField.label}`,
         list: [],
       }
     },

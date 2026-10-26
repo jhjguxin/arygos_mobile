@@ -50,7 +50,8 @@
           },
           product_id: {
             name: "product_id",
-            label: featureLabels["product"]
+            label: featureLabels["product"],
+            select_klass_name: "Product"
           },
           department_id: {
             name: "department_id",

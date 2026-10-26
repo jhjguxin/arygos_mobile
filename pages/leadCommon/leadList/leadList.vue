@@ -339,10 +339,10 @@
       handleActionSheetSelect (item) {
         const index = this.uActionSheet.list.indexOf(item);
         let { uActionSheet: { list }, leadCommonTabs: { current }, leadCommons, leadCommonId, currentLeadId } = this;
-        let item = _.find(leadCommons, (item)=> item.id == leadCommonId);
+        let leadCommon = _.find(leadCommons, (item)=> item.id == leadCommonId);
         console.debug("uActionSheet 点击了", list[index]?.text);
 
-        if (item.is_admin) {
+        if (leadCommon.is_admin) {
           if (index == 0) {
             let transferUrl = `/pages/common/transferOutCommon/transferOutCommon?ids=${currentLeadId}&klassName=LeadCommon&id=${leadCommonId}&successUrl=/pages/leadCommon/leadList/leadList?index=${current}`;
             uni.navigateTo({
@@ -358,7 +358,7 @@
           return
         }
 
-        if (item.is_member) {
+        if (leadCommon.is_member) {
           if (index == 0) {
             this.doGrab({id: currentLeadId});
           }

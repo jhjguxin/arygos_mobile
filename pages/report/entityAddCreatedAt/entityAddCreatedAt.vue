@@ -48,7 +48,7 @@
           },
           user_id: {
             name: "user_id",
-            label: "时间",
+            label: "用户",
             select_klass_name: "User"
           }
         },

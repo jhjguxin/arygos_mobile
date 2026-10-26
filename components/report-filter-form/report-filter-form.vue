@@ -1,64 +1,64 @@
 <template>
   <view>
     <u-form
-      :model="filters" ref="uForm"
+      :model="formFilters" ref="uForm"
       label-width="160"
-      v-if="filters"
+      v-if="formFilters"
       class="column-filter-form"
     >
       <view class="column-filter-fields">
         <view v-for="(column, key, index) in filterColumns" :key="key">
           <report-filter-date-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'timeRange'"
           />
           <report-filter-year-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'year'"
           />
           <report-filter-time-unit-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'time_unit'"
           />
           <report-filter-tree-select2-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'product_category_id'"
           />
           <report-filter-select2-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'product_id'"
           />
           <report-filter-tree-select2-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'department_id'"
           />
           <report-filter-select2-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'user_id'"
           />
           <report-filter-multi-tag-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'category'"
           />
           <report-filter-multi-tag-field
             :customField="column"
-            :model="filters"
+            :model="formFilters"
             @fieldChange="handleFieldChange"
             v-if="key == 'status'"
           />
@@ -80,41 +80,38 @@
   import _ from 'lodash';
   export default {
   props: {
-      filters: [],
-      filterColumns: { },
-      filterColumns: { }
+      filters: { type: Object, default: () => ({}) },
+      filterColumns: { type: Object, default: () => ({}) }
   },
 
     data() {
-      /* moved to props */
-
       return {
+        formFilters: { ...this.filters }
       };
+    },
+    watch: {
+      filters: {
+        handler(val) {
+          this.formFilters = { ...val };
+        },
+        deep: true
+      }
     },
     methods: {
       handleFieldChange (values) {
-        let { filters } = this;
-        filters = {
-          ...filters,
+        this.formFilters = {
+          ...this.formFilters,
           ...values
         }
-
-        this.filters = filters;
       },
       handleSubmit () {
-        /* moved to props */
-        let { filters } = this;
-
-        // let filters = parseFilter({ filters: this.filters, filterColumns });
-
-        this.$emit("filterConfirm", filters);
+        this.$emit("filterConfirm", { ...this.formFilters });
       },
       handleReset () {
-        // let { filterColumns } = this;
         let { uForm } = this.$refs;
 
         _.delay(()=> {
-          this.filters = {};
+          this.formFilters = {};
           uForm.resetFields();
         }, 100);
       }

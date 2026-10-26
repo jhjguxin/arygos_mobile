@@ -2,10 +2,11 @@
   <u-form-item :prop="customField.name" :label="customField.label">
     <u-checkbox-group wrap @change="handleChange">
       <u-checkbox
-        v-model="item.checked"
+        v-model:checked="item.checked"
         v-for="(item, index) in list" :key="index"
         :name="item.value"
-      >{{item.label}}</u-checkbox>
+        :label="item.label"
+      ></u-checkbox>
     </u-checkbox-group>
     <u-button :disabled="checkedAllDisabled" @click="checkedAll">全选</u-button>
   </u-form-item>
