@@ -69,10 +69,6 @@
           </u-grid-item>
           <u-grid-item @click="salesActionSheet.show = true">
             <view class="grid-text">更多</view>
-            <u-action-sheet
-              :list="salesActionSheet.list" v-model="salesActionSheet.show"
-              @click="handleSalesActionSheetClick"
-            ></u-action-sheet>
           </u-grid-item>
         </u-grid>
       </view>
@@ -90,6 +86,10 @@
     </view>
     <unauthorized v-if="isInvalidData"/>
     <permit-checker authKey="contact#show" ></permit-checker>
+    <u-action-sheet
+      :actions="salesActionSheet.list" v-model:show="salesActionSheet.show" :closeOnClickOverlay="true" nameKey="text" subnameKey="subText"
+      @select="handleSalesActionSheetSelect"
+    ></u-action-sheet>
   </view>
 </template>
 
@@ -232,7 +232,8 @@
           url
         });
       },
-      handleSalesActionSheetClick (index) {
+      handleSalesActionSheetSelect (item) {
+        const index = this.salesActionSheet.list.indexOf(item);
         if (index == 0) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({

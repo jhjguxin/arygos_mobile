@@ -50,8 +50,8 @@
       </u-swipe-action>
     </uni-list>
     <u-action-sheet
-      :list="uActionSheet.list" v-model="uActionSheet.show"
-      @click="handleActionSheet"
+      :actions="uActionSheet.list" v-model:show="uActionSheet.show" :closeOnClickOverlay="true" nameKey="text"
+      @select="handleActionSheetSelect"
     ></u-action-sheet>
     <uni-load-more :status="status" />
     <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
@@ -335,7 +335,8 @@
         this.currentCustomerId = id;
         this.uActionSheet.show = true;
       },
-      handleActionSheet (index) {
+      handleActionSheetSelect (item) {
+        const index = this.uActionSheet.list.indexOf(item);
         let { uActionSheet: { list }, customerCommonTabs: { current }, customerCommons, customerCommonId, currentCustomerId } = this;
         let item = _.find(customerCommons, (item)=> item.id == customerCommonId);
         console.debug("uActionSheet 点击了", list[index]?.text);
