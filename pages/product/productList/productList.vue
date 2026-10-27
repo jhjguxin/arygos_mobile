@@ -115,32 +115,29 @@
       // 初始化页面数据
       this.fetchProduct({reload: true });
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchProduct({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchProduct({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchProduct({ reload: true });
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchProduct({ page });
+      }
+    },
+    methods: {
+
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false

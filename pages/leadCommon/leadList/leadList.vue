@@ -122,32 +122,29 @@
       await this.fetchLeadCommons();
       this.fetchLead({reload: true })
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchLead({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchLead({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchLead({ reload: true });
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchLead({ page });
+      }
+    },
+    methods: {
+
       async fetchLeadCommons() {
         let { tabIndex: index } = this;
         let res = await leadCommonApi.lead_common_settings();
@@ -167,7 +164,7 @@
               name: item.name
             }
           ));
-          this.handleLeadCommonChange(index)
+          this.handleLeadCommonChange(undefined, index)
         }
       },
       /**
@@ -305,7 +302,7 @@
           })
         }
       },
-      handleLeadCommonChange (item, index) {
+      handleLeadCommonChange (_item, index) {
         let { leadCommons, featureLabels } = this;
         let item = leadCommons[index];
 

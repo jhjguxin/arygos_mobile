@@ -46,23 +46,20 @@
       // 初始化页面数据
       this.fetchNotification({reload: true });
     },
+
+    onPullDownRefresh() {
+      this.page = 1;
+      this.fetchNotification({ reload: true });
+    },
+
+    onReachBottom() {
+      let { page } = this;
+      page += 1;
+      this.page = page;
+      this.fetchNotification({ page });
+    },
     methods: {
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1;
-        this.fetchNotification({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page } = this;
-        page += 1;
-        this.page = page;
-        this.fetchNotification({ page });
-      },
+
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false

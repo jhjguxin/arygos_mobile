@@ -91,21 +91,20 @@
       // 初始化页面数据
       this.fetchData();
     },
+
+    async onPullDownRefresh() {
+      let { featureLabels } = this;
+      this.filters = {
+        year: String(dayjs().year())
+      };
+      await this.fetchData();
+      uni.setNavigationBarTitle({
+        title: `${featureLabels['contract']}汇总`
+      })
+      uni.stopPullDownRefresh();
+    },
     methods: {
-      async onPullDownRefresh() {
-        let { featureLabels } = this;
 
-        this.filters = {
-          year: String(dayjs().year())
-        };
-        await this.fetchData();
-
-        uni.setNavigationBarTitle({
-          title: `${featureLabels['contract']}汇总`
-        })
-
-        uni.stopPullDownRefresh();
-      },
       fetchData(){
         let { filters, featureLabels } = this;
 

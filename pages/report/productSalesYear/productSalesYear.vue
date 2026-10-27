@@ -88,16 +88,17 @@
       // 初始化页面数据
       this.fetchData();
     },
-    methods: {
-      async onPullDownRefresh() {
-        this.filters = {
-          dimension: "year",
-          year: String(dayjs().year())
-        };
-        await this.fetchData();
 
-        uni.stopPullDownRefresh();
-      },
+    async onPullDownRefresh() {
+      this.filters = {
+        dimension: "year",
+        year: String(dayjs().year())
+      };
+      await this.fetchData();
+      uni.stopPullDownRefresh();
+    },
+    methods: {
+
       fetchData(){
         let { filters, featureLabels } = this;
 

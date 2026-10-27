@@ -78,18 +78,18 @@
       // 初始化页面数据
       this.fetchData();
     },
+
+    async onPullDownRefresh() {
+      this.filters = {
+      };
+      await this.fetchData();
+      uni.setNavigationBarTitle({
+        title: `赢单${featureLabels['opportunity']}汇总`
+      })
+      uni.stopPullDownRefresh();
+    },
     methods: {
-      async onPullDownRefresh() {
-        this.filters = {
-        };
-        await this.fetchData();
 
-        uni.setNavigationBarTitle({
-          title: `赢单${featureLabels['opportunity']}汇总`
-        })
-
-        uni.stopPullDownRefresh();
-      },
       fetchData(){
         let { filters } = this;
 

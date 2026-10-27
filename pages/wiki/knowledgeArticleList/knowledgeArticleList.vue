@@ -113,26 +113,24 @@
       // 初始化页面数据
       this.fetchKnowledgeArticle({reload: true });
     },
+
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchKnowledgeArticle({ reload: true });
+    },
+
+    onReachBottom() {
+      this.handleLoadMore();
+    },
     methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchKnowledgeArticle({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        this.handleLoadMore();
-      },
+
       handleLoadMore() {
         let { page, status } = this;
 

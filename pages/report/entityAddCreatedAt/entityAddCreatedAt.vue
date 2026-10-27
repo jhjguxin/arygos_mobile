@@ -73,15 +73,16 @@
       // 初始化页面数据
       this.fetchData();
     },
-    methods: {
-      async onPullDownRefresh() {
-        this.filters = {
-          dimension: "created_at"
-        };
-        await this.fetchData();
 
-        uni.stopPullDownRefresh();
-      },
+    async onPullDownRefresh() {
+      this.filters = {
+        dimension: "created_at"
+      };
+      await this.fetchData();
+      uni.stopPullDownRefresh();
+    },
+    methods: {
+
       fetchData(){
         let { filters } = this;
 

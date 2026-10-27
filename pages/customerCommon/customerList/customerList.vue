@@ -122,32 +122,29 @@
       await this.fetchCustomerCommons();
       this.fetchCustomer({reload: true })
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchCustomer({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchCustomer({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchCustomer({ reload: true });
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchCustomer({ page });
+      }
+    },
+    methods: {
+
       async fetchCustomerCommons() {
         let { tabIndex: index } = this;
         let res = await customerCommonApi.customer_common_settings();
@@ -167,7 +164,7 @@
               name: item.name
             }
           ));
-          this.handleCustomerCommonChange(index)
+          this.handleCustomerCommonChange(undefined, index)
         }
       },
       /**
@@ -304,7 +301,7 @@
           })
         }
       },
-      handleCustomerCommonChange (item, index) {
+      handleCustomerCommonChange (_item, index) {
         let { customerCommons, featureLabels } = this;
         let item = customerCommons[index];
 
