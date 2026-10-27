@@ -84,9 +84,9 @@
             title: '初始化上传组件失败',
             duration: 1000
           });
+        } else {
+          this.uploadReady = true;
         }
-
-        this.uploadReady = true;
       },
       async fetchQiniuUploadToken() {
         let res = await authApi.upload_token();

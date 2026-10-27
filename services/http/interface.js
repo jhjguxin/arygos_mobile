@@ -154,7 +154,7 @@ export default {
  * 请求接口日志记录
  */
 function _reqlog(req) {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     console.log("[_reqlog]【" + req.requestId + "】 地址：" + req.url)
     if (req.data) {
       console.log("[_reqlog]【" + req.requestId + "】 参数：" + JSON.stringify(req.data))
@@ -168,7 +168,7 @@ function _reqlog(req) {
  */
 function _reslog(res) {
   let _statusCode = res.statusCode;
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     console.log("[_reslog]【" + res.config.requestId + "】 地址：" + res.config.url)
     if (res.config.data) {
       console.log("[_reslog]【" + res.config.requestId + "】 请求参数：" + JSON.stringify(res.config.data))

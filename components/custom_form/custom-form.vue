@@ -33,7 +33,7 @@
       klassName: { type: String, default: '' },
       record: { type: Object, default: undefined },
       customFields: { type: Array, default: () => [] },
-      errorType: { type: String, default: 'toast' }
+      errorType: { type: String, default: 'message' }
     },
     data() {
       const { customFields } = this;
