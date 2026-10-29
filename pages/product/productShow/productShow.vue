@@ -16,6 +16,7 @@
               <u-swiper
                 :list="model.uSwiper.list"
                 :img-mode="model.uSwiper.imgMode"
+                keyName="image"
                 v-if="model.uSwiper"
               ></u-swiper>
             </u-col>
@@ -43,7 +44,6 @@
               <view class="grid-text">更多</view>
             </u-grid-item>
           </u-grid>
-        </u-grid>
       </view>
       <view v-if="tabs.current == 1" class="u-padding-bottom-80">
         <attachment-list

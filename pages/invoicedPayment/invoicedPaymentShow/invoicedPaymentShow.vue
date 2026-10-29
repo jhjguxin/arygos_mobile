@@ -58,7 +58,6 @@
               <view class="grid-text">更多</view>
             </u-grid-item>
           </u-grid>
-        </u-grid>
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>

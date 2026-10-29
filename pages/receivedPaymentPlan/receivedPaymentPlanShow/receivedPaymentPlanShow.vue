@@ -58,7 +58,6 @@
               <view class="grid-text">更多</view>
             </u-grid-item>
           </u-grid>
-        </u-grid>
       </view>
       <view v-if="tabs.current == 1" class="u-padding-bottom-80">
         <received-payment-list-on-received-payment-plan-show
