@@ -36,7 +36,7 @@
   export default {
   props: {
       rootStyle: { type: String, default: "height: 55vh;" },
-      params: { }
+      params: { type: Object }
   },
 
     data() {

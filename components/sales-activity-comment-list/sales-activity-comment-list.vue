@@ -56,7 +56,7 @@
   export default {
   emits: ['close'],
   props: {
-      sales_activity_id: undefined,
+      sales_activity_id: { type: [String, Number] },
       width: { type: String, default: "90vw" }
   },
 

@@ -30,9 +30,9 @@
 
   export default {
   props: {
-      klassName: "",
+      klassName: { type: String },
       rootStyle: { type: String, default: "height: 55vh;" },
-      model: { }
+      model: { type: Object }
   },
 
     data() {

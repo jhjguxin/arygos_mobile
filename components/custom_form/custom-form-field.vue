@@ -183,12 +183,12 @@
 
   export default {
     props: {
-      name: "",
-      fieldType: "",
-      customField: { },
-      record: { },
-      klassName: "",
-      value: undefined
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: null }
     },
     setup(props, { emit }) {
       const componentName = getFormField({

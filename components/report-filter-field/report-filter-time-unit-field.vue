@@ -17,10 +17,10 @@
 
   export default {
   props: {
-      name: "",
-      fieldType: "",
-      customField: { },
-      value: ""
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      value: { type: [String, Number] }
   },
 
     data() {

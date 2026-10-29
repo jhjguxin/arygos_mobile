@@ -82,7 +82,7 @@
   export default {
   props: {
       rootStyle: { type: String, default: "height: 55vh;" },
-      approvalDetail: { }
+      approvalDetail: { type: Object }
   },
 
     name:"approval-timeline",

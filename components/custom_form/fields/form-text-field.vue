@@ -13,10 +13,10 @@
 
   export default {
   props: {
-      customField: { },
-      record: { },
-      klassName: "",
-      value: ""
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [String, Number] }
   },
 
     setup(props, { emit }) {

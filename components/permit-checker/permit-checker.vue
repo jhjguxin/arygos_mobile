@@ -16,7 +16,7 @@
 
   export default {
   props: {
-      authKey: "",
+      authKey: { type: String },
       content: { type: String, default: "你没有权限操作！请联系管理员，点击确定后返回" },
       noPermitUrl: { type: String, default: "/pages/workbench/workbench" }
   },

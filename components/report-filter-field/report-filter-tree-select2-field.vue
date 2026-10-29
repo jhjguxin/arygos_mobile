@@ -17,8 +17,8 @@
 
   export default {
   props: {
-      customField: { },
-      klassName: ""
+      customField: { type: Object },
+      klassName: { type: String }
   },
 
     data() {

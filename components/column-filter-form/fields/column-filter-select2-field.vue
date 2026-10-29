@@ -28,10 +28,10 @@
 
   export default {
   props: {
-      customField: { },
-      record: { },
-      klassName: "",
-      value: "",
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [Object, Array] },
       mode: { type: String, default: "selector" }
   },
 

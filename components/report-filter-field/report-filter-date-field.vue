@@ -28,7 +28,7 @@
 
   export default {
     props: {
-      name: {}, fieldType: {}, customField: {},
+      name: { type: String }, fieldType: { type: String }, customField: { type: Object },
       model: { default: () => ({}) }
     },
     setup(props) {

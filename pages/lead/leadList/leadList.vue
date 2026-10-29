@@ -97,7 +97,6 @@
       };
     },
     async onLoad() {
-      console.log('[leadList] onLoad start');
       let { klassName, featureLabels } = this;
       let customFields = await CustomField.instance().fetchData(klassName);
 
@@ -112,7 +111,6 @@
         title: featureLabels["lead"]
       });
 
-      console.log('[leadList] customFields loaded, calling fetchLead');
       // 初始化页面数据
       this.fetchLead({reload: true });
     },
@@ -200,7 +198,6 @@
           }
 
           this.list = list.concat(tempList);
-          console.log('[leadList] fetchLead done, list.length:', this.list.length);
         })
 
       },

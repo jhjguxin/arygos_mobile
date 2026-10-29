@@ -27,7 +27,7 @@
 
   export default {
   props: {
-      storeKey: ""
+      storeKey: { type: String }
   },
 
     data() {

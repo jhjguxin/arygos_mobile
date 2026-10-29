@@ -14,12 +14,12 @@
 
   export default {
   props: {
-      name: "",
-      fieldType: "",
-      customField: { },
-      record: { },
-      klassName: "",
-      value: { }
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [String, Object] }
   },
 
     setup(props, { emit }) {

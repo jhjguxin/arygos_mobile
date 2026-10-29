@@ -33,7 +33,7 @@
       maxCount: { type: Number, default: 8 },
       uploadText: { type: String, default: '选择文件' },
       deletable: { type: Boolean, default: false },
-      width: {}, height: {}
+      width: { type: [String, Number] }, height: { type: [String, Number] }
     },
     data() {
       return {

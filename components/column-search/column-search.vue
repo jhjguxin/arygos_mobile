@@ -31,7 +31,7 @@
 
   export default {
   props: {
-      klassName: ""
+      klassName: { type: String }
   },
 
     data() {

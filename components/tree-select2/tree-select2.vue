@@ -28,8 +28,8 @@
 
   export default {
     props: {
-      klassName: {},
-      value: {},
+      klassName: { type: String },
+      value: { type: [Object, Array] },
       required: { type: Boolean, default: false },
       title: { type: String, default: "" },
       params: { type: Object, default: () => ({}) },
