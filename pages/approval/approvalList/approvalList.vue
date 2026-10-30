@@ -70,7 +70,7 @@
       </uni-list-item>
     </uni-list>
     <uni-load-more :status="status" v-if="!allModuleDisable" />
-    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top" v-if="! allModuleDisable"></u-back-top>
+    <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top" v-if="! allModuleDisable"></u-back-top>
     <u-empty v-if="allModuleDisable" text="没有开启审批的模块，审批不可用" mode="list"></u-empty>
 
   </view>
@@ -165,6 +165,13 @@
     onPullDownRefresh() {
       this.page = 1
       this.fetchApproval({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
     },
 
     onReachBottom() {

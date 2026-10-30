@@ -54,7 +54,7 @@
       @select="handleActionSheetSelect"
     ></u-action-sheet>
     <uni-load-more :status="status" />
-    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+    <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
   </view>
 </template>
 
@@ -133,6 +133,13 @@
     onPullDownRefresh() {
       this.page = 1
       this.fetchCustomer({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
     },
 
     onReachBottom() {
