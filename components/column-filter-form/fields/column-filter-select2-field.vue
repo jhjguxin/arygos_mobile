@@ -4,9 +4,9 @@
       :title="customField.label"
       :klassName="customField.select_klass_name"
       :placeholder="placeholder"
-      :value="value"
+      :value="localValue"
       :required="customField.required"
-      perPage = "5"
+      :perPage="5"
       @select="handleSelect"
       v-if="customField.input_html_options.selectType != 'tree'"
     />
@@ -15,7 +15,7 @@
       :title="customField.label"
       :klassName="customField.select_klass_name"
       :placeholder="placeholder"
-      :value="value"
+      :value="localValue"
       @select="handleSelect"
       v-if="customField.input_html_options.selectType == 'tree'"
     />
@@ -24,33 +24,35 @@
 
 <script>
   import _ from "lodash";
+  import { ref, watch } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        customField,
-        record, klassName,
-        value,
-        mode = "selector"
-      } = this.$attrs;
+  props: {
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [Object, Array] },
+      mode: { type: String, default: "selector" }
+  },
 
+    setup(props, { emit }) {
+      const localValue = ref(props.value);
+      watch(() => props.value, (newVal) => {
+        localValue.value = newVal;
+      });
+      const placeholder = `请选择${props.customField.label}`;
+      const handleSelect = (e) => {
+        const { name } = props.customField;
+        const value = e.value;
+        localValue.value = value;
+        emit("fieldChange", { name, value: value });
+      };
       return {
-        customField,
-        record, klassName,
-        value, mode,
-        placeholder: `请选择${customField.label}`,
+        localValue,
+        placeholder,
+        handleSelect,
         list: [],
-      }
-    },
-    methods: {
-      handleSelect: function (e) {
-        let { customField: { name }} = this;
-        let value = e.value;
-
-        this.value = value;
-        this.$emit("fieldChange", {name, value: value});
-      }
+      };
     },
     computed: {
       valueDisplay: {

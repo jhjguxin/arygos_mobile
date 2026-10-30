@@ -2,19 +2,19 @@
   <view class="wrap">
     <u-form :model="form.model" ref="uForm"  label-width="160">
         <u-form-item :label="form.item.content.label" prop="content">
-          <u-input
-            v-model="form.model.content"
-            :placeholder="form.item.content.placeholder"
-            type="textarea"
-            :auto-height="form.item.content.autoHeight"
-          />
+          <u-textarea v-model="form.model.content" :placeholder="form.item.content.placeholder" :autoHeight="form.item.content.autoHeight" />
         </u-form-item>
 
         <u-form-item :label="form.item.category.label" prop="category">
-          <u-input
-            :border="form.item.category.border" type="select" :select-open="form.item.category.show" v-model="categoryDisplay"
-            :placeholder="form.item.category.placeholder" @click="form.item.category.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.category.list" v-model="form.item.category.show" @confirm="handleSelectCategoryConfirm"></u-select>
+          <u-select
+            :options="form.item.category.list"
+            v-model:current="form.model.category"
+            label-name="label"
+            key-name="value"
+            :label="form.item.category.placeholder"
+            :show-options-label="true"
+            @select="handleSelectCategoryConfirm"
+          />
         </u-form-item>
 
         <!-- 跟进时间 -->
@@ -22,7 +22,7 @@
           <u-input
             :border="form.item.revisit_at.border" type="select" :select-open="form.item.revisit_at.show" v-model="form.model.revisit_at"
             :placeholder="form.item.revisit_at.placeholder" @click="form.item.revisit_at.show = true"></u-input>
-          <u-picker v-model="form.item.revisit_at.show" mode="time" :default-time="form.model.revisit_at" :params="form.item.revisit_at.params" @confirm="handleSelectRevisitAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.revisit_at.show" mode="datetime" :modelValue="form.model.revisit_at" @confirm="handleSelectRevisitAtConfirm" @close="form.item.revisit_at.show = false" @cancel="form.item.revisit_at.show = false"></u-datetime-picker>
         </u-form-item>
 
         <!-- 跟进对象 -->
@@ -33,10 +33,15 @@
         </u-form-item>
         <!-- 跟进对象状态 -->
         <u-form-item :label="form.item.loggableStatus.label" prop="loggable">
-          <u-input
-            :border="form.item.loggableStatus.border" type="select" :select-open="form.item.loggableStatus.show" v-model="loggableStatusDisplay"
-            :placeholder="form.item.loggableStatus.placeholder" @click="form.item.loggableStatus.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.loggableStatus.list" v-model="form.item.loggableStatus.show" @confirm="handleSelectLoggableStatusConfirm"></u-select>
+          <u-select
+            :options="form.item.loggableStatus.list"
+            v-model:current="form.model.loggableStatus"
+            label-name="label"
+            key-name="value"
+            :label="form.item.loggableStatus.placeholder"
+            :show-options-label="true"
+            @select="handleSelectLoggableStatusConfirm"
+          />
         </u-form-item>
 
         <!-- 关联联系人 -->
@@ -57,7 +62,7 @@
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.remind_at.show" mode="datetime" :modelValue="form.model.remind_at" @confirm="handleSelectRemindAtConfirm" @close="form.item.remind_at.show = false" @cancel="form.item.remind_at.show = false"></u-datetime-picker>
         </u-form-item>
         <u-form-item prop="image_attachment_ids" :label="form.item.image_attachment_ids.label">
           <attachment-upload
@@ -80,19 +85,20 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
-  import CustomFieldForm from 'services/custom_field_form';
+  import CustomFieldForm from '@/services/custom_field_form';
+  import { useStore } from '@/store';
   import {
     revisitLogApi,
     leadApi, customerApi, opportunityApi, contractApi
-  } from 'services/http';
+  } from '@/services/http';
 
   export default {
     data() {
       // uniq 不能使用 this.$route 获取页面参数应该在 onLoad 中获取
       // let { query: {loggable_type, loggable_id} } = this.$route;
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
 
       return {
         klassName: "RevisitLog",
@@ -136,7 +142,7 @@
             placeholder: "请选择跟进类型",
             list: [],
             show: false,
-            border: false
+            border: 'none'
           },
           revisit_at: {
             label: "跟进时间",
@@ -150,7 +156,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           loggable: {
             label: "跟进对象"
@@ -160,7 +166,7 @@
             placeholder: "",
             list: [],
             show: false,
-            border: false
+            border: 'none'
           },
           contacts: {
             label: "联系人",
@@ -182,7 +188,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           image_attachment_ids: {
             label: "图片",
@@ -288,7 +294,7 @@
       this.loggableStatusCustomField = loggableStatusCustomField;
       this.form.model.loggableStatus = loggable[loggableStatusCustomField?.name];
 
-      this.$set(this, "formReady", true);
+      this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `写${featureLabels[_.snakeCase(klassName)]}`
@@ -375,26 +381,24 @@
         }
       },
       handleSelectRevisitAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.revisit_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.revisit_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.revisit_at.show = false;
       },
-      handleSelectCategoryConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.category = value;
+      handleSelectCategoryConfirm: function (item) {
+        this.form.model.category = item?.value;
       },
-      handleSelectLoggableStatusConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.loggableStatus = value;
+      handleSelectLoggableStatusConfirm: function (item) {
+        this.form.model.loggableStatus = item?.value;
       },
       handleContactsSelect: function (e) {
         let value = e.value;
         this.form.model.contacts = value;
       },
       handleSelectRemindAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.remind_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.remind_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.remind_at.show = false;
       },
       handleImageAttachmentUpload(lists) {;
         if (_.isArray(lists)) {
@@ -420,7 +424,7 @@
         uForm.resetFields();
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

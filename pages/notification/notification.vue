@@ -29,7 +29,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { notificationApi } from 'services/http';
+  import { notificationApi } from '@/services/http';
   
   export default {
     components: {},
@@ -46,23 +46,20 @@
       // 初始化页面数据
       this.fetchNotification({reload: true });
     },
+
+    onPullDownRefresh() {
+      this.page = 1;
+      this.fetchNotification({ reload: true });
+    },
+
+    onReachBottom() {
+      let { page } = this;
+      page += 1;
+      this.page = page;
+      this.fetchNotification({ page });
+    },
     methods: {
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1;
-        this.fetchNotification({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page } = this;
-        page += 1;
-        this.page = page;
-        this.fetchNotification({ page });
-      },
+
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false
@@ -118,7 +115,7 @@
             _.each(list, (model)=> {
               if (model.id == Number(id)) model.status = 'read';
             })
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },
@@ -135,7 +132,7 @@
             _.each(list, (model)=> {
               model.status = 'read';
             })
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },
@@ -148,7 +145,7 @@
           } = res;
           
           if (code == 0) {
-            this.$set(this, "list", []);
+            this.list = [];
           }
         })
       },

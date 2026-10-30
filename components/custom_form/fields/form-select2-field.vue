@@ -4,7 +4,7 @@
       :title="customField.label"
       :klassName="customField.select_klass_name"
       :placeholder="customField.input_html_options.placeholder"
-      :value="value"
+      :value="localValue"
       :required="customField.required"
       :params="select2Params"
       @select="handleSelect"
@@ -15,7 +15,7 @@
       :title="customField.label"
       :klassName="customField.select_klass_name"
       :placeholder="customField.input_html_options.placeholder"
-      :value="value"
+      :value="localValue"
       @select="handleSelect"
       v-if="customField.input_html_options.selectType == 'tree'"
     />
@@ -24,31 +24,33 @@
 
 <script>
   import _ from "lodash";
+  import { ref, toRef, watch } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        customField,
-        record, klassName,
-        value,
-        mode = "selector"
-      } = this.$attrs;
+  props: {
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [Object, Array] },
+      mode: { type: String, default: "selector" }
+  },
 
+    setup(props, { emit }) {
+      const localValue = ref(props.value);
+      watch(() => props.value, (newVal) => {
+        localValue.value = newVal;
+      });
+      const handleSelect = (e) => {
+        const { name } = props.customField;
+        const value = e.value;
+        localValue.value = value;
+        emit("fieldChange", { name, value: value });
+      };
       return {
-        customField,
-        record, klassName,
-        value, mode
-      }
-    },
-    methods: {
-      handleSelect: function (e) {
-        let { customField: { name }} = this;
-        let value = e.value;
-
-        this.value = value;
-        this.$emit("fieldChange", {name, value: value});
-      },
+        localValue,
+        handleSelect,
+        customField: toRef(props, 'customField'),
+      };
     },
     computed: {
       select2Params: {

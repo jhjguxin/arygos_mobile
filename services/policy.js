@@ -2,7 +2,8 @@
  * 权限服务
  */
 import _ from 'lodash';
-import { permissionApi } from './http';
+import { permissionApi } from '@/services/http';
+import { useStore } from '@/store';
 
 export default class Policy {
   static _policyInstance = null;
@@ -55,11 +56,11 @@ export default class Policy {
   }
 
   async fetchPermission() {
+    const store = useStore();
     let {
-      getters: {
-        getPermissions: { permissions = [], usercenter_permission = null }
-      }
-    } = this.app.$store;
+      permissions = [],
+      usercenter_permission = null
+    } = store.getPermissions;
 
     if (permissions.length > 0) {
       return { permissions, usercenter_permission };
@@ -70,7 +71,7 @@ export default class Policy {
       let { data: { code, data } } = res;
       if (Number(code) == 0) {
         let { permissions, usercenter_permission = null } = data;
-        this.app.$store.dispatch('setPermissions', { permissions, usercenter_permission });
+        useStore().setPermissions({ permissions, usercenter_permission });
         return { permissions, usercenter_permission };
       }
     } catch (e) {

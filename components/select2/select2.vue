@@ -1,44 +1,39 @@
 <template>
   <view :class="className">
-    <u-input
-      :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
-      :placeholder="placeholder"
-      @click="handleShowSelect"></u-input>
+    <view @click="handleShowSelect">
+      <u-input
+        :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
+        :placeholder="placeholder"
+      /></view>
     <u-modal
-      :title="title" v-model="modalOpen" @confirm="handleConfirm" @cancel="handleCancel"
+      :title="title" :show="modalOpen" @update:show="modalOpen = $event" @confirm="handleConfirm" @cancel="handleCancel"
       :show-cancel-button="showCancelButton"
       :width="width"
     >
       <view class="wrap">
-        <u-row gutter="16">
-          <u-col span="12">
-            <u-search
-              :placeholder="searchPlaceholder" v-model="query" :show-action="showAction"
-              @search="handleSearch"
-            ></u-search>
-          </u-col>
-          <u-col span="12">
-            <uni-list
-              v-for="item in list"
-              v-bind:key="item.value"
-             >
-              <uni-list-item
-                :title="item.label"
-                showSwitch
-                :switchChecked="item.checked"
-                @switchChange="handleSwitchChange($event, item.value)"
-              ></uni-list-item>
-            </uni-list>
-            <u-loadmore :status="status" @loadmore="handleLoadmore"/>
-          </u-col>
-        </u-row>
+        <u-search
+          :placeholder="searchPlaceholder" v-model="searchQuery" :show-action="showAction"
+          @search="handleSearch"
+        ></u-search>
+        <uni-list
+          v-for="item in list"
+          :key="item.value"
+        >
+          <uni-list-item
+            :title="item.label"
+            showSwitch
+            :switchChecked="item.checked"
+            @switchChange="handleSwitchChange($event, item.value)"
+          ></uni-list-item>
+        </uni-list>
+        <u-loadmore :status="status" @loadmore="handleLoadmore"/>
       </view>
     </u-modal>
   </view>
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import {
     userApi,
     departmentApi,
@@ -51,41 +46,32 @@
     productApi,
     productCategoryApi,
     customerCommonSettingApi
-  } from "services/http";
+  } from "@/services/http";
 
 
   export default {
+    props: {
+      klassName: { type: String },
+      value: { type: [Object, Array], default: () => ({}) },
+      required: { type: Boolean, default: false },
+      title: { type: String, default: '' },
+      width: { type: String, default: '80vw' },
+      placeholder: { type: String, default: '' },
+      perPage: { type: Number, default: 10 },
+      searchPlaceholder: { type: String, default: '输入要搜索的内容' },
+      mode: { type: String, default: 'selector' },
+      params: { type: Object, default: () => ({}) },
+      query: { type: String, default: '' }
+    },
     data() {
-      // props 获取数据
-      let {
-        klassName,
-        value = {},
-        required,
-        title = "",
-        width = "80%",
-        // params = {},
-        query = "",
-        placeholder,
-        perPage = 10,
-        searchPlaceholder = "输入要搜索的内容",
-        mode = "selector" // selector 单选，多选 multi
-      } = this.$attrs;
-
       return {
-        klassName,
-        value, mode,
-        required,
-        title,
-        width,
-        placeholder,
-        searchPlaceholder,
-        query,
+        selectedValue: this.value,
+        searchQuery: this.query,
         className: "select2-container",
         status: "nomore",
         showCancelButton: true,
         page: 1,
-        perPage: perPage,
-        border: false,
+        border: "none",
         showAction: false,
         list: [],
         modalOpen: false
@@ -100,7 +86,7 @@
 
         let value = (mode == "selector") ? _.find(list, "checked") : _.filter(list, "checked");
 
-        this.$set(this, "value", value);
+        this.selectedValue = value;
 
         this.$emit("select", {value});
       },
@@ -143,7 +129,7 @@
           return;
         }
 
-        this.$set(this, "list", list);
+        this.list = list;
       },
       handleSearch: function(value) {
         this.page = 1;
@@ -154,7 +140,7 @@
         this.fetchData({page: this.page});
       },
       fetchData: function ({page, query}) {
-        let { params } = this.$attrs;
+        let { params } = this;
         let { klassName, perPage: per_page } = this;
         params = {
           ...params,
@@ -178,7 +164,7 @@
             this.status = 'nomore';
           }
           let list = _.map(models, (item)=> {
-            let { mode, value } = this;
+            let { mode, selectedValue: value } = this;
             let checked = (mode == "selector") ? item.id == value?.value : (_.findIndex(value, (opt)=> opt.value == item.id) != -1);
 
             return ({
@@ -191,11 +177,9 @@
           });
 
           if (page > 1) {
-            this.$set(this, "list", _.concat(this.list, list));
+            this.list = _.concat(this.list, list);
           } else {
-            this.$set(
-              this, "list", _.uniqBy(_.concat(_.filter(this.list, "checked"), list), "id")
-            );
+            this.list = _.uniqBy(_.concat(_.filter(this.list, "checked"), list), "id");
           }
         })
       },
@@ -241,13 +225,20 @@
     computed: {
       valueDisplay: {
         get: function() {
-          let { mode, value } = this;
+          let { mode, selectedValue: value } = this;
 
           if (_.isNil(value)) return;
 
           return mode == "selector" ? value.label : _.map(value, "label").join(", ");
         },
         set: function (value) {
+        }
+      }
+    },
+    watch: {
+      value(newVal) {
+        if (!_.isEqual(newVal, this.selectedValue)) {
+          this.selectedValue = newVal;
         }
       }
     }

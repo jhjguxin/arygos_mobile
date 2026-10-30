@@ -1,10 +1,10 @@
 <template>
   <view>
-    <u-tabs-swiper
-      ref="uTabs" :list="tabsSwiper.list" :is-scroll="tabsSwiper.isScroll"
-      :current="tabsSwiper.current"
-      @change="handleTabsSwiperChange"
-    ></u-tabs-swiper>
+    <u-tabs
+      ref="uTabs" :list="tabsSwiper.list" :scrollable="tabsSwiper.isScroll"
+      v-model:current="tabsSwiper.current"
+      @change="loadEntityItemData"
+    />
     <swiper class="swiper" :current="tabsSwiper.current" @transition="transition" @animationfinish="animationfinish">
       <swiper-item v-for="(item, index) in swiperItems" :key="index">
         <pick-entity-item
@@ -18,7 +18,8 @@
 </template>
 
 <script>
-  const qs = require('qs');
+  import _ from 'lodash';
+  import qs from 'qs';
 
   export default {
     data() {
@@ -77,11 +78,6 @@
       },10);
     },
     methods: {
-      handleTabsSwiperChange (index) {
-        this.tabsSwiper.current = index;
-
-        this.loadEntityItemData()
-      },
       loadEntityItemData() {
         let {tabsSwiper: {current: index}, swiperItems} = this;
         let { ref: refName } = swiperItems[index];

@@ -7,13 +7,14 @@
     />
     <u-gap></u-gap>
     <view class="schedule-report-list">
-      <u-swipe-action
-        v-for="(item, index) in models"
-        :key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in models"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
       <u-card
         full
         :title="item.title"
@@ -24,7 +25,7 @@
         :border="card.border"
         @click="handleCardClick($event, item)"
       >
-        <view slot="body" class="u-flex">
+        <template #body><view class="u-flex">
           <u-row gutter="16" style="width: 85%;">
             <u-col span="12" class="u-font-lg">总结</u-col>
             <u-col span="12" class="u-font-sm u-line-3 u-border-bottom">{{item.summary}}</u-col>
@@ -36,8 +37,8 @@
             style="width: 14%;"
             v-if="item.marking_at"
           >阅</view>
-        </view>
-        <u-row slot="foot">
+        </view></template>
+        <template #foot><u-row >
           <u-col span="4">
             <u-icon
               name="checkmark" :label="item.card.foot.markingUser"
@@ -48,16 +49,16 @@
               name="chat" :label="item.markings_count"
             ></u-icon>
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
+      </u-swipe-action-item>
       </u-swipe-action>
-    </view>
-      <u-empty mode="list" v-show="models.length == 0"/>
+    <u-empty mode="list" v-show="models.length == 0"/>
       <uni-load-more
         :status="status" :contentText="loadText"
         @clickLoadMore="handleLoadMore"
         v-if="models.length > 0" />
-      <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+      <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
     </view>
   </view>
 </template>
@@ -65,7 +66,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { scheduleReportApi } from 'services/http';
+  import { scheduleReportApi } from '@/services/http';
 
   export default {
     components: {},
@@ -134,27 +135,31 @@
       // 初始化页面数据
       this.fetchScheduleReport({reload: true });
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchScheduleReport({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        this.handleLoadMore();
 
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchScheduleReport({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      this.handleLoadMore();
+    },
+    methods: {
+
       handleLoadMore() {
         let { page, status } = this;
 
@@ -253,7 +258,7 @@
            }
          })
       },
-      handleScopeTabClick (index) {
+      handleScopeTabClick (item, index) {
         let { uTabs: { list }} = this;
         this.scope = list[index].key;
         this.uTabs.current = index;
@@ -276,19 +281,10 @@
           url
         })
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+            handleSwipActionClick ({ name, index }) {
+        if (index === 0) {
           let { models } = this;
-          let id = models[index]?.id;
+          let id = models[name]?.id;
           this.doDestroy({id});
         }
       },

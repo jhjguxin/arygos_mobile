@@ -1,12 +1,12 @@
 <template>
   <u-form
-    :model="model" ref="uForm"
+    :model="formModel" ref="uForm"
     label-width="160"
     v-if="formReady"
     class="column-filter-form"
   >
     <view class="column-filter-fields">
-      <view  v-for="column in filterColumns" :key="column.name">
+      <view  v-for="column in resolvedFilterColumns" :key="column.name">
         <column-filter-field-map-field
           :customField="column.customField"
           :value="column.value"
@@ -71,49 +71,50 @@
 </template>
 
 <script>
-  import _ from "lodash";
-  import CustomField from 'services/custom_field';
-  import parseFilter from './parseFilter';
+  import _ from 'lodash';
+  import CustomField from '@/services/custom_field';
+  import parseFilter from '@/components/column-filter-form/parseFilter';
 
   export default {
+    props: {
+      klassName: { type: String, default: '' },
+      model: { type: Object, default: () => ({}) },
+      customFields: { type: Array, default: () => [] },
+      filterColumns: { type: Array, default: () => [] }
+    },
     data() {
-      let {
-        klassName = "",
-        model = {},
-        customFields = []
-      } = this.$attrs;
-
       return {
-        klassName,
         formReady: false,
         filters: [],
-        customFields,
-        model
+        resolvedCustomFields: [],
+        formModel: {},
       };
     },
     async created() {
-      let { klassName, customFields } = this;
+      let { klassName } = this;
+      let resolvedCustomFields = this.customFields;
 
-      if (customFields.length == 0) {
-        customFields = await CustomField.instance().fetchData(klassName);
-        this.$set(this, "customFields", customFields);
+      if (resolvedCustomFields.length == 0) {
+        resolvedCustomFields = await CustomField.instance().fetchData(klassName);
       }
 
-      this.$set(this, "formReady", true);
+      this.resolvedCustomFields = resolvedCustomFields;
+      this.formModel = this.model;
+      this.formReady = true;
     },
     methods: {
       handleFieldChange ({name, value}) {
-        let { model } = this;
+        let model = this.formModel;
         model = {
           ...model,
           [`${name}`]: value
         }
 
-        this.model = model;
+        this.formModel = model;
       },
       handleSubmit () {
-        let { filterColumns } = this.$attrs;
-        let { model } = this;
+        let { filterColumns } = this;
+        let { formModel: model } = this;
 
         // REVIEW 数字范围交叉校验：最小值不能大于最大值，阻止提交
         let invalidNumeric = _.find(filterColumns, (column) => {
@@ -144,24 +145,24 @@
         this.$emit("filterConfirm", filters, model)
       },
       handleReset () {
-        let { customFields } = this;
+        let { resolvedCustomFields: customFields } = this;
         let { uForm } = this.$refs;
 
-        this.customFields = [];
+        this.resolvedCustomFields = [];
 
         _.delay(()=> {
-          this.customFields = customFields;
+          this.resolvedCustomFields = customFields;
           this.filters = [];
-          this.model = {};
+          this.formModel = {};
           uForm.resetFields();
         }, 100);
       }
     },
     computed: {
-      filterColumns: {
+      resolvedFilterColumns: {
         get () {
-          let { filterColumns } = this.$attrs;
-          let { customFields, model } = this;
+          let { filterColumns } = this;
+          let { resolvedCustomFields: customFields, formModel: model } = this;
 
           if (_.isEmpty(customFields)) return null;
 

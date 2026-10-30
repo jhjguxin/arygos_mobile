@@ -1,50 +1,49 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
-    <u-input
-      :border="border" type="select" :select-open="selectShow" v-model="value"
-      :placeholder="customField.input_html_options.placeholder" @click="selectShow = true"></u-input>
-    <u-picker v-model="selectShow" mode="time" :default-time="value" :params="params" @confirm="handleConfirm"></u-picker>
+    <view @click="selectShow = true">
+      <u-input
+        :border="border" type="select" :select-open="selectShow" v-model="localValue"
+        :placeholder="customField.input_html_options.placeholder"
+      /></view>
+    <u-datetime-picker style="flex:none" :show="selectShow" mode="datetime" :modelValue="localValue" @confirm="handleConfirm" @close="selectShow = false" @cancel="selectShow = false"></u-datetime-picker>
   </u-form-item>
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
+  import dayjs from 'dayjs';
+  import { ref, toRef, watch } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
-      if (_.isNil(value)) value = "";
+  props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [String, Number] }
+  },
 
+    setup(props, { emit }) {
+      const localValue = ref(_.isNil(props.value) ? "" : props.value);
+      watch(() => props.value, (newVal) => {
+        localValue.value = newVal;
+      });
+      const selectShow = ref(false);
+      const handleConfirm = (e) => {
+        const { name } = props.customField;
+        const value = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        localValue.value = value;
+        selectShow.value = false;
+        emit("fieldChange", { name, value });
+      };
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value,
-        params: {
-          year: true,
-          month: true,
-          day: true,
-          hour: true,
-          minute: true,
-          second: false
-        },
-        border: false,
-        selectShow: false
-      }
-    },
-    methods: {
-      handleConfirm: function (e) {
-        let { customField: { name }} = this;
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.value = value;
-
-        this.$emit("fieldChange", {name, value});
-      }
+        localValue,
+        selectShow,
+        handleConfirm,
+        customField: toRef(props, 'customField'),
+        border: "none",
+      };
     },
     computed: {
     }

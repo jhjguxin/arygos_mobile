@@ -21,17 +21,20 @@
 </template>
 
 <script>
-  import _ from "lodash";
-  import CustomField from 'services/custom_field';
-  import { userSettingApi } from 'services/http';
+  import _ from 'lodash';
+  import CustomField from '@/services/custom_field';
+  import { userSettingApi } from '@/services/http';
 
   export default {
+  props: {
+      storeKey: { type: String }
+  },
+
     data() {
-      let { storeKey } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName: "RevisitLog",
-        storeKey,
         sortValue: "",
         order: "asc",
         sortOptions: [
@@ -71,7 +74,7 @@
       let { klassName, storeKey } = this;
 
       CustomField.instance().fetchData(klassName).then((customFields)=> {
-        this.$set(this, "customFields", customFields);
+        this.customFields = customFields;
       });
     },
     methods: {

@@ -1,52 +1,52 @@
-import authApi from './api/auth';
-import constantApi from './api/constant';
-import geoApi from './api/geo';
-import permissionApi from './api/permission';
-import organizationApi from './api/organization';
-import notificationApi from './api/notification';
+import authApi from '@/services/http/api/auth';
+import constantApi from '@/services/http/api/constant';
+import geoApi from '@/services/http/api/geo';
+import permissionApi from '@/services/http/api/permission';
+import organizationApi from '@/services/http/api/organization';
+import notificationApi from '@/services/http/api/notification';
 
-import userApi from './api/user';
-import departmentApi from './api/department';
+import userApi from '@/services/http/api/user';
+import departmentApi from '@/services/http/api/department';
 
-import leadApi from './api/lead';
-import customerApi from './api/customer';
-import contactApi from './api/contact';
-import opportunityApi from './api/opportunity';
-import contractApi from './api/contract';
-import invoicedPaymentApi from './api/invoiced_payment';
-import receivedPaymentApi from './api/received_payment';
-import receivedPaymentPlanApi from './api/received_payment_plan';
+import leadApi from '@/services/http/api/lead';
+import customerApi from '@/services/http/api/customer';
+import contactApi from '@/services/http/api/contact';
+import opportunityApi from '@/services/http/api/opportunity';
+import contractApi from '@/services/http/api/contract';
+import invoicedPaymentApi from '@/services/http/api/invoiced_payment';
+import receivedPaymentApi from '@/services/http/api/received_payment';
+import receivedPaymentPlanApi from '@/services/http/api/received_payment_plan';
 
-import approvalApi  from './api/approval';
+import approvalApi  from '@/services/http/api/approval';
 
-import productApi from './api/product';
-import productCategoryApi from './api/product_category';
+import productApi from '@/services/http/api/product';
+import productCategoryApi from '@/services/http/api/product_category';
 
-import leadCommonApi from './api/lead_common';
-import customerCommonApi from './api/customer_common';
+import leadCommonApi from '@/services/http/api/lead_common';
+import customerCommonApi from '@/services/http/api/customer_common';
 
-import customerCommonSettingApi from './api/customer_common_setting';
+import customerCommonSettingApi from '@/services/http/api/customer_common_setting';
 
-import attachmentApi from './api/attachment';
+import attachmentApi from '@/services/http/api/attachment';
 
-import revisitLogApi from './api/revisit_log';
+import revisitLogApi from '@/services/http/api/revisit_log';
 
-import scheduleReportApi from './api/schedule_report';
+import scheduleReportApi from '@/services/http/api/schedule_report';
 
-import knowledgeSectionApi from './api/knowledge_section';
-import knowledgeTagApi from './api/knowledge_tag';
-import knowledgeArticleApi from './api/knowledge_article';
+import knowledgeSectionApi from '@/services/http/api/knowledge_section';
+import knowledgeTagApi from '@/services/http/api/knowledge_tag';
+import knowledgeArticleApi from '@/services/http/api/knowledge_article';
 
-import salesActivityApi from './api/sales_activity';
+import salesActivityApi from '@/services/http/api/sales_activity';
 
-import eventApi from './api/event';
-import reminderApi from './api/reminder';
+import eventApi from '@/services/http/api/event';
+import reminderApi from '@/services/http/api/reminder';
 
-import duplicateApi from './api/duplicate';
+import duplicateApi from '@/services/http/api/duplicate';
 
-import reportCenterApi from './api/report_center';
+import reportCenterApi from '@/services/http/api/report_center';
 
-import userSettingApi from './api/user_setting';
+import userSettingApi from '@/services/http/api/user_setting';
 
 /**
  * 将业务所有接口统一起来便于维护

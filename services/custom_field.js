@@ -3,8 +3,8 @@
  * 线索客户等自定义字段数据
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { constantApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { constantApi } from '@/services/http/index';
 
 export default class CustomField {
   static _instance = null;
@@ -43,6 +43,9 @@ export default class CustomField {
             } else {
               reject(data);
             }
+          })
+          .catch((err) => {
+            reject(err);
           });
       }
     })

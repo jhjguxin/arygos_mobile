@@ -1,8 +1,7 @@
 <template>
   <u-modal
     :title="modal.title"
-    :content="modal.content"
-    v-model="modal.show"
+    :show="modal.show" @update:show="modal.show = $event"
     :show-cancel-button="modal.showCancelButton"
     :confirm-text="modal.confirmText"
     @confirm="handleConfirm"
@@ -12,22 +11,22 @@
 
 <script>
   import _ from 'lodash';
-  import Feature from 'services/feature';
-  import Policy from 'services/policy';
+  import Feature from '@/services/feature';
+  import Policy from '@/services/policy';
 
   export default {
+  props: {
+      authKey: { type: String },
+      content: { type: String, default: "你没有权限操作！请联系管理员，点击确定后返回" },
+      noPermitUrl: { type: String, default: "/pages/workbench/workbench" }
+  },
+
     data() {
-      let {
-        authKey, content = "你没有权限操作！请联系管理员，点击确定后返回",
-        noPermitUrl = "/pages/workbench/workbench"
-      } = this.$attrs;
+      /* moved to props */
       return {
-        authKey,
         hasPermit: true,
-        noPermitUrl,
         modal: {
           title: "警告",
-          content,
           show: false,
           showCancelButton: false,
           confirmText: "确定"

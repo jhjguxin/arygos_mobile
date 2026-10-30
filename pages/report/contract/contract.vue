@@ -26,12 +26,12 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
-  import uCharts from '../../../js_sdk/u-charts/u-charts/u-charts.js';
+  import uCharts from '@/js_sdk/u-charts/u-charts/u-charts.js';
 
-  import { reportCenterApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { reportCenterApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -91,21 +91,20 @@
       // 初始化页面数据
       this.fetchData();
     },
+
+    async onPullDownRefresh() {
+      let { featureLabels } = this;
+      this.filters = {
+        year: String(dayjs().year())
+      };
+      await this.fetchData();
+      uni.setNavigationBarTitle({
+        title: `${featureLabels['contract']}汇总`
+      })
+      uni.stopPullDownRefresh();
+    },
     methods: {
-      async onPullDownRefresh() {
-        let { featureLabels } = this;
 
-        this.filters = {
-          year: String(dayjs().year())
-        };
-        await this.fetchData();
-
-        uni.setNavigationBarTitle({
-          title: `${featureLabels['contract']}汇总`
-        })
-
-        uni.stopPullDownRefresh();
-      },
       fetchData(){
         let { filters, featureLabels } = this;
 
@@ -251,7 +250,7 @@
     background-color: #FFFFFF;
   }
   .table-container {
-    width: 60vh;
+    width: 60vw;
     overflow-x: scroll;
   }
 </style>

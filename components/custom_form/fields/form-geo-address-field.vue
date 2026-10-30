@@ -1,44 +1,46 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      v-model="value"
+      v-model="inputValue"
       :placeholder="customField.input_html_options.placeholder"
-      @input="handleChange"
     />
   </u-form-item>
 </template>
 
 <script>
   import _ from "lodash";
-    import { Geo } from 'services/geo';
+  import Geo from '@/services/geo';
+  import { ref, watch, toRef } from 'vue';
+
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+  props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [String, Object] }
+  },
+
+    setup(props, { emit }) {
+      const inputValue = ref(props.value);
+
+      watch(() => props.value, (v) => {
+        inputValue.value = v;
+      });
+
+      watch(inputValue, (v) => {
+        const _value = {
+          detail_address: v
+        };
+        emit("fieldChange", { name: props.customField.name, value: _value });
+      });
 
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      }
+        inputValue,
+        customField: toRef(props, 'customField'),
+      };
     },
-    methods: {
-      handleChange: function (value) {
-        let { customField: { name }} = this;
-        let _value = {
-          // lat: nil, lng: nil,
-          detail_address: value
-          // off_distance: nil, region_info: nil, snippet: nil,
-        };
-
-        // this.value = value;
-        this.$emit("fieldChange", {name, value: _value});
-      }
-    }
   };
 </script>
 

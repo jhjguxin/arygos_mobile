@@ -25,10 +25,15 @@
 
         <!-- 日期 -->
       <u-form-item :label="form.item.due_at.label" prop="due_at" required>
-        <u-input
-          :border="form.item.due_at.border" type="select" :select-open="form.item.due_at.show" v-model="dueAtDisplay"
-          :placeholder="form.item.due_at.placeholder" @click="form.item.due_at.show = true"></u-input>
-        <u-select mode="single-column" :list="form.item.due_at.list" v-model="form.item.due_at.show" @confirm="handleSelectDueAtConfirm"></u-select>
+        <u-select
+          :options="form.item.due_at.list"
+          v-model:current="form.model.due_at"
+          label-name="label"
+          key-name="value"
+          :label="form.item.due_at.placeholder"
+          :show-options-label="true"
+          @select="handleSelectDueAtConfirm"
+        />
       </u-form-item>
 
       <!-- 批阅人 -->
@@ -59,27 +64,17 @@
 
       <!-- 总结 -->
       <u-form-item :label="form.item.summary.label" prop="summary" required>
-        <u-input
-          v-model="form.model.summary"
-          type="textarea"
-          :auto-height="form.item.summary.autoHeight"
-          :maxlength="form.item.summary.maxlength"
-        />
+        <u-textarea v-model="form.model.summary" :autoHeight="form.item.summary.autoHeight" :maxlength="form.item.summary.maxlength" />
       </u-form-item>
 
       <!-- 计划 -->
       <u-form-item :label="form.item.schedule.label" prop="schedule" required>
-        <u-input
-          v-model="form.model.schedule"
-          type="textarea"
-          :auto-height="form.item.schedule.autoHeight"
-          :maxlength="form.item.summary.maxlength"
-        />
+        <u-textarea v-model="form.model.schedule" :autoHeight="form.item.schedule.autoHeight" :maxlength="form.item.summary.maxlength" />
       </u-form-item>
 
       <u-form-item :label="form.item.file_attachments.label" prop="file_attachments">
         <attachment-upload
-          maxCount="5"
+          :maxCount="5"
           @upload="handleUpload"
         />
       </u-form-item>
@@ -90,11 +85,11 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
   import {
     scheduleReportApi
-  } from 'services/http';
+  } from '@/services/http';
 
   export default {
     data() {
@@ -253,9 +248,8 @@
 
         this.fetchDueAt();
       },
-      handleSelectDueAtConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.due_at = value;
+      handleSelectDueAtConfirm: function (item) {
+        this.form.model.due_at = item?.value;
       },
       handleMarkingUserSelect: function (e) {
         let value = e.value;
@@ -271,7 +265,7 @@
         this.form.model.file_attachments = file_attachments;
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

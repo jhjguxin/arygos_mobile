@@ -1,22 +1,22 @@
 <template>
   <view class="event-list"  :style="style">
-    <u-time-line class="timeLine">
-      <u-time-line-item
+    <u-swipe-action :autoClose="true">
+    <u-steps direction="column" class="timeLine">
+      <u-steps-item
         v-for="(item, index) in models"
         v-bind:key="item.id"
-        nodeTop="2"
       >
         <!-- 此处自定义了左边内容，用一个图标替代 -->
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="item.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
-          <u-swipe-action
-            :show="item.swipeAction.show" :index="index"
-            @click="(index, option_index) => handleSwipActionClick(item, index, option_index)" @open="handleSwipeActionOpen"
+        <template #content>
+          <u-swipe-action-item
+            v-model:show="item.swipeAction.show" :name="index"
+            @click="($event) => handleSwipActionClick(item, $event)"
             :options="item.swipeAction.options"
 
           >
@@ -29,7 +29,7 @@
             :show-foot="timeLine.card.showFoot"
             :border="timeLine.card.border"
           >
-            <view slot="body">
+            <template #body><view >
               <view class="u-order-desc">
                 状态：<u-tag :text="item.status_display" :type="item.statusTag.type"></u-tag>
               </view>
@@ -37,12 +37,13 @@
               <view class="u-order-desc">开始时间：{{item.remindAt}}</view>
               <view class="u-order-desc">提醒类型：{{item.remind_type_display}}</view>
               <view class="u-order-desc">参与人：{{item.userNames}}</view>
-            </view>
+            </view></template>
           </u-card>
-          </u-swipe-action>
+          </u-swipe-action-item>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
+    </u-swipe-action>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
     <uni-load-more
       :status="status" :contentText="loadText"
@@ -56,14 +57,19 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { eventApi } from 'services/http';
+  import { eventApi } from '@/services/http';
+  import { useStore } from '@/store';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" },
+      params: { type: Object }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
 
       return {
-        style,
         models: [],
         status: 'more', // 加载状态
         page: 1,
@@ -102,12 +108,12 @@
       this.fetchListData({});
     },
     created() {
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
       this.currentUser = currentUser;
     },
     methods: {
       fetchListData ({ page, reload }) {
-        let { params } = this.$attrs;
+        /* moved to props */
         let { perPage: per_page, models = [], timeLine, currentUser } = this;
 
         if (reload) {
@@ -115,8 +121,8 @@
           models = [];
         }
 
-        params = {
-          ...params,
+        let params = {
+          ...this.params,
           per_page,
           page
         };
@@ -261,18 +267,9 @@
         page += 1;
         this.fetchListData({page});
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (item, index, option_index) {
+      handleSwipActionClick (item, {name, index}) {
         let { swipeAction: {options = []}, id } = item;
-        let opt = options[option_index] || {};
+        let opt = options[index] || {};
 
         if (opt.text == "完成") {
           this.doComplate({id});

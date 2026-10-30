@@ -1,40 +1,43 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <u-input
-      v-model="value"
-      :placeholder="customField.input_html_options.placeholder"
+      v-model="inputValue"
       type="number"
-      @input="handleChange"
+      :placeholder="customField.input_html_options.placeholder"
     />
   </u-form-item>
 </template>
 
 <script>
   import _ from "lodash";
+  import { ref, watch, toRef } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+  props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: [String, Number] }
+  },
+    setup(props, { emit }) {
+      const inputValue = ref(props.value);
+
+      watch(() => props.value, (v) => {
+        inputValue.value = v;
+      });
+
+      watch(inputValue, (v) => {
+        emit("fieldChange", { name: props.customField.name, value: v });
+      });
 
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      }
+        inputValue,
+        customField: toRef(props, 'customField'),
+      };
     },
-    methods: {
-      handleChange: function (value) {
-        let { customField: { name }} = this;
 
-        // this.value = value;
-        this.$emit("fieldChange", {name, value});
-      }
-    }
   };
 </script>
 

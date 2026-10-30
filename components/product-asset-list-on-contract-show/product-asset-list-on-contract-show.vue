@@ -9,14 +9,14 @@
         :margin="card.margin"  :padding="card.padding"
         @click="handleItemClick($event, item)"
       >
-        <u-row slot="body" gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.name">
+        <template #body><u-row gutter="10" justify="space-between" v-for="customField in customFields" :key="customField.name">
           <u-col span="3" text-align="right" class="u-font-xs">
             {{customField.label}}
           </u-col>
           <u-col span="9" class="u-padding-left-20">
             <custom-field-on-list :customField="customField" :record="item" />
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
     </view>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -30,16 +30,20 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { contractApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contractApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
+  props: {
+      style: { type: String, default: "height: 55vh;" },
+      params: { type: Object }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
       let featureLabels = getApp().globalData.featureLabels;
 
       return {
-        style,
         models: [],
         status: 'more', // 加载状态
         page: 1,
@@ -93,7 +97,7 @@
     },
     methods: {
       fetchListData ({ page, reload }) {
-        let { params } = this.$attrs;
+        /* moved to props */
         let { perPage: per_page, models = [] } = this;
 
         if (reload) {
@@ -101,8 +105,8 @@
           models = [];
         }
 
-        params = {
-          ...params,
+        const params = {
+          ...this.params,
           per_page,
           page
         };

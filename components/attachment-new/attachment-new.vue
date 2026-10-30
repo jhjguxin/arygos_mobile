@@ -2,7 +2,7 @@
   <view>
     <u-modal
       ref="uModal"
-      v-model="show" :title="title" :z-index="zIndex" :mask="mask"
+      v-model:show="show" :title="title" :z-index="zIndex" :mask="mask"
       :async-close="true"
       :mask-close-able="maskCloseAble"
       :show-cancel-button="showCancelButton"
@@ -12,7 +12,7 @@
           <u-form :model="form.model" ref="uForm">
               <u-form-item :label="form.item.attachment_id.label" prop="attachment_id">
                 <attachment-upload
-                  maxCount="1"
+                  :maxCount="1"
                   @upload="handleUpload"
                 />
               </u-form-item>
@@ -24,15 +24,20 @@
 </template>
 
 <script>
-  import { attachmentApi } from 'services/http';
+  import _ from 'lodash';
+  import { attachmentApi } from '@/services/http';
 
   export default {
+  props: {
+      title: { type: String, default: "附件" },
+      buttonText: { type: String, default: "新增附件" },
+      params: { type: Object, default: () => ({}) }
+  },
+
     data() {
-      let { title = "附件", buttonText = "新增附件" } = this.$attrs;
+      /* moved to props */
 
       return {
-        title,
-        buttonText,
         show: false,
         zIndex: 1075 - 200,
         mask: false,
@@ -62,7 +67,7 @@
     },
     methods: {
       handleUpdate () {
-        let { params: {attachmentable_type, attachmentable_id} } = this.$attrs;
+        let { attachmentable_type, attachmentable_id } = this.params || {};
         let { form: {model: {attachment_id: id }}} = this;
 
         let params = {
@@ -96,17 +101,17 @@
                 duration: 1000
               });
             }, 200);
-            this.$refs.uModal.clearLoading();
+            this.$refs.uModal?.clearLoading?.();
           }
         })
       },
       showModal() {
         this.show = true;
 
-        // REVIEW 延时校验表单等待 uForm 初始化完成
-        _.delay(()=> {
-          this.$refs.uForm.setRules(this.form.rules);
-        }, 100);
+        // REVIEW 显示后等待 DOM 初始化完成再设置校验规则
+        this.$nextTick(() => {
+          this.$refs.uForm?.setRules(this.form.rules);
+        });
       },
       handleUpload(lists) {
         if (lists.length == 1) {
@@ -118,12 +123,15 @@
         }
       },
       handleConfirm() {
-        this.$refs.uForm.validate((valid) => {
+        this.$refs.uForm.validate().then((valid) => {
           if (valid) {
             this.handleUpdate();
           } else {
-            this.$refs.uModal.clearLoading();
+            this.$refs.uModal?.clearLoading?.();
           }
+        }).catch(() => {
+          // u-form errorType: toast 已提示，仅清除 loading
+          this.$refs.uModal?.clearLoading?.();
         })
       }
     }

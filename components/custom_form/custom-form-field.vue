@@ -178,34 +178,37 @@
 
 <script>
   import _ from "lodash";
-  import getFormField from "./getFormField";
+  import getFormField from "@/components/custom_form/getFormField";
+  import { toRef } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
-
-      let componentName =  getFormField({
-        customField
+    props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: null }
+    },
+    setup(props, { emit }) {
+      const componentName = getFormField({
+        customField: props.customField
       });
 
+      const handleFieldChange = ({ name, value }) => {
+        emit("fieldChange", { name, value });
+      };
+
       return {
-        name, fieldType, customField,
-        klassName,
-        record, value,
-        componentName
-      }
-    },
-    mounted () {
-    },
-    methods: {
-      handleFieldChange: function ({name, value}) {
-        this.$emit("fieldChange", {name, value});
-      }
+        componentName,
+        handleFieldChange,
+        name: toRef(props, 'name'),
+        fieldType: toRef(props, 'fieldType'),
+        customField: toRef(props, 'customField'),
+        record: toRef(props, 'record'),
+        klassName: toRef(props, 'klassName'),
+        value: toRef(props, 'value'),
+      };
     }
   };
 </script>

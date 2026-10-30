@@ -1,32 +1,14 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { useAppStore } from '@/store/app'
 
-// vuex 持久化存储
-import createPersistedState from "vuex-persistedstate";
+export const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
-// modules
-import userModule from './module/auth/userModule' // 登陆用户信息
-import permissionModule from './module/permission/permissionModule' // 用户操作权限
+// Non-component accessor. Binds explicitly to our pinia instance so callers
+// (services, HTTP layer) need not rely on getActivePinia() being set yet.
+export function useStore() {
+  return useAppStore(pinia)
+}
 
-import filterColumModule from './module/filterColumn/filterColumnModule' // 列表页启用的筛选字段
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
-  state: {},
-  plugins: [
-    createPersistedState({
-      key: "crm:vuex:storage",
-      storage: {
-        getItem: key => uni.getStorageSync(key),
-        setItem: (key, value) => uni.setStorageSync(key, value),
-        removeItem: key => uni.removeStorageSync(key)
-      }
-    })
-  ],
-  modules:{
-    auth: userModule,
-    permission: permissionModule,
-    filterColumn: filterColumModule
-  }
-})
+export { useAppStore }

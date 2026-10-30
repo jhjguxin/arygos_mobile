@@ -10,7 +10,7 @@
       :border="card.border"
       v-if="model"
     >
-      <view slot="body" class="u-flex">
+      <template #body><view class="u-flex">
         <u-row gutter="16" style="width: 85%;">
           <u-col span="12" class="u-font-lg">总结：</u-col>
           <u-col span="12" class="u-font-sm u-border-bottom u-p-b-10">{{model.summary}}</u-col>
@@ -31,45 +31,43 @@
           style="width: 14%;"
           v-if="model.marking_at"
         >阅</view>
-      </view>
-      <u-row slot="foot">
+      </view></template>
+      <template #foot><u-row >
         <u-col span="12" class="u-font-lg u-p-t-20">批阅人：<text class="u-font-sm">{{model.marking_user.name}}</text></u-col>
         <u-col span="12" class="u-font-lg u-p-t-20">抄送人：<text class="u-font-sm">{{model.ccUsers}}</text></u-col>
-      </u-row>
+      </u-row></template>
     </u-card>
-    <u-cell-item icon="chat" :title="markingListCellItem.title" :arrow="false"></u-cell-item>
+    <u-cell icon="chat" :title="markingListCellItem.title" :arrow="false"></u-cell>
     <uni-list
       :border="true"
       class="marking-list"
      >
-      <u-swipe-action
-        v-for="(item, index) in markings"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in markings"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
         <uni-list-item
           :title="item.user.name" :note="item.content"
         >
-          <view slot="body"  class="uni-list-item__content">
+          <template #body><view class="uni-list-item__content">
             <u-row>
               <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
               <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
             </u-row>
             <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
-          </view>
+          </view></template>
         </uni-list-item>
+      </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
 
     <u-form :model="form.model" ref="uForm" :error-type="form.errorType" class="u-padding-30">
       <u-form-item prop="content">
-        <u-input
-          v-model="form.model.content" type="textarea"
-          border
-          placeholder="内容"
-        />
+        <u-textarea v-model="form.model.content" border placeholder="内容" />
       </u-form-item>
     </u-form>
     <u-button type="primary" @click="handleSubmitClick">点评</u-button>
@@ -81,7 +79,7 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { scheduleReportApi } from 'services/http';
+  import { scheduleReportApi } from '@/services/http';
 
   export default {
     data() {
@@ -109,7 +107,7 @@
           ]
         },
         form: {
-          errorType: ['toast', 'border'],
+          errorType: 'toast',
           rules: {
             content: [
               {
@@ -294,25 +292,16 @@
          })
       },
       handleSubmitClick () {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             this.createMarking();
           }
         });
       },
-      handleSwipeActionOpen (index) {
-        let { markings } = this;
-        markings = _.each(markings, (item) => {
-          item.swipeAction.show = false;
-        });
-        markings[index].swipeAction.show = true;
-
-        this.markings = markings;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({ name, index }) {
+        if (index === 0) {
           let { markings } = this;
-          let marking_id = markings[index]?.id;
+          let marking_id = markings[name]?.id;
           this.doDestroy({marking_id});
         }
       },

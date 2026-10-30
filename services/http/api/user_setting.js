@@ -1,4 +1,4 @@
-import http from './../interface';
+import http from '@/services/http/interface';
 
 const entity_search_column = (data = {}) => {
   return http.request({

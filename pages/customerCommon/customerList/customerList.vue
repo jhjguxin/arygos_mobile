@@ -12,55 +12,57 @@
 
     <u-gap></u-gap>
     <uni-list>
-      <u-swipe-action
-        v-for="(item, index) in list"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="item.swipeAction.options"
-      >
-        <uni-list-item>
-          <u-card
-            class="item-body" slot="body" :title="item.company_name"
-            :border="card.border" :sub-title="item.name" :full="card.full"
-            :show-head="card.showHead" :show-foot="card.showFoot"
-            :margin="card.margin"  :padding="card.padding"
-            @click="handleItemClick($event, item.id)"
-          >
-            <view slot="body">
-              <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
-                <u-col span="3" text-align="right" class="u-font-xs">
-                  {{customField.label}}
-                </u-col>
-                <u-col span="9">
-                  <custom-field-on-list :customField="customField" :record="item" />
-                </u-col>
-              </u-row>
-            </view>
-            <view slot="foot">
-            </view>
-          </u-card>
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in list"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          @click="handleSwipActionClick"
+          :options="item.swipeAction.options"
+        >
+          <uni-list-item>
+            <template #body><u-card
+              class="item-body" :title="item.company_name"
+              :border="card.border" :sub-title="item.name" :full="card.full"
+              :show-head="card.showHead" :show-foot="card.showFoot"
+              :margin="card.margin"  :padding="card.padding"
+              @click="handleItemClick($event, item.id)"
+            >
+              <template #body><view >
+                <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
+                  <u-col span="3" text-align="right" class="u-font-xs">
+                    {{customField.label}}
+                  </u-col>
+                  <u-col span="9">
+                    <custom-field-on-list :customField="customField" :record="item" />
+                  </u-col>
+                </u-row>
+              </view></template>
+              <template #foot><view >
+              </view></template>
+            </u-card></template>
 
-          <u-row class="item-footer" slot="footer" gutter="0" align="center">
-            <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
-          </u-row>
-        </uni-list-item>
+            <template #footer><u-row class="item-footer" gutter="0" align="center">
+              <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
+            </u-row></template>
+          </uni-list-item>
+        </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
     <u-action-sheet
-      :list="uActionSheet.list" v-model="uActionSheet.show"
-      @click="handleActionSheet"
+      :actions="uActionSheet.list" v-model:show="uActionSheet.show" :closeOnClickOverlay="true" nameKey="text"
+      @select="handleActionSheetSelect"
     ></u-action-sheet>
     <uni-load-more :status="status" />
-    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+    <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
   </view>
 </template>
 
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { customerCommonApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { customerCommonApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     components: {},
@@ -120,32 +122,36 @@
       await this.fetchCustomerCommons();
       this.fetchCustomer({reload: true })
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchCustomer({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchCustomer({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchCustomer({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchCustomer({ page });
+      }
+    },
+    methods: {
+
       async fetchCustomerCommons() {
         let { tabIndex: index } = this;
         let res = await customerCommonApi.customer_common_settings();
@@ -165,7 +171,7 @@
               name: item.name
             }
           ));
-          this.handleCustomerCommonChange(index)
+          this.handleCustomerCommonChange(undefined, index)
         }
       },
       /**
@@ -302,7 +308,7 @@
           })
         }
       },
-      handleCustomerCommonChange (index) {
+      handleCustomerCommonChange (_item, index) {
         let { customerCommons, featureLabels } = this;
         let item = customerCommons[index];
 
@@ -333,12 +339,13 @@
         this.currentCustomerId = id;
         this.uActionSheet.show = true;
       },
-      handleActionSheet (index) {
+      handleActionSheetSelect (item) {
+        const index = this.uActionSheet.list.indexOf(item);
         let { uActionSheet: { list }, customerCommonTabs: { current }, customerCommons, customerCommonId, currentCustomerId } = this;
-        let item = _.find(customerCommons, (item)=> item.id == customerCommonId);
+        let customerCommon = _.find(customerCommons, (item)=> item.id == customerCommonId);
         console.debug("uActionSheet 点击了", list[index]?.text);
 
-        if (item.is_admin) {
+        if (customerCommon.is_admin) {
           if (index == 0) {
             let transferUrl = `/pages/common/transferOutCommon/transferOutCommon?ids=${currentCustomerId}&klassName=CustomerCommon&id=${customerCommonId}&successUrl=/pages/customerCommon/customerList/customerList?index=${current}`;
             uni.navigateTo({
@@ -354,26 +361,17 @@
           return
         }
 
-        if (item.is_member) {
+        if (customerCommon.is_member) {
           if (index == 0) {
             this.doGrab({id: currentCustomerId});
           }
           return
         }
       },
-      handleSwipeActionOpen (index) {
-        let { list } = this;
-        list = _.each(list, (item) => {
-          item.swipeAction.show = false;
-        });
-        list[index].swipeAction.show = true;
-
-        this.list = list;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { list } = this;
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           this.doDestroy({id})
         }
       },

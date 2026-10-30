@@ -21,10 +21,15 @@
           />
         </u-td>
         <u-td>
-          <u-input
-            type="select" :select-open="item.categorySelect.show" v-model="item.category_display"
-            :placeholder="customField.input_html_options.placeholder" @click="item.categorySelect.show = true"></u-input>
-          <u-select mode="single-column" :list="categorySelect.list" v-model="item.categorySelect.show" @confirm="handleCategoryConfirm($event, index)"></u-select>
+          <u-select
+            :options="categorySelect.list"
+            v-model:current="item.category"
+            label-name="label"
+            key-name="value"
+            :label="categorySelect.placeholder"
+            :show-options-label="true"
+            @select="handleCategoryConfirm($event, index)"
+          />
         </u-td>
         <u-td>
           <u-button type="error" size="medium" @click="handleDelete($event, index)">删除</u-button>
@@ -55,10 +60,10 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
-  import { contractApi, opportunityApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contractApi, opportunityApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -199,12 +204,11 @@
         },
        }
       },
-      handleCategoryConfirm: function (e, index) {
+      handleCategoryConfirm: function (item, index) {
         let { models } = this;
-        let item = models[index];
+        let row = models[index];
 
-        item.category = e[0]?.value;
-        item.category_display = e[0]?.label;
+        row.category = item?.value;
 
         this.models = models;
       },

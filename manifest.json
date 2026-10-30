@@ -5,6 +5,7 @@
     "versionName" : "1.0.1",
     "versionCode" : 101,
     "transformPx" : false,
+    "vueVersion" : "3",
     "app-plus" : {
         "usingComponents" : true,
         "compilerVersion" : 3,

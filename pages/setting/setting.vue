@@ -3,41 +3,38 @@
     <common></common>
       <uni-section title="功能设置" type="line"></uni-section>
       <uni-list>
-        <uni-list-item title="功能显示" clickable @click="onClick" />
-        <uni-list-item title="快捷新增显示" clickable @click="onClick" />
+        <uni-list-item title="功能显示" clickable />
+        <uni-list-item title="快捷新增显示" clickable />
       </uni-list>
       <uni-section title="消息提醒" type="line"></uni-section>
       <uni-list>
-        <uni-list-item title="推送设置" clickable @click="onClick" />
+        <uni-list-item title="推送设置" clickable />
       </uni-list>
       <uni-section title="个人信息" type="line"></uni-section>
       <uni-list>
         <uni-list-item title="退出登陆" clickable @click="handleLogoutClick" />
       </uni-list>
       <u-action-sheet
-        :list="logoutActionSheet.list"
-        v-model="logoutActionSheet.show"
-        :tips="logoutActionSheet.tips"
-        @click="handleLogoutActionSheetClick"
-        :cancel-btn="true"
+        :actions="logoutActionSheet.list"
+        v-model:show="logoutActionSheet.show" :closeOnClickOverlay="true"
+        description="退出登陆不会清除任何数据,你还可以继续登陆此账号！"
+        @select="handleLogoutActionSheetSelect"
+        cancelText="取消"
       ></u-action-sheet>
   </view>
 </template>
 
 <script>
-  import { authApi, organizationApi } from 'services/http';
-  import Auth from 'services/auth';
+  import { authApi, organizationApi } from '@/services/http';
+  import Auth from '@/services/auth';
   import _ from 'lodash';
   
   export default {
     data() {
       return {
         logoutActionSheet: {
-          tips: {
-            text: '退出登陆不会清除任何数据,你还可以继续登陆此账号！',
-          },
           list: [{
-            text: '退出当前账号',
+            name: '退出当前账号',
           }],
           show: false
         }
@@ -50,10 +47,8 @@
       handleLogoutClick () {
         this.logoutActionSheet.show = true;
       },
-      handleLogoutActionSheetClick (index) {
-        if (index == 0) {
-          this.doLogout();
-        }
+      handleLogoutActionSheetSelect (item) {
+        this.doLogout();
       },
       doLogout() {
         let { auth } = this;

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 /*
  * uCharts v1.9.6.20210214
  * uni-app平台高性能跨全端图表，支持H5、APP、小程序（微信/支付宝/百度/头条/QQ/360）
@@ -5685,3 +5686,5 @@ if (typeof module === "object" && typeof module.exports === "object") {
   module.exports = Charts;
   //export default Charts;//建议使用nodejs的module导出方式，如报错请使用export方式导出
 }
+
+export default Charts;

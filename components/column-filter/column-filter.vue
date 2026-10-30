@@ -37,16 +37,17 @@
 
 <script>
   import _ from 'lodash';
-  import { userSettingApi } from 'services/http';
+  import { userSettingApi } from '@/services/http';
+  import { useStore } from '@/store';
     
   export default {
+    props: {
+      klassName: { type: String, required: true },
+      storeKey: { type: String, default: '' }
+    },
     data() {
-      let { klassName, storeKey } = this.$attrs;
-      storeKey = storeKey || klassName;
-
       return {
-        klassName,
-        storeKey,
+        resolvedStoreKey: this.storeKey || this.klassName,
         sortValue: "",
         order: "asc",
         sortOptions: [],
@@ -58,15 +59,15 @@
       };
     },
     mounted() {
-      let { storeKey } = this;
-      this.filterColumns = this.$store.getters.getFilterColumns(storeKey) || [];
+      let { resolvedStoreKey: storeKey } = this;
+      this.filterColumns = useStore().getFilterColumns(storeKey) || [];
 
       this.fetchData();
     },
     methods: {
       fetchData () {
         let { sortValue, order, filterColumns } = this;
-        let { klassName: klass_name } = this.$attrs;
+        const klass_name = this.klassName;
         userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
           let { data: {code, remark, data}} = res;
           
@@ -84,8 +85,8 @@
               }
             });
 
-            this.$set(this, "defaultFilterColumns", defaultFilterColumns);
-            this.$set(this, "sortOptions", sortOptions);
+            this.defaultFilterColumns = defaultFilterColumns;
+            this.sortOptions = sortOptions;
           } else {
             uni.showToast({
               icon: 'none',
@@ -122,9 +123,9 @@
         this.$emit("sortColumnChange", sort);
       },
       handleFilterColumnSwitchChange (e, value) {
-        let { klassName } = this.$attrs;
+        let klassName = this.klassName;
         let { value: checked } = e;
-        let { defaultFilterColumns, maxFilterColumn, storeKey } = this;
+        let { defaultFilterColumns, maxFilterColumn, resolvedStoreKey: storeKey } = this;
         
         defaultFilterColumns = _.map(defaultFilterColumns, (column) => {
           if (String(column.name) == String(value)) {
@@ -163,7 +164,7 @@
         }
         
         let columns = _.filter(defaultFilterColumns, "checked").map((column) => ({...column}));
-        this.$store.dispatch('setFilterColumns', {name: storeKey, columns});
+        useStore().setFilterColumns({name: storeKey, columns});
         this.filterColumns = columns;
       },
       handleFilterConfirm (filters, model) {

@@ -18,7 +18,7 @@
         class="u-m-t-10 u-m-b-10"
         @click="handleCardClick($event, item)"
       >
-        <u-row slot="body" class="u-flex u-line-5">
+        <template #body><u-row class="u-flex u-line-5">
           <u-col span="8" class="u-line-5">
           {{item.summary}}
           </u-col>
@@ -30,8 +30,8 @@
               v-if="item.thumb"
             ></u-image>
           </u-col>
-        </u-row>
-        <u-row gutter="10" slot="foot">
+        </u-row></template>
+        <template #foot><u-row gutter="10" >
           <u-col span="4">
             <u-icon
               name="bookmark" :label="item.knowledge_section.name"
@@ -52,7 +52,7 @@
               name="tags" :label="item.tagsName"
             ></u-icon>
           </u-col>
-        </u-row>
+        </u-row></template>
       </u-card>
     </view>
       <u-empty mode="list" v-show="models.length == 0"/>
@@ -60,15 +60,14 @@
         :status="status" :contentText="loadText"
         @clickLoadMore="handleLoadMore"
         v-if="models.length > 0" />
-      <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
-    </view>
+      <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
   </view>
 </template>
 
 <script>
+  import _ from 'lodash';
   import dayjs from 'dayjs';
-  import _ from "lodash";
-  import { knowledgeArticleApi } from 'services/http';
+  import { knowledgeArticleApi } from '@/services/http';
 
   export default {
     data() {
@@ -114,26 +113,31 @@
       // 初始化页面数据
       this.fetchKnowledgeArticle({reload: true });
     },
+
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchKnowledgeArticle({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      this.handleLoadMore();
+    },
     methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchKnowledgeArticle({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        this.handleLoadMore();
-      },
+
       handleLoadMore() {
         let { page, status } = this;
 

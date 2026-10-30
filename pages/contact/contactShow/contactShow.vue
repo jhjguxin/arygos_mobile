@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16" v-if="customFieldsObject['extra.tel']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['extra.tel'].label}}</view>
@@ -47,12 +47,11 @@
           </u-row>
           <u-row gutter="16">
           </u-row>
-        </view>
+        </view></template>
       </u-card>
-      <u-tabs-swiper
-        ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
-        @change="handleTabsSwiperChange"
-      ></u-tabs-swiper>
+      <u-tabs
+        ref="tabs" :list="tabs.list" v-model:current="tabs.current" :scrollable="false"
+      />
       <view v-if="tabs.current == 0" class="u-padding-bottom-80">
         <sales-activity-list
           :params="salesActivityList.params"
@@ -70,10 +69,6 @@
           </u-grid-item>
           <u-grid-item @click="salesActionSheet.show = true">
             <view class="grid-text">更多</view>
-            <u-action-sheet
-              :list="salesActionSheet.list" v-model="salesActionSheet.show"
-              @click="handleSalesActionSheetClick"
-            ></u-action-sheet>
           </u-grid-item>
         </u-grid>
       </view>
@@ -91,13 +86,17 @@
     </view>
     <unauthorized v-if="isInvalidData"/>
     <permit-checker authKey="contact#show" ></permit-checker>
+    <u-action-sheet
+      :actions="salesActionSheet.list" v-model:show="salesActionSheet.show" :closeOnClickOverlay="true" nameKey="text" subnameKey="subText"
+      @select="handleSalesActionSheetSelect"
+    ></u-action-sheet>
   </view>
 </template>
 
 <script>
   import _ from 'lodash';
-  import { contactApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contactApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -228,15 +227,13 @@
           }
         })
       },
-      handleTabsSwiperChange (value) {
-        this.tabs.current = value;
-      },
       handleItemClick (event, url) {
         uni.navigateTo({
           url
         });
       },
-      handleSalesActionSheetClick (index) {
+      handleSalesActionSheetSelect (item) {
+        const index = this.salesActionSheet.list.indexOf(item);
         if (index == 0) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({

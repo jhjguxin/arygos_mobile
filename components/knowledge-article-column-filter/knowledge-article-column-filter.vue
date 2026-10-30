@@ -30,12 +30,16 @@
 </template>
 
 <script>
-  import _ from "lodash";
-  import { knowledgeArticleApi, knowledgeSectionApi, knowledgeTagApi } from 'services/http';
+  import _ from 'lodash';
+  import { knowledgeArticleApi, knowledgeSectionApi, knowledgeTagApi } from '@/services/http';
 
   export default {
+  props: {
+      storeKey: { type: String }
+  },
+
     data() {
-      let { storeKey } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName: "KnowledgeArticle",

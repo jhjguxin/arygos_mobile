@@ -18,16 +18,16 @@
     </u-row>
     <u-gap></u-gap>
     <view class="revisit-log-list">
-      <u-time-line class="timeLine">
-        <u-time-line-item nodeTop="2" v-for="item in models" :key="item.id">
+      <u-steps direction="column" class="timeLine">
+        <u-steps-item v-for="item in models" :key="item.id">
           <!-- 此处自定义了左边内容，用一个图标替代 -->
-          <template v-slot:node>
+          <template #icon>
             <view class="u-node" :style="item.node.style">
               <!-- 此处为uView的icon组件 -->
               <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
             </view>
           </template>
-          <template v-slot:content>
+          <template #content>
             <u-card
               full
               :title="item.user.name"
@@ -38,7 +38,7 @@
               :border="timeLine.card.border"
               :thumb="item.user.avatar_url"
             >
-              <view slot="body">
+              <template #body><view >
                 <view class="u-order-desc u-font-sm">{{item.content}}</view>
                 <view class="u-order-desc u-font-sm ">提醒时间：{{item.remindAt}}</view>
                 <view class="u-order-desc u-font-sm">跟进时间：{{item.revisitAt}}</view>
@@ -73,8 +73,8 @@
                     {{item.sales_activity.refer_name}}
                   </text>
                 </view>
-              </view>
-              <u-row slot="foot">
+              </view></template>
+              <template #foot><u-row >
                 <u-col span="4">
                   <u-icon
                     name="chat-fill" size="24" :label="item.sales_activity.commentCount"
@@ -85,16 +85,16 @@
                     :sales_activity_id="item.sales_activity.id" :ref="item.sales_activity.commentListRef"
                   />
                 </u-col>
-              </u-row>
+              </u-row></template>
             </u-card>
           </template>
-        </u-time-line-item>
-      </u-time-line>
+        </u-steps-item>
+      </u-steps>
       <uni-load-more
         :status="status" :contentText="loadText"
         @clickLoadMore="handleLoadMore"
         v-if="models.length > 0" />
-      <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+      <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
     </view>
   </view>
 </template>
@@ -104,8 +104,8 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { revisitLogApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { revisitLogApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     components: {},
@@ -153,27 +153,31 @@
       // 初始化页面数据
       this.fetchRevisitLog({reload: true });
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchRevisitLog({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        this.handleLoadMore();
 
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchRevisitLog({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      this.handleLoadMore();
+    },
+    methods: {
+
       handleLoadMore() {
         let { page, status } = this;
 
@@ -219,12 +223,13 @@
           } = res;
 
           const tempList = _.map(_models, (item) => {
+            const sa = item.sales_activity || {};
             const urlMap = {
-              Lead: `/pages/lead/leadShow/leadShow?id=${item.sales_activity.refer_id}`,
-              Customer: `/pages/customer/customerShow/customerShow?id=${item.sales_activity.refer_id}`,
-              Contact: `/pages/contact/contactShow/contactShow?id=${item.sales_activity.refer_id}`,
-              Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${item.sales_activity.refer_id}`,
-              Contract: `/pages/contract/contractShow/contractShow?id=${item.sales_activity.refer_id}`,
+              Lead: `/pages/lead/leadShow/leadShow?id=${sa.refer_id}`,
+              Customer: `/pages/customer/customerShow/customerShow?id=${sa.refer_id}`,
+              Contact: `/pages/contact/contactShow/contactShow?id=${sa.refer_id}`,
+              Opportunity: `/pages/opportunity/opportunityShow/opportunityShow?id=${sa.refer_id}`,
+              Contract: `/pages/contract/contractShow/contractShow?id=${sa.refer_id}`,
             };
 
             return {
@@ -241,10 +246,10 @@
                 })
               }),
               sales_activity: {
-                ...item.sales_activity,
-                refer_url: urlMap[item.sales_activity.refer_type],
-                commentCount: `评论（${item.sales_activity.comments_count}）`,
-                commentListRef: `sales-activity-comment-models-${item.sales_activity.id}`
+                ...sa,
+                refer_url: urlMap[sa.refer_type],
+                commentCount: `评论（${sa.comments_count}）`,
+                commentListRef: `sales-activity-comment-models-${sa.id}`
               },
               node: {
                 style: "background: green"

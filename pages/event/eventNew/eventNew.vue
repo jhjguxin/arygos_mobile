@@ -2,30 +2,35 @@
   <view class="wrap">
     <u-form :model="form.model" ref="uForm"  label-width="160">
         <u-form-item :label="form.item.note.label" prop="note">
-          <u-input
-            v-model="form.model.note"
-            :placeholder="form.item.note.placeholder"
-            type="textarea"
-            :auto-height="form.item.note.autoHeight"
-          />
+          <u-textarea v-model="form.model.note" :placeholder="form.item.note.placeholder" :autoHeight="form.item.note.autoHeight" />
         </u-form-item>
         <u-form-item :label="form.item.remind_at.label" prop="remind_at">
           <u-input
             :border="form.item.remind_at.border" type="select" :select-open="form.item.remind_at.show" v-model="form.model.remind_at"
             :placeholder="form.item.remind_at.placeholder" @click="form.item.remind_at.show = true"></u-input>
-          <u-picker v-model="form.item.remind_at.show" mode="time" :default-time="form.model.remind_at" :params="form.item.remind_at.params" @confirm="handleSelectRemindAtConfirm"></u-picker>
+          <u-datetime-picker style="flex:none" :show="form.item.remind_at.show" mode="datetime" :modelValue="form.model.remind_at" @confirm="handleSelectRemindAtConfirm" @close="form.item.remind_at.show = false" @cancel="form.item.remind_at.show = false"></u-datetime-picker>
         </u-form-item>
         <u-form-item :label="form.item.repeat.label" prop="repeat">
-          <u-input
-            :border="form.item.repeat.border" type="select" :select-open="form.item.repeat.show" v-model="repeatDisplay"
-            :placeholder="form.item.repeat.placeholder" @click="form.item.repeat.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.repeat.list" v-model="form.item.repeat.show" @confirm="handleSelectRepeatConfirm"></u-select>
+          <u-select
+            :options="form.item.repeat.list"
+            v-model:current="form.model.repeat"
+            label-name="label"
+            key-name="value"
+            :label="form.item.repeat.placeholder"
+            :show-options-label="true"
+            @select="handleSelectRepeatConfirm"
+          />
         </u-form-item>
         <u-form-item :label="form.item.remind_type.label" prop="remind_type">
-          <u-input
-            :border="form.item.remind_type.border" type="select" :select-open="form.item.remind_type.show" v-model="remindTypeDisplay"
-            :placeholder="form.item.remind_type.placeholder" @click="form.item.remind_type.show = true"></u-input>
-          <u-select mode="single-column" :list="form.item.remind_type.list" v-model="form.item.remind_type.show" @confirm="handleSelectRemindTypeConfirm"></u-select>
+          <u-select
+            :options="form.item.remind_type.list"
+            v-model:current="form.model.remind_type"
+            label-name="label"
+            key-name="value"
+            :label="form.item.remind_type.placeholder"
+            :show-options-label="true"
+            @select="handleSelectRemindTypeConfirm"
+          />
         </u-form-item>
         <u-form-item :label="form.item.user_ids.label" prop="user_ids">
           <select2
@@ -45,9 +50,10 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from "dayjs";
-  import { eventApi } from 'services/http';
+  import { eventApi } from '@/services/http';
+  import { useStore } from '@/store';
 
   export default {
     data() {
@@ -57,7 +63,7 @@
     },
     onLoad(options) {
       let {related_item_type, related_item_id } = options;
-      const currentUser = getApp().$store.getters.getUser;
+      const currentUser = useStore().getUser;
 
       this.form = {
         model: {
@@ -89,7 +95,7 @@
               second: false
             },
             show: false,
-            border: false
+            border: 'none'
           },
           repeat: {
             label: "重复",
@@ -117,7 +123,7 @@
               }
             ],
             show: false,
-            border: false
+            border: 'none'
            },
           remind_type: {
             label: "提醒时间",
@@ -161,7 +167,7 @@
               }
             ],
             show: false,
-            border: false
+            border: 'none'
           },
           user_ids: {
             label: "参与人",
@@ -254,17 +260,15 @@
         })
       },
       handleSelectRemindAtConfirm: function (e) {
-        let value = `${e.year}-${e.month}-${e.day} ${e.hour}:${e.minute}:00`;
-
-        this.form.model.remind_at = value;
+        // u-datetime-picker mode="datetime" 返回时间戳,格式化后拼接秒
+        this.form.model.remind_at = dayjs(Number(e.value)).format("YYYY-MM-DD HH:mm:ss");
+        this.form.item.remind_at.show = false;
       },
-      handleSelectRepeatConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.repeat = value;
+      handleSelectRepeatConfirm: function (item) {
+        this.form.model.repeat = item?.value;
       },
-      handleSelectRemindTypeConfirm: function (e) {
-        let value = e[0]?.value;
-        this.form.model.remind_type = value;
+      handleSelectRemindTypeConfirm: function (item) {
+        this.form.model.remind_type = item?.value;
       },
       handleUserIdsSelect: function (e) {
         let value = e.value;
@@ -276,7 +280,7 @@
         uForm.resetFields();
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

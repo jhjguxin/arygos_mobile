@@ -50,14 +50,11 @@
 
 
 <script>
-  import {
-    mapActions
-  } from 'vuex';
-  import { authApi } from 'services/http';
-  import Auth from 'services/auth';
+  import { authApi } from '@/services/http';
+  import Auth from '@/services/auth';
   import _ from 'lodash';
 
-  import logo from 'static/logo.png';
+  import logo from '@/static/logo.png';
 
   export default {
     data() {
@@ -66,7 +63,7 @@
           login: "",
           password: "",
         },
-         errorType: ['toast'],
+         errorType: 'toast',
         rules: {
           login: [
             {
@@ -141,7 +138,7 @@
         }
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           let { form: {login, password} } = this;
           if (valid) this.doAuthLogin({login, password});
         });

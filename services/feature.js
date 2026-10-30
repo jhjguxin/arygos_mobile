@@ -3,8 +3,8 @@
  * 可用状态, 自定义显示名
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { constantApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { constantApi } from '@/services/http/index';
 
 export default class Feature {
   static _featureInstance = null;

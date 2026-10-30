@@ -116,7 +116,7 @@
 </template>
 
 <script>
-  import Policy from 'services/policy';
+  import Policy from '@/services/policy';
   export default {
     data() {
       let featureLabels = getApp().globalData.featureLabels;

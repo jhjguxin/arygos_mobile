@@ -1,20 +1,21 @@
 <template>
-  <view class="attachment-list"  :style="style">
+  <view class="attachment-list"  :style="rootStyle">
     <u-cell-group>
-      <u-swipe-action
-        v-for="(item, index) in models"
-        :key="item.id"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
-        <u-cell-item
-          icon="file-text-fill"
-          :title="item.file_file_name"
-          :value="item.fileSize"
-          @click="handleItemClick($event, item)"
-        ></u-cell-item>
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in models"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          @click="handleSwipActionClick"
+          :options="swipeAction.options"
+        >
+          <u-cell
+            icon="file-text-fill"
+            :title="item.file_file_name"
+            :value="item.fileSize"
+            @click="handleItemClick($event, item)"
+          ></u-cell>
+        </u-swipe-action-item>
       </u-swipe-action>
     </u-cell-group>
     <u-empty class="u-p-t-80" mode="list" :text="uEmpty.text" v-if="models.length == 0"></u-empty>
@@ -30,14 +31,18 @@
   import dayjs from 'dayjs';
   import prettyBytes from 'pretty-bytes';
   import mime from 'mime-types';
-  import { attachmentApi } from 'services/http';
+  import { attachmentApi } from '@/services/http';
 
   export default {
+  props: {
+      rootStyle: { type: String, default: "height: 55vh;" },
+      params: { type: Object }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
 
       return {
-        style,
         models: [],
         status: 'more', // 加载状态
         page: 1,
@@ -67,7 +72,7 @@
     },
     methods: {
       fetchListData ({ page, reload }) {
-        let { params } = this.$attrs;
+        /* moved to props */
         let { perPage: per_page, models = [] } = this;
 
         if (reload) {
@@ -75,8 +80,8 @@
           models = [];
         }
         
-        params = {
-          ...params,
+        let params = {
+          ...this.params,
           per_page,
           page
         };
@@ -201,19 +206,10 @@
         });
 
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { models } = this;
-          let id = models[index]?.id;
+          let id = models[name]?.id;
           this.doDestroy({id});
         }
       },

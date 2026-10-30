@@ -1,9 +1,10 @@
 <template>
   <view>
-    <u-input
-      :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
-      :placeholder="placeholder"
-      @click="handleShowSelect"></u-input>
+    <view @click="handleShowSelect">
+      <u-input
+        :border="border" type="select" :select-open="modalOpen" v-model="valueDisplay"
+        :placeholder="placeholder"
+      /></view>
 
     <tki-tree
       ref="tkitree"
@@ -13,46 +14,44 @@
       :multiple="multiple"
       confirmColor="#4e8af7"
       @confirm="handleConfirm"
-      v-if="list"
     />
   </view>
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import {
     departmentApi,
     productCategoryApi
-  } from "services/http";
+  } from "@/services/http";
+  import { ref } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        klassName,
-        value = {},
-        required,
-        title = "",
-        params = {},
-        placeholder,
-        mode = "selector" // selector 单选，多选 multi
-      } = this.$attrs;
-
+    props: {
+      klassName: { type: String },
+      value: { type: [Object, Array] },
+      required: { type: Boolean, default: false },
+      title: { type: String, default: "" },
+      params: { type: Object, default: () => ({}) },
+      placeholder: { type: String, default: "" },
+      mode: { type: String, default: "selector" }
+    },
+    setup(props) {
       return {
-        klassName,
-        value, mode,
-        required,
-        title,
-        params,
-        placeholder,
-        border: false,
+        selectedValue: ref(props.value),
+        border: "none",
         showAction: false,
-        list: null,
-        modalOpen: false,
+        list: ref([]),
+        modalOpen: ref(false),
         rangeKey: "label",
         idKey: "value",
-        multiple:  (mode == "multi"),
+        multiple: (props.mode == "multi"),
         selectParent: true
+      };
+    },
+    watch: {
+      value(val) {
+        this.selectedValue = val;
       }
     },
     created() {
@@ -67,13 +66,13 @@
 
         value = (mode == "selector") ? value[0] : value;
 
-        this.$set(this, "value", value);
+        this.selectedValue = value;
         this.$emit("select", {value});
       },
       fetchData: function () {
-        let { klassName, params, value, mode } = this;
+        let { klassName, params, selectedValue, mode } = this;
 
-        let ids = (mode == "selector") ? [value?.value] : _.map(value, "value");
+        let ids = (mode == "selector") ? [selectedValue?.value] : _.map(selectedValue, "value");
 
         this.requestApi({ klassName, params }).then((res) => {
           let {
@@ -95,7 +94,7 @@
           )
           models = formater(models);
 
-          this.$set(this, "list", models);
+          this.list = models;
         })
       },
       requestApi: function ({ klassName, params = {} }) {
@@ -118,11 +117,11 @@
     computed: {
       valueDisplay: {
         get: function() {
-          let { mode, value } = this;
+          let { mode, selectedValue } = this;
 
-          if (_.isNil(value)) return;
+          if (_.isNil(selectedValue)) return;
 
-          return mode == "selector" ? value.label : _.map(value, "label").join(", ");
+          return mode == "selector" ? selectedValue.label : _.map(selectedValue, "label").join(", ");
         },
         set: function (value) {
         }

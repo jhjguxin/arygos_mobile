@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="model && customFieldsObject"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16" v-if="customFieldsObject['amount']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['amount'].label}}</view>
@@ -37,12 +37,11 @@
           </u-row>
           <u-row gutter="16">
           </u-row>
-        </view>
+        </view></template>
       </u-card>
-      <u-tabs-swiper
-        ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
-        @change="handleTabsSwiperChange"
-      ></u-tabs-swiper>
+      <u-tabs
+        ref="tabs" :list="tabs.list" v-model:current="tabs.current" :scrollable="false"
+      />
       <view v-if="tabs.current == 0" class="u-padding-bottom-80">
         <entity-base-info
           :model="model" :klassName="klassName"
@@ -57,25 +56,25 @@
             </u-grid-item>
             <u-grid-item @click="salesActionSheet.show = true">
               <view class="grid-text">更多</view>
-              <u-action-sheet
-                :list="salesActionSheet.list" v-model="salesActionSheet.show"
-                @click="handleSalesActionSheetClick"
-              ></u-action-sheet>
             </u-grid-item>
           </u-grid>
-        </u-grid>
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
     <permit-checker authKey="invoiced_payment#show" ></permit-checker>
+    <u-action-sheet
+      :actions="salesActionSheet.list" v-model:show="salesActionSheet.show" :closeOnClickOverlay="true" nameKey="text" subnameKey="subText"
+      @select="handleSalesActionSheetSelect"
+    ></u-action-sheet>
+
   </view>
 </template>
 
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { invoicedPaymentApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { invoicedPaymentApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -202,15 +201,13 @@
           }
         })
       },
-      handleTabsSwiperChange (value) {
-        this.tabs.current = value;
-      },
       handleItemClick (event, url) {
         uni.navigateTo({
           url
         });
       },
-      handleSalesActionSheetClick (index) {
+      handleSalesActionSheetSelect (item) {
+        const index = this.salesActionSheet.list.indexOf(item);
         if (index == 0) {
           let { id, klassName, featureLabels } = this;
           uni.showModal({

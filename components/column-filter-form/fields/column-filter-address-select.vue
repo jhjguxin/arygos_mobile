@@ -1,62 +1,97 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
-    <u-input
-      :border="border" type="select" :select-open="selectShow" v-model="valueDisplay"
-      :placeholder="placeholder" @click="selectShow = true"></u-input>
-    <u-select
-      v-model="selectShow" mode="mutil-column-auto"
-      :default-value="value"
-      :list="list"
+    <view class="geo-address-trigger" @click="openPicker">
+      <text class="geo-address-trigger__text" :class="valueDisplay ? '' : 'geo-address-trigger__placeholder'">
+        {{ valueDisplay || placeholder }}
+      </text>
+      <u-icon name="arrow-down" :size="12" color="#909399"></u-icon>
+    </view>
+    <u-picker
+      v-if="listReady"
+      ref="picker"
+      v-model:show="selectShow"
+      :columns="columns"
+      :key-name="'label'"
+      :value-name="'value'"
+      :default-index="defaultIndex"
+      @change="handleChange"
       @confirm="handleConfirm"
-    ></u-select>
+    ></u-picker>
   </u-form-item>
 </template>
 
 <script>
-  import _ from "lodash";
-  import Geo from 'services/geo';
+  import _ from 'lodash';
+  import Geo from '@/services/geo';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+  props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: Array }
+  },
 
+    data() {
       return {
-        name,  fieldType, customField,
-        record, klassName,
         list: [],
-        value,
-        placeholder: `请选择${customField.label}`,
-        border: false,
+        columns: [[], [], []],
+        defaultIndex: [0, 0, 0],
+        listReady: false,
+        placeholder: `请选择${this.customField.label}`,
         selectShow: false
       }
     },
-    created() {
-      this.fetchData();
+    async created() {
+      await this.fetchData();
+      this.buildColumns();
+      this.listReady = true;
     },
     methods: {
+      openPicker() {
+        if (!this.listReady) return;
+        this.selectShow = true;
+      },
+      buildColumns() {
+        let { value } = this;
+        let [provinceId, cityId, districtId] = value || [];
+
+        let provinces = this.list;
+        let province = _.find(provinces, (opt) => opt.value == provinceId) || provinces[0];
+        let cities = province?.children || [];
+        let city = _.find(cities, (opt) => opt.value == cityId) || cities[0];
+        let districts = city?.children || [];
+
+        this.columns = [provinces, cities, districts];
+        this.defaultIndex = [
+          Math.max(0, _.findIndex(provinces, (opt) => opt.value == province?.value)),
+          Math.max(0, _.findIndex(cities, (opt) => opt.value == city?.value)),
+          Math.max(0, _.findIndex(districts, (opt) => (opt?.value) == districtId))
+        ];
+      },
+      handleChange(e) {
+        let { columnIndex, index, indexs } = e;
+
+        if (columnIndex === 0) {
+          let cities = this.list[index]?.children || [];
+          this.$refs.picker.setColumnValues(1, cities);
+          this.$refs.picker.setColumnValues(2, cities[0]?.children || []);
+        } else if (columnIndex === 1) {
+          let cities = this.list[indexs[0]]?.children || [];
+          this.$refs.picker.setColumnValues(2, cities[index]?.children || []);
+        }
+      },
       handleConfirm(e) {
         let { customField: { name }} = this;
-        // console.debug("form-geo-address-field confirm", e);
 
         let value = {
-          province_id: e[0].value,
-          // province_name: e[0].label,
-          city_id: e[1].value,
-          // city_name: e[1].label,
-          district_id: e[2].value,
-          // district_name: e[2].label
-        }
+          province_id: e.value?.[0]?.value,
+          city_id: e.value?.[1]?.value,
+          district_id: e.value?.[2]?.value
+        };
 
-        this.value = [
-          value.province_id,
-          value.city_id,
-          value.district_id
-        ];
         this.$emit("fieldChange", {name, value});
       },
       async fetchData () {
@@ -66,15 +101,6 @@
 
         let { provinces, cities, districts } = data;
         let list = null;
-
-        // REVIEW 第一级不能出现 children 为空的 因为 层级深度要对齐
-        // provinces = _.concat(
-        //   [{
-        //     name: "请选择省份",
-        //     id: ""
-        //   }],
-        //   provinces
-        // );
 
         cities = _.map(cities, (city) => {
           let _districts = _.filter(districts, (district) => {
@@ -131,8 +157,8 @@
             })
           });
         });
-        
-        this.$set(this, "list", list);
+
+        this.list = list;
       }
     },
     computed: {
@@ -156,4 +182,18 @@
 </script>
 
 <style>
+  .geo-address-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 36rpx;
+    flex: 1;
+  }
+  .geo-address-trigger__text {
+    font-size: 15px;
+    color: #303133;
+  }
+  .geo-address-trigger__placeholder {
+    color: #c0c4cc;
+  }
 </style>

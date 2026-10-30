@@ -25,12 +25,12 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
-  import uCharts from '../../../js_sdk/u-charts/u-charts/u-charts.js';
+  import uCharts from '@/js_sdk/u-charts/u-charts/u-charts.js';
 
-  import { reportCenterApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { reportCenterApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -84,15 +84,16 @@
       // 初始化页面数据
       this.fetchData();
     },
-    methods: {
-      async onPullDownRefresh() {
-        this.filters = {
-          dimension: "product_category"
-        };
-        await this.fetchData();
 
-        uni.stopPullDownRefresh();
-      },
+    async onPullDownRefresh() {
+      this.filters = {
+        dimension: "product_category"
+      };
+      await this.fetchData();
+      uni.stopPullDownRefresh();
+    },
+    methods: {
+
       fetchData(){
         let { filters, featureLabels } = this;
 
@@ -219,10 +220,10 @@
     background-color: #FFFFFF;
   }
   .table-container {
-    width: 60vh;
+    width: 60vw;
     overflow-x: scroll;
   }
   .table-container .table {
-    width: 75vh;
+    width: 75vw;
   }
 </style>

@@ -13,21 +13,21 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
 
   export default {
+  props: {
+      customField: { type: Object },
+      klassName: { type: String }
+  },
+
     data() {
       // props 获取数据
-      let {
-        customField,
-        klassName,
-      } = this.$attrs;
+      /* moved to props */
 
       return {
-        customField,
-        klassName,
         value: null,
-        placeholder: `请选择${customField.label}`,
+        placeholder: `请选择${this.customField.label}`,
         list: [],
       }
     },

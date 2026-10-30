@@ -1,4 +1,4 @@
-import http from './../interface';
+import http from '@/services/http/interface';
 
 const lead_common_settings = (data = {}) => {
   return http.request({

@@ -1,13 +1,10 @@
 <template>
-  <view :style="style">
-    <u-link v-if="fieldType === 'mobile_field'"  :href="href">
-      {{displayValue}}
+  <view :style="wrapperStyle">
+    <u-link v-if="fieldType === 'mobile_field'"  :href="href" :text="displayValue">
     </u-link>
-    <u-link v-else-if="fieldType === 'tel_field'"  :href="href">
-      {{displayValue}}
+    <u-link v-else-if="fieldType === 'tel_field'"  :href="href" :text="displayValue">
     </u-link>
-    <u-link v-else-if="fieldType === 'url_field'"  :href="href">
-      {{displayValue}}
+    <u-link v-else-if="fieldType === 'url_field'"  :href="href" :text="displayValue">
     </u-link>
     <text v-else-if="fieldType === 'select2_field'">
       <text
@@ -28,11 +25,10 @@
     </u-tag>
     <view v-else-if="fieldType === 'file_field' && displayValue">
       <u-row v-for="item in displayValue"
-      :key="item.id" style="width: 45vh;">
+      :key="item.id" style="width: 45vw;">
         <u-col span="10">{{item.name}}</u-col>
         <u-col span="2">
-          <u-link :href="item.file_url" >
-            查看
+          <u-link :href="item.file_url" text="查看">
           </u-link>
         </u-col>
       </u-row>
@@ -45,28 +41,24 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
+  import { ref } from 'vue';
 
   export default {
-    data() {
-      let {
-        customField = {},
-        style = {},
-        inline
-      } = this.$attrs;
-      let { field_type: fieldType } = customField;
-      if (inline) style = {
-        ...style,
-        display: "inline-block"
-      };
+  props: {
+      customField: { default: () => ({}) },
+      style: { default: () => ({}) },
+      inline: { default: false },
+      record: { default: () => ({}) }
+  },
 
+    setup(props) {
+      const fieldType = props.customField.field_type;
       return {
-        customField,
         fieldType,
-        style,
-        href: null,
-      }
+        href: ref(null),
+      };
     },
     methods: {
       handleSelect2Click (e) {
@@ -79,11 +71,16 @@
       }
     },
     computed: {
+      wrapperStyle() {
+        let style = this.style;
+        if (this.inline) {
+          return { ...style, display: "inline-block" };
+        }
+        return style;
+      },
       displayValue: {
         get () {
-          let {
-            record
-          } = this.$attrs;
+          /* moved to props */
           let {
             customField: {
               name,
@@ -96,37 +93,37 @@
           switch (fieldType) {
             case "text_field": case "email_field":
             case "integer_field": case "float_field": case "currency_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "url_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               this.href = value;
               break;
             case "mobile_field": case "tel_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               this.href = `tel:${value}`;
               break;
             case "text_area":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               _.truncate(value, {length: 80});
               break;
             case "date_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = value ? dayjs(value).format("YYYY-MM-DD") : value;
               break;
             case "datetime_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = value ? dayjs(value).format("YYYY-MM-DD HH:ss") : value;
               break;
             case "select_field": case "field_map_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "multi_select":
-              value = _.split(_.at(record, customColumnName)[0], "，");
+              value = _.split(_.at(this.record, customColumnName)[0], "，");
               break;
             case "select2_field":
-              value = _.at(record, customColumnName)[0];
-              let id = _.at(record, `${name}_id`)[0];
+              value = _.at(this.record, customColumnName)[0];
+              let id = _.at(this.record, `${name}_id`)[0];
               const urlMap = {
                 Lead: `/pages/lead/leadShow/leadShow?id=${id}`,
                 Customer: `/pages/customer/customerShow/customerShow?id=${id}`,
@@ -138,13 +135,13 @@
               this.href = urlMap[selectKlassName];
               break;
             case "address_select":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "geo_address_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               break;
             case "file_field":
-              value = _.at(record, customColumnName)[0];
+              value = _.at(this.record, customColumnName)[0];
               value = _.map(value, (v)=> (
                 {
                   name: _.truncate(v.name, {length: 20}),

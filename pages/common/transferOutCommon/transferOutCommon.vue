@@ -9,7 +9,7 @@
       :show-foot="card.showFoot"
       :border="card.border"
     >
-      <view slot="body">
+      <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.user_id.label" prop="user_id">
             <select2
@@ -22,18 +22,18 @@
             />
           </u-form-item>
         </u-form>
-      </view>
-      <view slot="foot">
+      </view></template>
+      <template #foot><view >
         <u-button @click="handleSubmit" type="primary">提交</u-button>
-      </view>
+      </view></template>
     </u-card>
     <permit-checker :authKey="permitChecker.authKey" ></permit-checker>
   </view>
 </template>
 
 <script>
-  import _ from "lodash";
-  import { leadCommonApi, customerCommonApi } from 'services/http';
+  import _ from 'lodash';
+  import { leadCommonApi, customerCommonApi } from '@/services/http';
 
   export default {
     data() {
@@ -130,7 +130,7 @@
         this.form.model.user_id = value;
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { form: { model: values }} = this;
             this.handleSave({ values });

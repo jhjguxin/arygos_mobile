@@ -11,42 +11,49 @@
     v-if="model.id"
     class="u-m-t-10 u-m-b-10"
   >
-    <u-row slot="body" class="u-p-l-10 u-p-r-10">
-      <view class="article-content">
-        <rich-text :nodes="model.content"></rich-text>
-      </view>
+    <template #body><u-row class="u-p-l-10 u-p-r-10">
+      <u-col span="12">
+        <view class="article-content">
+          <rich-text :nodes="model.content"></rich-text>
+        </view>
+      </u-col>
 
-      <u-row class="u-m-t-20 u-font-sm u-border-top u-border-bottom" style="width: 100%">
-        <u-col span="12">
-          附件:
-          <u-link
-            :href="item.file_url"
-            v-for="(item, index) in (model.attachments)"
-            class="u-m-r-10 u-m-l-10"
-            :key="index"
-          >{{item.file_file_name}}</u-link>
-        </u-col>
-        <u-col span="12" class="u-m-t-10">
-          标签:
-          <u-tag
-            :text="tag"
-            v-for="tag in (model.tags)"
-            class="u-m-r-10 u-m-l-10"
-            :key="tag"
-          ></u-tag>
-        </u-col>
-      </u-row>
+      <u-col span="12">
+        <u-row class="u-m-t-20 u-font-sm u-border-top u-border-bottom">
+          <u-col span="12">
+            附件:
+            <u-link
+              :href="item.file_url"
+              :text="item.file_file_name"
+              v-for="(item, index) in (model.attachments)"
+              class="u-m-r-10 u-m-l-10"
+              :key="index"
+            ></u-link>
+          </u-col>
+          <u-col span="12" class="u-m-t-10">
+            标签:
+            <u-tag
+              :text="tag"
+              v-for="tag in (model.tags)"
+              class="u-m-r-10 u-m-l-10"
+              :key="tag"
+            ></u-tag>
+          </u-col>
+        </u-row>
+      </u-col>
 
-      <u-row class="u-m-t-20 u-font-xs "style="width: 100%">
-        <u-col span="6">
-          创建时间：{{model.createdAt}}
-        </u-col>
-        <u-col span="6">
-          更新时间：{{model.updatedAt}}
-        </u-col>
-      </u-row>
-    </u-row>
-    <view slot="foot">
+      <u-col span="12">
+        <u-row class="u-m-t-20 u-font-xs">
+          <u-col span="6">
+            创建时间：{{model.createdAt}}
+          </u-col>
+          <u-col span="6">
+            更新时间：{{model.updatedAt}}
+          </u-col>
+        </u-row>
+      </u-col>
+    </u-row></template>
+    <template #foot><view >
       <u-row gutter="10" class="u-font-sm">
         <u-col span="4">
           版块: {{model.knowledge_section.name}}
@@ -58,7 +65,7 @@
           发布人: {{model.user.name}}
         </u-col>
       </u-row>
-    </view>
+    </view></template>
   </u-card>
  </view>
 </template>
@@ -66,7 +73,7 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { knowledgeArticleApi } from 'services/http';
+  import { knowledgeArticleApi } from '@/services/http';
 
   export default {
     data() {

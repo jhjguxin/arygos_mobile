@@ -1,6 +1,7 @@
 <template>
     <u-popup
-      v-model="popup.show" :mode="popup.mode" :width="popup.width"
+      v-model:show="popup.show" :mode="popup.mode"
+      :custom-style="{width: width}"
       @close="handlePopupClose"
     >
       <u-card
@@ -9,42 +10,40 @@
         :padding="card.padding"
         :show-foot="card.showFoot"
       >
-        <view slot="body">
+        <template #body><view >
           <uni-list
             class="sales-activity-comment-list"
            >
-            <u-swipe-action
-              v-for="(item, index) in models"
-              v-bind:key="item.id"
-              :show="item.swipeAction.show" :index="index"
-              @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-              :options="swipeAction.options"
-            >
-              <uni-list-item
-                :title="item.user.name" :note="item.content"
+            <u-swipe-action :autoClose="true">
+              <u-swipe-action-item
+                v-for="(item, index) in models"
+                :key="item.id"
+                v-model:show="item.swipeAction.show" :name="index"
+                @click="handleSwipActionClick"
+                :options="swipeAction.options"
               >
-                <view slot="body"  class="uni-list-item__content">
-                  <u-row>
-                    <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
-                    <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
-                  </u-row>
-                  <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
-                </view>
-              </uni-list-item>
+                <uni-list-item
+                  :title="item.user.name" :note="item.content"
+                >
+                  <template #body><view class="uni-list-item__content">
+                    <u-row>
+                      <u-col span="4" class="u-padding-left-0 uni-list-item__content-title u-font-sm">{{ item.user.name }}</u-col>
+                      <u-col span="8" text-align="right" class="u-font-xs">{{item.createdAt}}</u-col>
+                    </u-row>
+                    <text class="uni-list-item__content-note u-font-sm">{{ item.content }}</text>
+                  </view></template>
+                </uni-list-item>
+              </u-swipe-action-item>
             </u-swipe-action>
-            <u-loading mode="circle" v-if="isLoading"></u-loading>
+            <u-loading-icon mode="circle" v-if="isLoading" />
           </uni-list>
           <u-form :model="form.model" ref="uForm" :error-type="form.errorType" class="u-padding-16">
             <u-form-item prop="content">
-              <u-input
-                v-model="form.model.content" type="textarea"
-                placeholder="内容"
-                border
-              />
+              <u-textarea v-model="form.model.content" placeholder="内容" border />
             </u-form-item>
           </u-form>
           <u-button type="primary" @click="handleSubmitClick">评论</u-button>
-        </view>
+        </view></template>
       </u-card>
     </u-popup>
 </template>
@@ -52,19 +51,23 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { salesActivityApi } from 'services/http';
+  import { salesActivityApi } from '@/services/http';
 
   export default {
+  emits: ['close'],
+  props: {
+      sales_activity_id: { type: [String, Number] },
+      width: { type: String, default: "90vw" }
+  },
+
     data() {
-      let { sales_activity_id, width = "85%" } = this.$attrs;
+      /* moved to props */
 
       return {
-        sales_activity_id,
         models: [],
         popup: {
           show: false,
           mode: "right",
-          width
         },
         card: {
           margin: "0 0",
@@ -82,7 +85,7 @@
           ]
         },
         form: {
-          errorType: ['toast', 'border'],
+          errorType: 'toast',
           rules: {
             content: [
               {
@@ -97,7 +100,7 @@
               }
             ]
           },
-          model: {}
+          model: { content: "" }
         },
         isLoading: false,
       };
@@ -106,10 +109,10 @@
     },
     methods: {
       fetchListData () {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
 
         this.isLoading = true;
-        salesActivityApi.comments({ id }).then((res)=> {
+        salesActivityApi.comments({ id: this.sales_activity_id }).then((res)=> {
           let {
             data: {
               data: {
@@ -132,11 +135,11 @@
         })
       },
       createComment() {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
         let { form: {model: { content }} } = this;
 
         let params = {
-          sales_activity: {id},
+          sales_activity: { id: this.sales_activity_id },
           sales_activity_comment: { content }
         };
         salesActivityApi.comment(params).then((res)=> {
@@ -166,14 +169,14 @@
         })
       },
       doDestroy ({comment_id}) {
-        let { sales_activity_id: id } = this.$attrs;
+        /* moved to props */
 
         let params = {
-          sales_activity: {id},
+          sales_activity: { id: this.sales_activity_id },
           comment_id
         };
 
-        if (_.isNumber(id)) {
+        if (_.isNumber(this.sales_activity_id)) {
           salesActivityApi.destroy_comment(params).then((res) => {
             let { data: {code, remark}} = res;
             if (code == 0) {
@@ -195,36 +198,27 @@
         this.fetchListData();
 
         // REVIEW 显示的时候才会渲染 form
-        _.delay(()=> {
-          this.$refs.uForm.setRules(this.form.rules);
-        }, 100)
+        this.$nextTick(() => {
+          this.$refs.uForm?.setRules(this.form.rules);
+        });
       },
       handleSubmitClick () {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             this.createComment();
           }
         });
       },
-      handleSwipeActionOpen (index) {
-        let { models } = this;
-        models = _.each(models, (item) => {
-          item.swipeAction.show = false;
-        });
-        models[index].swipeAction.show = true;
-
-        this.models = models;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { models } = this;
-          let comment_id = models[index]?.id;
+          let comment_id = models[name]?.id;
           this.doDestroy({comment_id})
         }
       },
       handlePopupClose () {
-        let { models = [] } = this;
-        this.$emit("close", models.length)
+        const count = Array.isArray(this.models) ? this.models.length : 0;
+        this.$emit("close", count)
       }
     }
   }

@@ -12,7 +12,7 @@
           klassName="User"
           placeholder="请选择用户"
           mode="selector"
-          perPage = "5"
+          :perPage="5"
           :value="filters.user"
           @select="handleUserSelect"
         />
@@ -30,14 +30,13 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   export default {
+    props: {
+      filters: { default: () => ({}) }
+    },
     data() {
-      let {
-        filters = {},
-      } = this.$attrs;
-
       return {
-        filters,
         formReady: false
       };
     },

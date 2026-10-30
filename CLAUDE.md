@@ -4,13 +4,14 @@
 
 ## 项目概述
 
-Arygos CRM 移动端应用，基于 **uni-app (Vue 2)** 构建，面向 H5、Android、iOS 和微信小程序。
+Arygos CRM 移动端应用，基于 **uni-app (Vue 3)** 构建，面向 H5、Android、iOS 和微信小程序。状态管理为 **Pinia**，UI 库为 **uview-plus**，底层编译器为 **Vite**（HBuilderX 内置）。
 
 ## 开发环境
 
-- **IDE**：HBuilderX 为主开发工具。需启用 Sass/SCSS 插件（工具 → 插件安装 → Sass）。
+- **IDE**：HBuilderX 为主开发工具（`manifest.json` 中 `vueVersion: "3"`）。需启用 Sass/SCSS 插件（工具 → 插件安装 → Sass）。
 - **开发服务器**：H5 开发服务器通过 HBuilderX 运行。代理配置在 `manifest.json` 的 `h5.devServer` 中。
-- **无 npm 构建脚本**——项目通过 HBuilderX 或 uni-app CLI 构建（`package.json` 中未定义 `npm run dev:*` / `npm run build:*`）。
+- **无 npm 构建脚本**——项目通过 HBuilderX 或 uni-app CLI 构建（`package.json` 中未定义 `npm run dev:*` / `npm run build:*`）。`node_modules` 仅存放运行时库（uview-plus、pinia、lodash、dayjs、qs 等）。
+- **Vite 约束**：底层编译器为 Vite——全部使用 ESM（禁止 `require()`），环境变量用 `import.meta.env`，第三方库（lodash、qs 等）必须显式 `import`。
 
 ## 架构
 
@@ -32,31 +33,38 @@ services/http/
   import { leadApi } from '@/services/http';
   leadApi.index({ page: 1 }).then(res => { ... });
   ```
-- 认证令牌通过请求头发送：`Authorization: Bearer token="<token>", device="h5"`
+- 认证令牌通过请求头发送：`Authorization: Bearer token="<token>", device="h5"`。令牌从 Pinia 读取（`useStore().getAuthToken`）。
 - API 基础地址来自 `config`（开发环境 `config/default.js`，生产环境 `config/production.js`——后者已被 gitignore）。
 - 令牌过期（HTTP 100401）会自动触发 `uni.clearStorage()`。
 
-### 状态管理 (Vuex)
+### 状态管理 (Pinia)
 
 ```
-store/module/
-├── auth/userModule.js              # authToken, hasLogin, userData
-├── permission/permissionModule.js  # 权限列表
-└── filterColumn/filterColumnModule.js  # 列表页筛选列状态
+store/
+├── index.js   # createPinia + pinia-plugin-persistedstate；导出 useStore()
+└── app.js     # 唯一的 useAppStore：auth / permission / filterColumn 三块 state
 ```
 
-- 通过 `vuex-persistedstate` 持久化到设备存储，键名为 `crm:vuex:storage`。
-- 通过 `this.$store.getters.getAuthToken`、`getHasLogin`、`getUser` 访问。
+- 持久化通过 `pinia-plugin-persistedstate` + 自定义 `uni.getStorageSync`/`uni.setStorageSync` 适配器，存储键为 `crm:pinia:storage`。
+- Getters：`getAuthToken`、`getHasLogin`、`getUser`、`getPermissions`、`getFilterColumns(name)`。Actions：`login(user)`、`logout()`、`setPermissions(...)`、`setFilterColumns(...)`。
+- **统一访问方式**（组件和服务层相同）：
+  ```js
+  import { useStore } from '@/store';
+  const token = useStore().getAuthToken;
+  ```
+  `useStore()` 显式绑定到本项目的 pinia 实例，因此服务层/HTTP 层可在 `getActivePinia()` 就绪前调用。
 - 在组件中检查权限：用 `<permit-checker>` 组件包裹内容，或编程式调用 `Policy.checkPermission({ subject, action, authKey })`。
 
 ### 配置
 
 ```
 config/
-├── index.js          # 根据 NODE_ENV 切换 default/production
+├── index.js          # 按 import.meta.env.MODE 切换 default/production
 ├── default.js        # 开发环境配置 { debug: true, API_HOST: 'http://localhost:3030' }
-├── production.js     # 生产环境配置（已 gitignore；参见 .example）
+└── production.js     # 生产环境配置（已 gitignore；参见 .example）
 ```
+
+`config/index.js` 通过 `import.meta.glob('./production.*')` 惰性加载生产配置——production.js 缺失时（新克隆仓库）不会导致编译报错。
 
 ### 页面组织
 
@@ -73,21 +81,24 @@ config/
 **easycom 自动导入**（在 `pages.json` 中配置）：
 | 前缀 | 解析路径 |
 |---|---|
-| `u-*` | `uview-ui/components/u-*/u-*.vue` |
+| `up-*` / `u-*` | `uview-plus/components/u-*/u-*.vue` |
+| `uni-section` | `@/components/uni-section/uni-section.vue`（本地覆写） |
 | `uni-*` | `@dcloudio/uni-ui/lib/uni-*/uni-*.vue` |
 | `form-*` | `@/components/custom_form/fields/form-*.vue` |
-| `custom-form` | `@/components/custom_form/custom-form` |
-| `column-filter-*` | `@/components/column-filter-form/fields/column-filter-*.vue` |
-| `report-filter-*` | `@/components/report-filter-field/report-filter-*.vue` |
+| `custom-form` / `custom-form-field` / `collapse-custom-field` | `@/components/custom_form/` |
+| `column-filter-form` / `column-filter-*` | `@/components/column-filter-form/` |
+| `report-filter-form` / `report-filter-*` | `@/components/report-filter-form/`、`@/components/report-filter-field/` |
 
 **元数据驱动的表单系统 (`custom_form/`)：** 表单/筛选/展示 UI 完全由元数据驱动——后端定义字段类型、标签、校验规则和选项；前端渲染对应控件，无需硬编码各字段逻辑。
 
 - **`custom-form.vue`**——容器组件：接收 `klassName`（如 `"Contact"`、`"Contract"`），通过 `CustomFieldForm` 获取表单专用自定义字段，逐字段渲染 `custom-form-field`，提交时发出携带清洗后数据的 `submit` 事件。
 - **`custom-form-field.vue`**——字段分发器：由于 uni-app 不支持动态组件，通过 `v-if`/`v-else-if` 链覆盖 17 种字段类型（文本、选择、日期、文件、地址等）。
 - **`getFormField.js`**——将 `field_type` 字符串映射到组件名称。
-- **`parseRule.js`**——按字段类型构建 uView async-validator 校验规则（必填、最大长度、正则、范围）。
+- **`parseRule.js`**——按字段类型构建 uview-plus async-validator 校验规则（必填、最大长度、正则、范围）。
 - **`parseInitialValue.js`** / **`parseCustomField.js`**——在 API 记录格式与表单模型格式之间转换。
-- 组件通过 `this.$attrs`（而非 `props`）接收属性，这是非惯用写法但能与 uni-app 编译兼容。
+- 组件使用**显式 `props` 声明**（配合 `setup()` + `toRef` 透传），不通过 `$attrs` 隐式传参。
+- 表单校验统一使用 Promise 风格：`this.$refs.uForm.validate().then(valid => { ... })`。
+- 表单字段组件统一使用 `v-model` 双向绑定。
 
 **页面 CRUD 模式详情：**
 - **列表页**：加载时获取 `CustomField` 以确定显示哪些列。下拉刷新重新加载第 1 页，滚动到底部追加后续页面。列筛选器变更时发出 `{name, op, value}`。
@@ -119,23 +130,24 @@ config/
 - 下载地址：`GET /api/qiniu/auth/download_url`（无需认证）
 - 附件回调：`POST /api/v2/qiniu/attachments/callback`（无需认证）
 - 创建附件：`POST /api/v2/qiniu/attachments`（需认证）
+- `attachment-upload` 组件基于 uview-plus 的 `u-upload` API（上传成功后直接使用回调 event 本身作为响应数据，而非 `event.data`）。
 
 ### 图表
 
-uCharts v1.9.6 位于 `js_sdk/u-charts/`——uni-app 跨平台图表库。通过 Vue 组件包装器 `u-charts.vue` 导入。
+uCharts v1.9.6 位于 `js_sdk/u-charts/u-charts/`（注意是两层同名目录），通过同目录的 Vue 组件包装器 `u-charts.vue` 导入。报表页面（`pages/report/*`）均基于此包装器。
 
 ### UI 库
 
-- **uView UI** v1.8.4——主要组件库（表单、列表、导航等）
-- **@dcloudio/uni-ui** v1.4.7——uni-app 官方补充组件
-- SCSS 通过 `uni.scss` + uView 主题系统
+- **uview-plus** ^3.8.0——主要组件库（uView 的 Vue 3 版本）
+- **@dcloudio/uni-ui** ^1.5.0——uni-app 官方补充组件
+- SCSS：`uni.scss` 引入 `uview-plus/theme.scss`；`App.vue` 引入 `uview-plus/index.scss`，并包含全局 `u-tr`/`u-td` flex 等高修复（解决 uview-plus 表格单元格不等高 bug）。
 
 ## 认证流程
 
-1. `App.vue` 的 onLaunch 检查 store 中的 `getHasLogin`
+1. `App.vue` 的 onLaunch 通过 `useStore().getHasLogin` 检查登录状态
 2. 如过期/缺失 → 跳转到 `pages/auth/login/login`
-3. 登录调用 `authApi.login()` → 成功后调用 `Auth.login(user)`，dispatch 到 Vuex 并获取权限和特性标识
-4. 令牌存储在 Vuex（持久化到 uni.storage），所有需认证的请求都附带该令牌
+3. 登录调用 `authApi.login()` → 成功后调用 `Auth.login(user)`，写入 Pinia store 并获取权限和特性标识
+4. 令牌存储在 Pinia（通过持久化插件写入 uni.storage），所有需认证的请求都附带该令牌
 
 ## 部署 (H5)
 
@@ -146,9 +158,19 @@ scp -r -P40022 unpackage/dist/build/h5/* crm_deploy@crm-private.ikcrm.com:/data0
 
 ## 已知约束
 
-- **仅支持 Vue 2**——此项目不支持 uni-app 的 Vue 3。
-- **不支持动态组件**——uni-app 不支持 `<component :is="...">`。
+- **仅支持 Vue 3**——`this.$set`/`this.$delete`、`filters` 过滤器等不可用；直接赋值即响应式。
+- **不支持动态组件**——uni-app 不支持 `<component :is="...">`（custom-form-field 因此使用 `v-if` 链分发）。
+- **模块规范**——全 ESM；lodash/qs/dayjs 等必须显式 import；导入路径使用 `@/` 别名或带扩展名的相对路径（Vite 下 bare import 相对路径易出错）。
+- **props 规范**——所有组件 props 必须带类型声明（`{ type: String }` 等）；props 不得与 data/computed 同名（Vue 3 会警告）；不得直接修改 props（只读），需要变更时 emit 事件或复制到本地状态。
+- **模板严格模式**——`v-for` 别名不得与外层作用域变量重复声明（如嵌套 `v-for` 都叫 `item` 会编译报错）。
+- **uview-plus 组件用法**（以 uview-plus 官方文档为准）：
+  - 多行文本用 `u-textarea`（`u-input` 不支持 `type="textarea"`）
+  - 时间选择用 `u-datetime-picker`
+  - `u-link` 通过 `text` prop 传文字（不使用默认 slot）
+  - `uForm.validate()` 返回 Promise
+  - `u-input` 的 `border` prop 为 String 类型
 - **请求数据不支持嵌套数组**——HTTP 层在 GET 请求中将参数通过 `qs.stringify({ arrayFormat: 'brackets' })` 序列化后拼接到 URL。
 - **null 值**在微信小程序中可能引发问题——HTTP 层中有被注释掉的 null 值替换逻辑。
 - `uni.scss` 定义了全局 SCSS 变量，整个应用都在使用。
-- **Bug：`userModule.js` 的 logout action** 调用的是 `commit("login")` 而非 `commit("logout")`——logout mutation 从未触发。`Auth.logout()` 服务方法通过直接调用 `uni.clearStorage()` 绕过了此问题。
+- `Auth.logout()` 直接调用 `uni.clearStorage()` 清空全部本地存储（含 Pinia 持久化数据）。
+- **组件风格混用**——多数组件为 Options API，部分组件使用 `setup()`，修改时先看清组件用的是哪种风格。

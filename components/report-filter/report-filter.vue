@@ -15,15 +15,12 @@
 
 <script>
   export default {
+    props: {
+      filters: { default: () => ({}) },
+      filterColumns: { default: () => ({}) }
+    },
     data() {
-      let {
-        filters = {},
-        filterColumns = {}
-      } = this.$attrs;
-
       return {
-        filterColumns,
-        filters
       };
     },
     methods: {

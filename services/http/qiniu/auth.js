@@ -1,4 +1,4 @@
-import http from './../interface';
+import http from '@/services/http/interface';
 
 const upload_token = (data = {}) => {
   return http.request({

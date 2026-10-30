@@ -12,12 +12,13 @@
 </template>
 
 <script>
-  import CustomFieldForm from 'services/custom_field_form';
-  import Auth from 'services/auth';
+  import _ from 'lodash';
+  import CustomFieldForm from '@/services/custom_field_form';
+  import Auth from '@/services/auth';
   import {
     invoicedPaymentApi,
     contractApi
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {
@@ -47,8 +48,8 @@
       this.contractId = contractId;
       await this.setContract();
 
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `新增${featureLabels[_.snakeCase(klassName)]}`

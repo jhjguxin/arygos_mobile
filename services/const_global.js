@@ -2,8 +2,8 @@
  * 来自于服务端的一些全局配置
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { constantApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { constantApi } from '@/services/http/index';
 
 export default class ConstGlobal {
   static _instance = null;

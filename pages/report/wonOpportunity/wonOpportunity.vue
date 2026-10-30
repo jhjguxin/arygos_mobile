@@ -25,12 +25,12 @@
 
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
-  import uCharts from '../../../js_sdk/u-charts/u-charts/u-charts.js';
+  import uCharts from '@/js_sdk/u-charts/u-charts/u-charts.js';
 
-  import { reportCenterApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { reportCenterApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -78,18 +78,18 @@
       // 初始化页面数据
       this.fetchData();
     },
+
+    async onPullDownRefresh() {
+      this.filters = {
+      };
+      await this.fetchData();
+      uni.setNavigationBarTitle({
+        title: `赢单${featureLabels['opportunity']}汇总`
+      })
+      uni.stopPullDownRefresh();
+    },
     methods: {
-      async onPullDownRefresh() {
-        this.filters = {
-        };
-        await this.fetchData();
 
-        uni.setNavigationBarTitle({
-          title: `赢单${featureLabels['opportunity']}汇总`
-        })
-
-        uni.stopPullDownRefresh();
-      },
       fetchData(){
         let { filters } = this;
 
@@ -230,10 +230,10 @@
     background-color: #FFFFFF;
   }
   .table-container {
-    width: 60vh;
+    width: 60vw;
     overflow-x: scroll;
   }
   .table-container .table {
-    width: 75vh;
+    width: 75vw;
   }
 </style>

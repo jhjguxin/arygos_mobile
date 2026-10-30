@@ -1,20 +1,15 @@
-import Vue from 'vue';
-import App from './App';
-import uView from 'uview-ui';
-import store from './store';
+import { createSSRApp } from 'vue'
+import App from '@/App'
+import uviewPlus from 'uview-plus'
+import { pinia } from '@/store'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
 
-import dayjs from 'dayjs';
-require('dayjs/locale/zh-cn');
+dayjs.locale('zh-cn')
 
-Vue.config.productionTip = false
-Vue.prototype.$store = store;
-Vue.use(uView);
-
-App.mpType = 'app';
-
-dayjs.locale('zh-cn');
-
-const app = new Vue({
-  ...App
-})
-app.$mount()
+export function createApp() {
+  const app = createSSRApp(App)
+  app.use(pinia)
+  app.use(uviewPlus)
+  return { app }
+}

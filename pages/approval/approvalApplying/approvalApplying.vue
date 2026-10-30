@@ -10,15 +10,10 @@
       :border="card.border"
        v-if="form.model"
     >
-      <view slot="body">
+      <template #body><view >
         <u-form :model="form.model" label-width="160" ref="uForm">
           <u-form-item :label="form.item.note.label" prop="note">
-            <u-input
-              v-model="form.model.note"
-              :placeholder="form.item.note.placeholder"
-              type="textarea"
-              :auto-height="form.item.note.autoHeight"
-            />
+            <u-textarea v-model="form.model.note" :placeholder="form.item.note.placeholder" :autoHeight="form.item.note.autoHeight" />
           </u-form-item>
           <u-form-item :label="form.item.notify_users.label" prop="notify_users">
             <select2
@@ -31,18 +26,18 @@
             />
           </u-form-item>
         </u-form>
-      </view>
-      <view slot="foot">
+      </view></template>
+      <template #foot><view >
         <u-button @click="handleSubmit" type="primary">提交</u-button>
-      </view>
+      </view></template>
     </u-card>
   </view>
 </template>
 
 <script>
-  import _ from "lodash";
-  import { approvalApi } from 'services/http';
-  import ApprovalSetting from 'services/approval_setting';
+  import _ from 'lodash';
+  import { approvalApi } from '@/services/http';
+  import ApprovalSetting from '@/services/approval_setting';
 
   export default {
     data() {
@@ -150,7 +145,7 @@
         this.form.model.notify_users = value;
       },
       handleSubmit() {
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
 
           if (valid) {
             let { form: { model: values }} = this;

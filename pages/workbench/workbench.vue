@@ -4,14 +4,14 @@
     <uni-section title="营销管理" type="line"></uni-section>
     <u-grid :col="4" :border="true">
       <u-grid-item>
-        <u-icon name="zhuanfa" :size="46"></u-icon>
+        <u-icon name="chat-fill" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">社交推广</view>
       </u-grid-item>
     </u-grid>
     <uni-section title="销售管理" type="line"></uni-section>
     <u-grid :col="4" :border="true">
       <u-grid-item @click="handleItemClick($event, '/pages/lead/leadList/leadList', 'lead#show')">
-        <u-icon name="share-fill" :size="46"></u-icon>
+        <u-icon name="share-fill" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["lead"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/leadCommon/leadList/leadList', 'lead#show_lead_common')">
@@ -19,7 +19,7 @@
         <view class="grid-text">{{this.featureLabels["lead_common"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/customer/customerList/customerList', 'customer#show')">
-        <u-icon name="account-fill" :size="46"></u-icon>
+        <u-icon name="account-fill" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["customer"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/customerCommon/customerList/customerList', 'customer#show_customer_common')">
@@ -31,11 +31,11 @@
         <view class="grid-text">{{this.featureLabels["contact"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/opportunity/opportunityList/opportunityList', 'opportunity#show')">
-        <u-icon name="rmb" :size="46"></u-icon>
+        <u-icon name="rmb" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["opportunity"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/contract/contractList/contractList', 'contract#show')">
-        <u-icon name="order" :size="46"></u-icon>
+        <u-icon name="order" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["contract"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/receivedPaymentCenter/receivedPaymentCenter')">
@@ -47,7 +47,7 @@
         <view class="grid-text">审批</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/product/productList/productList', 'product#show')">
-        <u-icon name="bag-fill" :size="46"></u-icon>
+        <u-icon name="bag-fill" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["product"]}}</view>
       </u-grid-item>
     </u-grid>
@@ -62,7 +62,7 @@
         <view class="grid-text">{{this.featureLabels["schedule_report"]}}</view>
       </u-grid-item>
       <u-grid-item @click="handleItemClick($event, '/pages/wiki/knowledgeArticleList/knowledgeArticleList', 'knowledge_article#show')">
-        <u-icon name="zhihu" :size="46"></u-icon>
+        <u-icon name="zhihu" :size="46" :color="iconColor"></u-icon>
         <view class="grid-text">{{this.featureLabels["knowledge_article"]}}</view>
       </u-grid-item>
     </u-grid>
@@ -70,26 +70,24 @@
 </template>
 
 <script>
-  import {
-    mapGetters,
-    mapState,
-    mapMutations
-  } from 'vuex';
-  import Policy from 'services/policy';
-  import Feature from 'services/feature';
-  import ApprovalSetting from 'services/approval_setting';
+  import Policy from '@/services/policy';
+  import Feature from '@/services/feature';
+  import ApprovalSetting from '@/services/approval_setting';
+  import { useStore } from '@/store';
+  import _ from 'lodash';
 
   export default {
     data() {
       return {
         featureLabels: {},
-        showApprovalList: false
+        showApprovalList: false,
+        iconColor: '#333'
       }
     },
     onShow () {
       console.debug('显示工作台');
 
-      let { getters: {getHasLogin: hasLogin } } = this.$store;
+      const hasLogin = useStore().getHasLogin;
 
       // 检查用户登陆状态
       if (hasLogin) {

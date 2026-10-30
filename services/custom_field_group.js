@@ -3,8 +3,8 @@
  * 线索客户等自定义字段数据
  */
 import _ from 'lodash';
-import { CacheStore } from './../common/utils';
-import { constantApi } from './http/index';
+import { CacheStore } from '@/common/utils';
+import { constantApi } from '@/services/http/index';
 
 export default class  CustomFieldGroup {
   static _instance = null;

@@ -25,17 +25,21 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import {
     leadApi,
     customerApi,
     opportunityApi,
     contractApi
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
+  props: {
+      klassName: { type: String }
+  },
+
     data() {
-      let { klassName } = this.$attrs;
+      /* moved to props */
 
       return {
         klassName: klassName,
@@ -102,9 +106,9 @@
           });
       
           if (page > 1) {
-            this.$set(this, "list", _.concat(this.list, list));
+            this.list = _.concat(this.list, list);
           } else {
-            this.$set(this, "list", list);
+            this.list = list;
           }
         })
       },

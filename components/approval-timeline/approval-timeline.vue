@@ -1,41 +1,38 @@
 <template>
-  <view class="approval-timeline" :style="style">
-    <u-time-line class="timeLine" v-if="approve_status != 'await_sumbit'">
+  <view class="approval-timeline" :style="rootStyle">
+    <u-steps direction="column" class="timeLine" v-if="approve_status != 'await_sumbit'">
       <!-- 申请节点 -->
-      <u-time-line-item
-        nodeTop="2"
-      >
-        <template v-slot:node>
+      <u-steps-item>
+        <template #icon>
           <view class="u-node" :style="node.applying.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="info-circle-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
-                {{approvalDetail.applier.name}}<text class="u-m-l-10 u-type-primary">发起人</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.submitApplyingAt}}</text>
+                {{approvalDetail.applier.name}}<text class="u-m-l-10 u-type-primary">发起人</text>  <text class="u-m-l-10 u-type-info">{{submitApplyingAt}}</text>
               </view>
               <view class="u-font-sm">
-                <text class="u-type-primary u-m-r-10">发起审批</text> 审批通过后抄送给：<text class="u-m-l-10 u-type-info">{{approvalDetail.notifyUserNames}}</text>
+                <text class="u-type-primary u-m-r-10">发起审批</text> 审批通过后抄送给：<text class="u-m-l-10 u-type-info">{{notifyUserNames}}</text>
               </view>
             </view>
         </template>
-      </u-time-line-item>
+      </u-steps-item>
       
       <!-- 审批步骤 -->
-      <u-time-line-item
-        nodeTop="2"
-          v-for="(step, index) in node.steps" :key="step.level"
+      <u-steps-item
+        v-for="(step, index) in node.steps" :key="step.level"
         v-if="node.steps.length > 0"
       >
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="step.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon :name="step.node.icon" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
                 <text class="u-type-primary">{{step.level}}级审批 </text>  <text class="u-m-l-10 u-type-primary">{{step.type_display}}</text>  <text class="u-m-l-10 u-type-info">{{step.approvers.join(", ")}}</text>
@@ -48,22 +45,21 @@
               </view>
             </view>
         </template>
-      </u-time-line-item>
+      </u-steps-item>
       <!-- 审批结果 -->
-      <u-time-line-item
-        nodeTop="2"
+      <u-steps-item
         v-if="isApproveFinished"
       >
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="node.result.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon :name="node.result.icon" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
             <view class="u-padding-10">
               <view class="u-font-sm u-line-2">
-                <text class="u-type-primary">结束</text>  <text class="u-m-l-10 u-type-info">{{approvalDetail.finishApproveAt}}</text>
+                <text class="u-type-primary">结束</text>  <text class="u-m-l-10 u-type-info">{{finishApproveAt}}</text>
               </view>
               <view class="u-font-sm">
                 <text class="u-type-success" v-if="approve_status == 'approved'">审批通过</text>
@@ -71,33 +67,31 @@
               </view>
             </view>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
     <u-empty v-else text="待提交审批" mode="history"></u-empty>
   </view>
 </template>
 
 <script>
-  import ApprovalSetting from 'services/approval_setting';
+  import _ from 'lodash';
+  import ApprovalSetting from '@/services/approval_setting';
   import dayjs from 'dayjs';
+  import { computed } from 'vue';
 
   export default {
+  props: {
+      rootStyle: { type: String, default: "height: 55vh;" },
+      approvalDetail: { type: Object }
+  },
+
     name:"approval-timeline",
     data() {
-      let { style = "height: 55vh;", approvalDetail } = this.$attrs;
-
-      approvalDetail = {
-        ...approvalDetail,
-        submitApplyingAt: approvalDetail.submit_applying_at ? dayjs(approvalDetail.submit_applying_at).format("YYYY-MM-DD HH:mm") : null,
-        finishApproveAt: approvalDetail.finish_approve_at ? dayjs(approvalDetail.finish_approve_at).format("YYYY-MM-DD HH:mm") : null,
-        notifyUserNames: _.map(approvalDetail.notify_users, "name").join(", ")
-      };
+      const { approvalDetail } = this;
 
       return {
-        approvalDetail,
         approve_status: approvalDetail?.approve_status,
         isApproveFinished: _.includes(["approved", "rejected"], approvalDetail?.approve_status),
-        style,
         node: {
           applying: {
             style: "background: green"
@@ -107,6 +101,19 @@
             style: "background: green"
           },
         }
+      };
+    },
+    setup(props) {
+      return {
+        submitApplyingAt: computed(() =>
+          props.approvalDetail?.submit_applying_at ? dayjs(props.approvalDetail.submit_applying_at).format("YYYY-MM-DD HH:mm") : null
+        ),
+        finishApproveAt: computed(() =>
+          props.approvalDetail?.finish_approve_at ? dayjs(props.approvalDetail.finish_approve_at).format("YYYY-MM-DD HH:mm") : null
+        ),
+        notifyUserNames: computed(() =>
+          _.map(props.approvalDetail?.notify_users || [], "name").join(", ")
+        )
       };
     },
     async mounted() {

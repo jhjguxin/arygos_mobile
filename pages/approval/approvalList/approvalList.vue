@@ -17,14 +17,14 @@
         v-bind:key="item.id"
         :index="index"
       >
-        <u-card
-          class="item-body" slot="body" :title="item.approvable.name"
+        <template #body><u-card
+          class="item-body" :title="item.approvable.name"
           :border="card.border" :sub-title="item.applier.name" :full="card.full"
           :show-head="card.showHead" :show-foot="card.showFoot"
           :margin="card.margin"  :padding="card.padding"
           @click="handleItemClick($event, item)"
         >
-          <view slot="body">
+          <template #body><view >
             <u-row gutter="10" v-if="approvalTabs.current == 0">
               <u-col span="3" text-align="right" class="u-font-xs">
                 层级
@@ -59,18 +59,18 @@
                 {{item.finishApproveAt}}
               </u-col>
             </u-row>
-          </view>
-          <view slot="foot">
-          </view>
-        </u-card>
+          </view></template>
+          <template #foot><view >
+          </view></template>
+        </u-card></template>
 
-        <u-row class="item-footer" slot="footer" gutter="0" align="center">
+        <template #footer><u-row class="item-footer" gutter="0" align="center">
           <u-tag :text="item.approveStatusDisplay" v-if="item.approveStatusDisplay"/>
-        </u-row>
+        </u-row></template>
       </uni-list-item>
     </uni-list>
     <uni-load-more :status="status" v-if="!allModuleDisable" />
-    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top" v-if="! allModuleDisable"></u-back-top>
+    <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top" v-if="! allModuleDisable"></u-back-top>
     <u-empty v-if="allModuleDisable" text="没有开启审批的模块，审批不可用" mode="list"></u-empty>
 
   </view>
@@ -79,10 +79,10 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { approvalApi } from 'services/http';
-  import CustomField from 'services/custom_field';
-  import ApprovalSetting from 'services/approval_setting';
-  import Feature from 'services/feature';
+  import { approvalApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
+  import ApprovalSetting from '@/services/approval_setting';
+  import Feature from '@/services/feature';
 
   export default {
     components: {},
@@ -154,32 +154,36 @@
         this.fetchApproval({reload: true })
       }
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchApproval({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchApproval({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchApproval({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchApproval({ page });
+      }
+    },
+    methods: {
+
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false
@@ -248,7 +252,7 @@
         })
 
       },
-      handleTabChange (index) {
+      handleTabChange (item, index) {
         let { approvalTabs } = this;
 
         approvalTabs.current = index;

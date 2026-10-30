@@ -12,10 +12,11 @@
 </template>
 
 <script>
-  import CustomFieldForm from 'services/custom_field_form';
+  import _ from 'lodash';
+  import CustomFieldForm from '@/services/custom_field_form';
   import {
     opportunityApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {
@@ -36,9 +37,9 @@
       let model = await this.doBuildcontract({ id: opportunityId });
 
       this.opportunityId = opportunityId;
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "record", model);
-      if (model) this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.record = model;
+      if (model) this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `转${featureLabels.contract}`

@@ -1,5 +1,7 @@
-import {config} from 'config';
-const qs = require('qs');
+import {config} from '@/config';
+import { useStore } from '@/store';
+import _ from 'lodash';
+import qs from 'qs';
 
 /**
  * 通用uni-app网络请求
@@ -8,7 +10,7 @@ const qs = require('qs');
 
 /*
 // 开放的接口
-import http from './interface'
+import http from '@/services/http/interface'
 
 http.config.baseUrl = "http://localhost:8080/api/"
 
@@ -68,7 +70,7 @@ export default {
     */
 
     if (options.needAuth) {
-      const userToken = getApp().$store.getters.getAuthToken;
+      const userToken = useStore().getAuthToken;
       const header = {
         'Authorization': `Bearer token="${userToken}", device="h5"`
       };
@@ -152,7 +154,7 @@ export default {
  * 请求接口日志记录
  */
 function _reqlog(req) {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     console.log("[_reqlog]【" + req.requestId + "】 地址：" + req.url)
     if (req.data) {
       console.log("[_reqlog]【" + req.requestId + "】 参数：" + JSON.stringify(req.data))
@@ -166,7 +168,7 @@ function _reqlog(req) {
  */
 function _reslog(res) {
   let _statusCode = res.statusCode;
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.MODE === 'development') {
     console.log("[_reslog]【" + res.config.requestId + "】 地址：" + res.config.url)
     if (res.config.data) {
       console.log("[_reslog]【" + res.config.requestId + "】 请求参数：" + JSON.stringify(res.config.data))

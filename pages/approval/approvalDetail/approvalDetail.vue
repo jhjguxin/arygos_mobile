@@ -10,7 +10,7 @@
         :show-foot="card.showFoot"
         v-if="detail && approval_detail"
       >
-        <view slot="body">
+        <template #body><view >
           <u-row gutter="16"  v-if="customFieldsObject['approve_status']">
             <u-col span="3" class="u-font-xs">
               <view>{{customFieldsObject['approve_status'].label}}</view>
@@ -35,12 +35,11 @@
               <custom-field-on-show :customField="customFieldsObject['finish_approve_at']" :record="approval_detail" />
             </u-col>
           </u-row>
-        </view>
+        </view></template>
       </u-card>
-      <u-tabs-swiper
-        ref="tabs" :list="tabs.list" :current="tabs.current" :is-scroll="false"
-        @change="handleTabsSwiperChange"
-      ></u-tabs-swiper>
+      <u-tabs
+        ref="tabs" :list="tabs.list" v-model:current="tabs.current" :scrollable="false"
+      />
       <view v-if="tabs.current == 0" class="u-padding-bottom-80">
         <approval-timeline
           :approvalDetail="approval_detail"
@@ -76,7 +75,6 @@
           :params="attachmentList.params"
           style="height: 65vh;"
         />
-        </u-grid>
       </view>
     </view>
     <unauthorized v-if="isInvalidData"/>
@@ -85,8 +83,8 @@
 
 <script>
   import _ from 'lodash';
-  import { contractApi, opportunityApi, receivedPaymentApi, approvalApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { contractApi, opportunityApi, receivedPaymentApi, approvalApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     data() {
@@ -284,9 +282,6 @@
 
           return null;
         }
-      },
-      handleTabsSwiperChange (value) {
-        this.tabs.current = value;
       },
       handleItemClick (event, key) {
         let { approvable_id, approvable_type } = this;

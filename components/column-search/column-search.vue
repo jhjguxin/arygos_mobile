@@ -1,10 +1,16 @@
 <template>
   <u-row gutter="16" justify="center" v-if="list.length > 0">
     <u-col span="4">
-      <u-input
-        :border="columnSelect.border" type="select" :select-open="selectShow" v-model="valueDisplay"
-        :placeholder="columnSelect.placeholder" @click="selectShow = true"></u-input>
-      <u-select mode="single-column" :list="list" v-model="selectShow" @confirm="handleSelectConfirm">      </u-select>
+      <u-select
+        :options="list"
+        v-model:current="searchColumnName"
+        label-name="label"
+        key-name="value"
+        label="选择搜索字段"
+        border
+        :show-options-label="true"
+        @select="handleSelectChange"
+      />
     </u-col>
     <u-col span="8">
       <u-search
@@ -19,19 +25,18 @@
 </template>
 
 <script>
-  import _ from "lodash";
-  import { userSettingApi } from 'services/http';
+  import _ from 'lodash';
+  import { userSettingApi } from '@/services/http';
 
 
   export default {
+  props: {
+      klassName: { type: String }
+  },
+
     data() {
       return {
         query: null,
-        selectShow: false,
-        columnSelect: {
-          placeholder: "选择搜索字段",
-          border: true
-        },
         search: {
           placeholder: "输入搜索内容",
           showAction: false,
@@ -46,8 +51,8 @@
     },
     methods: {
       fetchData () {
-        let { klassName: klass_name } = this.$attrs;
-        userSettingApi.default_entity_list_table({ klass_name}).then((res) => {
+        /* moved to props */
+        userSettingApi.default_entity_list_table({ klass_name: this.klassName }).then((res) => {
           let { data: {code, remark, data}} = res;
 
           if (code == 0) {
@@ -61,7 +66,7 @@
             this.query = null;
             this.searchColumnName = list[0]?.value;
             this.search.placeholder = `搜索${list[0]?.label}`;
-            this.$set(this, "list", list);
+            this.list = list;
           } else {
             uni.showToast({
               icon: 'none',
@@ -71,10 +76,9 @@
           }
         })
       },
-      handleSelectConfirm (value) {
+      handleSelectChange (item) {
         this.query = null;
-        this.searchColumnName = value[0]?.value;
-        this.search.placeholder = `搜索${value[0]?.label}`;
+        this.search.placeholder = `搜索${item.label}`;
       },
       handleSearch (value) {
         let { searchColumnName } = this;
@@ -84,17 +88,6 @@
           query: value,
           searchColumnName
         })
-      }
-    },
-    computed: {
-      valueDisplay: {
-        get: function () {
-          let { list, searchColumnName: value } = this;
-
-          return _.find(list, (opt)=> opt.value == value)?.label;
-        },
-        set: function (value) {
-        }
       }
     }
   }

@@ -6,7 +6,7 @@
         <u-input
           :border="border" v-model="start"
           placeholder="开始" @click="selectStartShow = true"></u-input>
-        <u-picker v-model="selectStartShow" mode="time" :default-time="start" :params="params" @confirm="handleConfirm($event, 'start')"></u-picker>
+        <u-datetime-picker style="flex:none" :show="selectStartShow" mode="date" :modelValue="start" @confirm="handleConfirm($event, 'start')" @close="selectStartShow = false" @cancel="selectStartShow = false"></u-datetime-picker>
       </u-form-item>
     </u-col>
     -
@@ -15,52 +15,44 @@
         <u-input
           :border="border" v-model="end"
           placeholder="结束" @click="selectEndShow = true"></u-input>
-        <u-picker v-model="selectEndShow" mode="time" :default-time="end" :params="params" @confirm="handleConfirm($event, 'end')"></u-picker>
+        <u-datetime-picker style="flex:none" :show="selectEndShow" mode="date" :modelValue="end" @confirm="handleConfirm($event, 'end')" @close="selectEndShow = false" @cancel="selectEndShow = false"></u-datetime-picker>
       </u-form-item>
     </u-col>
   </u-row>
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
   import dayjs from 'dayjs';
+  import { ref } from 'vue';
 
   export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value = {}
-      } = this.$attrs;
-      let { start, end} = value;
-
+    props: {
+      name: { type: String }, fieldType: { type: String }, customField: { type: Object },
+      record: { type: Object }, klassName: { type: String },
+      value: { default: () => ({}) }
+    },
+    setup(props) {
+      const start = ref("");
+      const end = ref("");
+      const selectStartShow = ref(false);
+      const selectEndShow = ref(false);
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value,
-        startName: `${customField.name}-start`,
-        endName: `${customField.name}-end`,
-        start: "",
-        end: "",
-        params: {
-          year: true,
-          month: true,
-          day: true,
-          hour: false,
-          minute: false,
-          second: false
-        },
-        border: false,
-        selectStartShow: false,
-        selectEndShow: false
-      }
+        startName: `${props.customField.name}-start`,
+        endName: `${props.customField.name}-end`,
+        start,
+        end,
+        border: "none",
+        selectStartShow,
+        selectEndShow
+      };
     },
     methods: {
       handleConfirm: function (e, key) {
         let { [`${key}Name`]: name, start, end} = this;
-        let value = `${e.year}-${e.month}-${e.day}`;
-        
+        let value = dayjs(Number(e.value)).format("YYYY-MM-DD");
+        let showKey = key == "start" ? "selectStartShow" : "selectEndShow";
+
         if (key == "start" && end) {
           if (dayjs(value) > dayjs(end)) {
             uni.showToast({
@@ -68,8 +60,9 @@
               title: "开始时间不能大于结束时间",
               duration: 1000
             });
+            this[showKey] = false;
             _.delay(()=> {
-              this.selectStartShow = true;
+              this[showKey] = true;
             }, 500);
             return;
           }
@@ -81,14 +74,16 @@
               title: "开始时间不能大于结束时间",
               duration: 1000
             });
+            this[showKey] = false;
             _.delay(()=> {
-              this.selectEndShow = true;
+              this[showKey] = true;
             }, 500);
             return;
           }
         }
-        this.$set(this, key, value);
-        
+        this[key] = value;
+        this[showKey] = false;
+
         if (key == "end" && _.isEmpty(start)) {
           this.selectStartShow = true;
 
@@ -101,7 +96,7 @@
           this.$emit("fieldChange", {name, value});
           return;
         }
-    
+
         this.$emit("fieldChange", {name, value});
       }
     },

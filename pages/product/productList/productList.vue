@@ -8,52 +8,54 @@
 
     <u-gap></u-gap>
     <uni-list>
-      <u-swipe-action
-        v-for="(item, index) in list"
-        v-bind:key="item.id"
-        :show="item.swipeAction.show" :index="index"
-        @click="handleSwipActionClick" @open="handleSwipeActionOpen"
-        :options="swipeAction.options"
-      >
-        <uni-list-item :thumb="item.thumb" thumbSize="lg">
-          <u-card
-            class="item-body" slot="body" :title="item.name"
+      <u-swipe-action :autoClose="true">
+        <u-swipe-action-item
+          v-for="(item, index) in list"
+          :key="item.id"
+          v-model:show="item.swipeAction.show" :name="index"
+          :options="swipeAction.options"
+          @click="handleSwipActionClick"
+        >
+          <uni-list-item :thumb="item.thumb" thumbSize="lg">
+            <template #body><u-card
+              class="item-body" :title="item.name"
 
-            :border="card.border" :sub-title="item.no" :full="card.full"
-            :show-head="card.showHead" :show-foot="card.showFoot"
-            :margin="card.margin"  :padding="card.padding"
-            @click="handleItemClick($event, item.id)"
-          >
-            <view slot="body">
-              <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
-                <u-col span="3" text-align="right" class="u-font-xs">
-                  {{customField.label}}
-                </u-col>
-                <u-col span="9">
-                  <custom-field-on-list :customField="customField" :record="item" />
-                </u-col>
-              </u-row>
-            </view>
-            <view slot="foot">
-            </view>
-          </u-card>
+              :border="card.border" :sub-title="item.no" :full="card.full"
+              :show-head="card.showHead" :show-foot="card.showFoot"
+              :margin="card.margin"  :padding="card.padding"
+              @click="handleItemClick($event, item.id)"
+            >
+              <template #body><view >
+                <u-row gutter="10" v-for="customField in ShowCustomFields" :key="customField.name">
+                  <u-col span="3" text-align="right" class="u-font-xs">
+                    {{customField.label}}
+                  </u-col>
+                  <u-col span="9">
+                    <custom-field-on-list :customField="customField" :record="item" />
+                  </u-col>
+                </u-row>
+              </view></template>
+              <template #foot><view >
+              </view></template>
+            </u-card></template>
 
-          <u-row class="item-footer" slot="footer" gutter="0" align="center">
-            <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
-          </u-row>
-        </uni-list-item>
+            <template #footer><u-row class="item-footer" gutter="0" align="center">
+              <u-tag :text="item.statusDisplay" v-if="item.statusDisplay"/>
+            </u-row></template>
+          </uni-list-item>
+        </u-swipe-action-item>
       </u-swipe-action>
     </uni-list>
     <uni-load-more :status="status" />
-    <u-back-top :scroll-top="backTop.scrollTop" top="backTop.top"></u-back-top>
+    <u-back-top :scroll-top="backTop.scrollTop" :top="backTop.top"></u-back-top>
   </view>
 </template>
 
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { productApi } from 'services/http';
-  import CustomField from 'services/custom_field';
+  import { productApi } from '@/services/http';
+  import CustomField from '@/services/custom_field';
 
   export default {
     components: {},
@@ -113,32 +115,36 @@
       // 初始化页面数据
       this.fetchProduct({reload: true });
     },
-    methods: {
-      onBackPress() {
-        uni.switchTab({
-          url: "/pages/workbench/workbench"
-        })
-        return true;
-      },
-      /**
-       * 下拉刷新回调函数
-       */
-      onPullDownRefresh() {
-        this.page = 1
-        this.fetchProduct({ reload: true });
-      },
-      /**
-       * 上拉加载回调函数
-       */
-      onReachBottom() {
-        let { page, status } = this;
 
-        if (status == 'more') {
-          page += 1;
-          this.page = page;
-          this.fetchProduct({ page });
-        }
-      },
+    onBackPress() {
+      uni.switchTab({
+        url: "/pages/workbench/workbench"
+      })
+      return true;
+    },
+
+    onPullDownRefresh() {
+      this.page = 1
+      this.fetchProduct({ reload: true });
+    },
+
+    /**
+     * 页面滚动回调函数——实时更新 scrollTop，驱动 u-back-top 显隐
+     */
+    onPageScroll(e) {
+      this.backTop.scrollTop = e.scrollTop;
+    },
+
+    onReachBottom() {
+      let { page, status } = this;
+      if (status == 'more') {
+        page += 1;
+        this.page = page;
+        this.fetchProduct({ page });
+      }
+    },
+    methods: {
+
       /**
        * 获取页面数据
        * @param {Object} reload 参数reload值为true时执行列表初始化逻辑，值为false时执行追加下一页数据的逻辑。默认为false
@@ -233,19 +239,10 @@
           url
         });
       },
-      handleSwipeActionOpen (index) {
-        let { list } = this;
-        list = _.each(list, (item) => {
-          item.swipeAction.show = false;
-        });
-        list[index].swipeAction.show = true;
-
-        this.list = list;
-      },
-      handleSwipActionClick (index, option_index) {
-        if (option_index === 0) {
+      handleSwipActionClick ({name, index}) {
+        if (index === 0) {
           let { list } = this;
-          let id = list[index]?.id;
+          let id = list[name]?.id;
           this.doDestroy({id})
         }
       },

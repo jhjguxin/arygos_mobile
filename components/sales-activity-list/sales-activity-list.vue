@@ -1,15 +1,15 @@
 <template>
   <view class="sales-activity-list" :style="style">
-    <u-time-line class="timeLine">
-      <u-time-line-item nodeTop="2" v-for="item in models" :key="item.id">
+    <u-steps direction="column" class="timeLine">
+      <u-steps-item v-for="item in models" :key="item.id">
         <!-- 此处自定义了左边内容，用一个图标替代 -->
-        <template v-slot:node>
+        <template #icon>
           <view class="u-node" :style="item.node.style">
             <!-- 此处为uView的icon组件 -->
             <u-icon name="map-fill" color="#fff" :size="24"></u-icon>
           </view>
         </template>
-        <template v-slot:content>
+        <template #content>
           <u-card
             full
             :title="item.user.name"
@@ -20,7 +20,7 @@
             :border="timeLine.card.border"
             :thumb="item.user.avatar_url"
           >
-            <view slot="body">
+            <template #body><view >
               <view class="u-order-desc">{{item.description}}</view>
               <view class="u-order-desc">来自：
                 <text
@@ -33,8 +33,8 @@
                   {{item.refer_name}}
                 </text>
               </view>
-            </view>
-            <u-row slot="foot">
+            </view></template>
+            <template #foot><u-row >
               <u-col span="4">
                 <u-icon
                   name="chat-fill" size="24" :label="item.commentCount"
@@ -45,11 +45,11 @@
                   :sales_activity_id="item.id" :ref="item.commentListRef"
                 />
               </u-col>
-            </u-row>
+            </u-row></template>
           </u-card>
         </template>
-      </u-time-line-item>
-    </u-time-line>
+      </u-steps-item>
+    </u-steps>
     <uni-load-more
       :status="status" :contentText="loadText"
       @clickLoadMore="handleLoadMore"
@@ -60,18 +60,22 @@
 <script>
   import _ from 'lodash';
   import dayjs from 'dayjs';
-  import { salesActivityApi } from 'services/http';
+  import { salesActivityApi } from '@/services/http';
 
   export default {
+  props: {
+      style: { type: [String, Object], default: "height: 55vh;" },
+      params: { type: Object, default: () => ({}) }
+  },
+
     data() {
-      let { style = "height: 55vh;"} = this.$attrs;
+      /* moved to props */
       return {
         models: [],
         isLoading: true,
         category: "all",
         status: 'more', // 加载状态
         perPage: 5, // 分页数
-        style,
         timeLine: {
           card: {
             border: true,
@@ -109,7 +113,7 @@
     methods: {
       fetchListData (page = 1) {
         let { category, models, timeLine, perPage } = this;
-        let { params = {} } = this.$attrs;
+        let params = { ...this.params };
         params.page = page;
         params.per_page = perPage;
         params.category = category;

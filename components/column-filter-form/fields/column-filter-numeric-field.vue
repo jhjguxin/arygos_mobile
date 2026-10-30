@@ -20,26 +20,25 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      // props 获取数据
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value = {}
-      } = this.$attrs;
-      let { start, end} = value;
+  import { ref } from 'vue';
 
+  export default {
+    props: {
+      name: { type: String }, fieldType: { type: String }, customField: { type: Object },
+      record: { type: Object }, klassName: { type: String },
+      value: { default: () => ({}) }
+    },
+    setup(props) {
+      const { start: startFromValue, end: endFromValue } = props.value;
+      const start = ref(startFromValue != null ? startFromValue : "");
+      const end = ref(endFromValue != null ? endFromValue : "");
       return {
-        name,  fieldType, customField,
-        record, klassName,
-        value,
-        startName: `${customField.name}-start`,
-        endName: `${customField.name}-end`,
-        start: start != null ? start : "",
-        end: end != null ? end : "",
-        border: false,
-      }
+        startName: `${props.customField.name}-start`,
+        endName: `${props.customField.name}-end`,
+        start,
+        end,
+        border: "none",
+      };
     },
     methods: {
       handleInput: function (value, key) {

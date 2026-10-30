@@ -1,4 +1,4 @@
-import http from './../interface';
+import http from '@/services/http/interface';
 
 const callback = (data = {}) => {
   return http.request({
@@ -17,7 +17,7 @@ const create = (data = {}) => {
   });
 };
 
-export {
+export default {
   callback,
   create
 };

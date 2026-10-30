@@ -1,4 +1,4 @@
-import http from './../interface';
+import http from '@/services/http/interface';
 
 const entity_add = (data = {}) => {
   return http.request({

@@ -23,20 +23,22 @@
 </template>
 
 <script>
-  import _ from "lodash";
-  import parseInitialValue from "./parseInitialValue";
-  import parseRule from "./parseRule";
-  import parseCustomField from "./parseCustomField";
-
+  import _ from 'lodash';
+  import parseInitialValue from "@/components/custom_form/parseInitialValue";
+  import parseRule from "@/components/custom_form/parseRule";
+  import parseCustomField from "@/components/custom_form/parseCustomField";
+  
   export default {
+    props: {
+      klassName: { type: String, default: '' },
+      record: { type: Object, default: undefined },
+      customFields: { type: Array, default: () => [] },
+      errorType: { type: String, default: 'message' }
+    },
     data() {
-      let {
-        klassName = "",  record, customFields = [],
-        errorType = ['message', 'border-bottom', 'toast']
-      } = this.$attrs;
+      const { customFields } = this;
 
       let rules = {};
-
       _.map(customFields, (customField) => {
         let _rules = parseRule({ customField });
         if (_.isArray(_rules)) {
@@ -47,15 +49,13 @@
             }
           )
         }
-      })
+      });
 
       return {
-        name: "",
-        klassName,  record, customFields,
-        rules, errorType,
+        rules,
         formFields: [],
         model: {}
-      }
+      };
     },
     created() {
       this.handleCollapseCustomFieldChange(false)
@@ -88,8 +88,8 @@
           model[`${customField.name}`] = value;
         });
 
-        this.$set(this, "formFields", formFields);
-        this.$set(this, "model", model);
+        this.formFields = formFields;
+        this.model = model;
       },
       handleCollapseCustomFieldChange (value) {
         let { customFields } = this;
@@ -120,13 +120,13 @@
           [`${name}`]: value
         };
 
-        this.$set(this, "model", model);
-        this.$set(this, "formFields", formFields);
+        this.model = model;
+        this.formFields = formFields;
       },
       handleSubmit() {
         console.debug("fields", this.$refs.uForm.fields, "model", this.model);
 
-        this.$refs.uForm.validate(valid => {
+        this.$refs.uForm.validate().then(valid => {
           if (valid) {
             let { formFields, model } = this;
             let values = {};

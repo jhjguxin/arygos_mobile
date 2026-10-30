@@ -1,7 +1,7 @@
 <template>
   <u-form-item :prop="customField.name" :label="customField.label" :required="customField.required">
     <attachment-upload
-      maxCount="10"
+      :maxCount="10"
       :file-list="value"
       :deletable="deletable"
       @upload="handleUpload"
@@ -10,22 +10,22 @@
 </template>
 
 <script>
-  import _ from "lodash";
+  import _ from 'lodash';
 
   export default {
-    data() {
-      let {
-        name,  fieldType, customField,
-        record, klassName,
-        value
-      } = this.$attrs;
+  props: {
+      name: { type: String },
+      fieldType: { type: String },
+      customField: { type: Object },
+      record: { type: Object },
+      klassName: { type: String },
+      value: { type: Array }
+  },
 
+    setup() {
       return {
-        name,  fieldType, customField,
-        record, klassName,
         deletable: true,
-        value
-      }
+      };
     },
     methods: {
       handleUpload(lists) {

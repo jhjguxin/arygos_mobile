@@ -13,11 +13,12 @@
 </template>
 
 <script>
-  import CustomFieldForm from 'services/custom_field_form';
-  import Auth from 'services/auth';
+  import _ from 'lodash';
+  import CustomFieldForm from '@/services/custom_field_form';
+  import Auth from '@/services/auth';
   import {
     customerApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {
@@ -42,8 +43,8 @@
       let { klassName, featureLabels } = this;
       let customFields = await CustomFieldForm.instance().fetchData(klassName);
 
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `新增${featureLabels[_.snakeCase(klassName)]}`

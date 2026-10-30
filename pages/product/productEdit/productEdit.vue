@@ -12,11 +12,12 @@
 </template>
 
 <script>
-  import CustomFieldForm from 'services/custom_field_form';
-  import Auth from 'services/auth';
+  import _ from 'lodash';
+  import CustomFieldForm from '@/services/custom_field_form';
+  import Auth from '@/services/auth';
   import {
     productApi,
-  } from "services/http";
+  } from "@/services/http";
 
   export default {
     data() {
@@ -46,9 +47,9 @@
         }
       };
 
-      this.$set(this, "customFields", customFields);
-      this.$set(this, "record", model);
-      if (model) this.$set(this, "formReady", true);
+      this.customFields = customFields;
+      this.record = model;
+      if (model) this.formReady = true;
 
       uni.setNavigationBarTitle({
         title: `编辑${featureLabels[_.snakeCase(klassName)]}`
