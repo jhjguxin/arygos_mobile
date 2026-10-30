@@ -45,7 +45,7 @@ store/
 └── app.js     # 唯一的 useAppStore：auth / permission / filterColumn 三块 state
 ```
 
-- 持久化通过 `pinia-plugin-persistedstate` + 自定义 `uni.getStorageSync`/`uni.setStorageSync` 适配器，存储键为 `crm:vuex:storage`。
+- 持久化通过 `pinia-plugin-persistedstate` + 自定义 `uni.getStorageSync`/`uni.setStorageSync` 适配器，存储键为 `crm:pinia:storage`。
 - Getters：`getAuthToken`、`getHasLogin`、`getUser`、`getPermissions`、`getFilterColumns(name)`。Actions：`login(user)`、`logout()`、`setPermissions(...)`、`setFilterColumns(...)`。
 - **统一访问方式**（组件和服务层相同）：
   ```js

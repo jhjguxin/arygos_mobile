@@ -46,7 +46,7 @@ export const useAppStore = defineStore('app', {
     }
   },
   persist: {
-    key: 'crm:vuex:storage',
+    key: 'crm:pinia:storage',
     storage: {
       getItem: (key) => uni.getStorageSync(key),
       setItem: (key, value) => uni.setStorageSync(key, value),
